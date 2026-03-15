@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>財務報表分析 第1章 練習題</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0f2240;
+  --navy2: #1a3560;
+  --gold: #c9902a;
+  --gold-light: #e8b84b;
+  --cream: #faf7f2;
+  --paper: #f5f0e8;
+  --ink: #1a1a2e;
+  --ink2: #2d3560;
+  --muted: #6b7280;
+  --correct: #166534;
+  --correct-bg: #dcfce7;
+  --wrong: #991b1b;
+  --wrong-bg: #fee2e2;
+  --rule: #d4c9b0;
+  --shadow: 0 4px 24px rgba(15,34,64,0.10);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+  min-height: 100vh;
+}
+
+/* ── Top header ─────────────────────────────── */
+.page-header {
+  background: var(--navy);
+  color: #fff;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+.page-header::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 260px; height: 260px;
+  border-radius: 50%;
+  background: rgba(201,144,42,0.18);
+}
+.page-header::after {
+  content: '';
+  position: absolute;
+  bottom: -40px; left: 40px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+}
+.header-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 44px 32px 36px;
+  position: relative;
+  z-index: 1;
+}
+.header-label {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: var(--gold-light);
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.header-title {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 6px;
+}
+.header-sub {
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  margin-top: 8px;
+}
+.header-meta {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+.meta-chip {
+  background: rgba(255,255,255,0.09);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.75);
+}
+
+/* ── Progress bar ───────────────────────────── */
+.progress-bar-wrap {
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  padding: 12px 32px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(15,34,64,0.06);
+}
+.progress-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.progress-text { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.progress-track {
+  flex: 1;
+  height: 5px;
+  background: var(--rule);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--navy2), var(--gold));
+  border-radius: 99px;
+  transition: width 0.5s ease;
+  width: 0%;
+}
+.score-display {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--navy2);
+  white-space: nowrap;
+}
+
+/* ── Main layout ────────────────────────────── */
+.main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+/* ── Section headers ────────────────────────── */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 44px 0 20px;
+}
+.section-label:first-child { margin-top: 8px; }
+.section-num {
+  background: var(--navy);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+.section-name {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--navy);
+  border-bottom: 2px solid var(--gold);
+  padding-bottom: 2px;
+}
+.section-count {
+  font-size: 12px;
+  color: var(--muted);
+  margin-left: auto;
+}
+
+/* ── Question card ──────────────────────────── */
+.q-card {
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 22px 24px 18px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+  transition: border-color 0.2s;
+}
+.q-card:hover { border-color: #b8a88a; }
+
+.q-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.q-num {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  color: var(--navy2);
+  font-size: 11px;
+  font-weight: 700;
+  min-width: 32px;
+  height: 24px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.q-text {
+  font-size: 15px;
+  color: var(--ink);
+  line-height: 1.75;
+  flex: 1;
+}
+.q-tag {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-weight: 500;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.tag-mc { background: #e0e7ff; color: #3730a3; }
+.tag-tf { background: #fef3c7; color: #92400e; }
+.tag-fill { background: #d1fae5; color: #065f46; }
+.tag-think { background: #fce7f3; color: #831843; }
+
+/* ── Multiple choice options ────────────────── */
+.mc-options {
+  display: grid;
+  gap: 8px;
+  margin-top: 4px;
+}
+.mc-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--paper);
+  border: 1.5px solid transparent;
+  border-radius: 7px;
+  padding: 10px 14px;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 14px;
+  color: var(--ink2);
+  transition: all 0.18s ease;
+  line-height: 1.6;
+  width: 100%;
+}
+.mc-btn:hover:not(:disabled) {
+  background: #eef2ff;
+  border-color: var(--navy2);
+}
+.mc-btn:disabled { cursor: default; }
+.mc-btn .opt-letter {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--muted);
+  min-width: 18px;
+  margin-top: 1px;
+}
+.mc-btn.correct {
+  background: var(--correct-bg);
+  border-color: #16a34a;
+  color: var(--correct);
+}
+.mc-btn.correct .opt-letter { color: var(--correct); }
+.mc-btn.wrong {
+  background: var(--wrong-bg);
+  border-color: #dc2626;
+  color: var(--wrong);
+}
+.mc-btn.wrong .opt-letter { color: var(--wrong); }
+.mc-btn.reveal-correct {
+  background: var(--correct-bg);
+  border-color: #86efac;
+  color: var(--correct);
+}
+
+/* ── True/False ─────────────────────────────── */
+.tf-options {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+.tf-btn {
+  flex: 1;
+  padding: 10px;
+  border: 1.5px solid transparent;
+  border-radius: 7px;
+  cursor: pointer;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.18s;
+  background: var(--paper);
+  color: var(--ink2);
+}
+.tf-btn:hover:not(:disabled) { background: #eef2ff; border-color: var(--navy2); }
+.tf-btn:disabled { cursor: default; }
+.tf-btn.correct { background: var(--correct-bg); border-color: #16a34a; color: var(--correct); }
+.tf-btn.wrong { background: var(--wrong-bg); border-color: #dc2626; color: var(--wrong); }
+.tf-btn.reveal-correct { background: var(--correct-bg); border-color: #86efac; color: var(--correct); }
+
+/* ── Fill blank ─────────────────────────────── */
+.fill-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+.fill-input {
+  border: 1.5px solid var(--rule);
+  border-radius: 7px;
+  padding: 8px 12px;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--paper);
+  outline: none;
+  min-width: 160px;
+  transition: border-color 0.18s;
+}
+.fill-input:focus { border-color: var(--navy2); }
+.fill-input.correct { border-color: #16a34a; background: var(--correct-bg); color: var(--correct); }
+.fill-input.wrong { border-color: #dc2626; background: var(--wrong-bg); color: var(--wrong); }
+.fill-input:disabled { cursor: default; }
+.fill-submit {
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: 'Noto Sans TC', sans-serif;
+  transition: background 0.18s;
+}
+.fill-submit:hover:not(:disabled) { background: var(--navy2); }
+.fill-submit:disabled { opacity: 0.4; cursor: default; }
+
+/* ── Feedback ───────────────────────────────── */
+.q-feedback {
+  margin-top: 12px;
+  border-radius: 7px;
+  padding: 10px 14px;
+  font-size: 13.5px;
+  line-height: 1.7;
+  display: none;
+}
+.q-feedback.show { display: block; }
+.q-feedback.correct-fb {
+  background: var(--correct-bg);
+  border-left: 3px solid #16a34a;
+  color: #14532d;
+}
+.q-feedback.wrong-fb {
+  background: var(--wrong-bg);
+  border-left: 3px solid #dc2626;
+  color: #7f1d1d;
+}
+.fb-icon { font-weight: 700; margin-right: 6px; }
+
+/* ── Think question ─────────────────────────── */
+.think-area {
+  width: 100%;
+  border: 1.5px solid var(--rule);
+  border-radius: 7px;
+  padding: 10px 14px;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--paper);
+  resize: vertical;
+  min-height: 80px;
+  outline: none;
+  margin-top: 8px;
+  transition: border-color 0.18s;
+}
+.think-area:focus { border-color: var(--navy2); }
+.think-hint {
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: #fffbeb;
+  border-left: 3px solid var(--gold);
+  border-radius: 0 6px 6px 0;
+  font-size: 13px;
+  color: #78350f;
+  display: none;
+}
+.think-hint.show { display: block; }
+.hint-btn {
+  background: none;
+  border: 1.5px solid var(--gold);
+  color: var(--gold);
+  border-radius: 6px;
+  padding: 5px 12px;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: 'Noto Sans TC', sans-serif;
+  margin-top: 8px;
+  transition: all 0.18s;
+}
+.hint-btn:hover { background: #fffbeb; }
+
+/* ── Submit all / results ───────────────────── */
+.submit-zone {
+  margin-top: 48px;
+  text-align: center;
+}
+.submit-btn {
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 40px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: 'Noto Sans TC', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  box-shadow: 0 4px 16px rgba(15,34,64,0.2);
+  letter-spacing: 0.05em;
+}
+.submit-btn:hover { background: var(--navy2); transform: translateY(-1px); }
+
+.result-card {
+  display: none;
+  margin-top: 32px;
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: var(--shadow);
+}
+.result-card.show { display: block; }
+.result-title {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+.result-score-big {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1.1;
+  margin: 12px 0 4px;
+}
+.result-sub {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.result-breakdown {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+}
+.breakdown-item {
+  background: var(--paper);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  border: 1px solid var(--rule);
+}
+.breakdown-num {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--navy);
+}
+.breakdown-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.result-msg {
+  font-size: 14px;
+  color: var(--ink2);
+  padding: 14px 16px;
+  background: var(--paper);
+  border-radius: 8px;
+  line-height: 1.7;
+  margin-top: 12px;
+}
+.retry-btn {
+  margin-top: 20px;
+  background: none;
+  border: 1.5px solid var(--navy);
+  color: var(--navy);
+  border-radius: 8px;
+  padding: 10px 24px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-weight: 500;
+  transition: all 0.18s;
+}
+.retry-btn:hover { background: var(--navy); color: #fff; }
+
+/* ── Key terms bar ──────────────────────────── */
+.key-terms {
+  background: var(--navy);
+  color: #fff;
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 48px 0 16px;
+}
+.key-terms-title { font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 10px; }
+.key-terms-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.key-term {
+  background: rgba(255,255,255,0.09);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.8);
+}
+
+@media (max-width: 600px) {
+  .header-inner { padding: 28px 18px 22px; }
+  .header-title { font-size: 20px; }
+  .main { padding: 20px 14px 60px; }
+  .q-card { padding: 16px 16px 14px; }
+  .result-breakdown { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="header-inner">
+    <div class="header-label">財務報表分析（第6版）· 第1章</div>
+    <div class="header-title">財務報表分析基礎<br><span style="font-size:18px;font-weight:400;opacity:0.75">Financial Statement Analysis — Fundamentals</span></div>
+    <div class="header-meta">
+      <span class="meta-chip">✦ 選擇題 · 是非題 · 填充題 · 思考題</span>
+      <span class="meta-chip">共 24 題</span>
+      <span class="meta-chip">涵蓋 1.1 — 1.7 節</span>
+    </div>
+  </div>
+</div>
+
+<div class="progress-bar-wrap">
+  <div class="progress-inner">
+    <span class="progress-text">作答進度</span>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="score-display" id="scoreLive">0 / 20 分</span>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════════════════════════════════════
+     SECTION A：1.1 起源與演進
+═══════════════════════════════════════════ -->
+<div class="section-label">
+  <span class="section-num">1.1</span>
+  <span class="section-name">財務報表分析的起源與演進</span>
+  <span class="section-count">Q1 – Q3</span>
+</div>
+
+<!-- Q1 MC -->
+<div class="q-card" id="q1">
+  <div class="q-header">
+    <div class="q-num">1</div>
+    <div class="q-text">19世紀末至20世紀初，財務報表分析的<strong>起源動因</strong>為何？</div>
+    <span class="q-tag tag-mc">選擇題</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q1','A','B')"><span class="opt-letter">A</span>股票市場興起，股東需要分析盈利能力</button>
+    <button class="mc-btn" onclick="answerMC(this,'q1','B','B')"><span class="opt-letter">B</span>美國銀行家為控制信貸風險，要求企業提供資產負債表以評估償債能力</button>
+    <button class="mc-btn" onclick="answerMC(this,'q1','C','B')"><span class="opt-letter">C</span>企業規模擴大，主動進行財務報表自我分析</button>
+    <button class="mc-btn" onclick="answerMC(this,'q1','D','B')"><span class="opt-letter">D</span>政府法規要求企業強制編製並公開財務報表</button>
+  </div>
+  <div class="q-feedback" id="fb_q1"></div>
+</div>
+
+<!-- Q2 MC -->
+<div class="q-card" id="q2">
+  <div class="q-header">
+    <div class="q-num">2</div>
+    <div class="q-text">依據財務報表分析的演進，請將下列三個階段<strong>依時序排列</strong>（最早→最近）：<br>①投資分析　②信用分析　③內部分析</div>
+    <span class="q-tag tag-mc">選擇題</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q2','A','C')"><span class="opt-letter">A</span>①②③</button>
+    <button class="mc-btn" onclick="answerMC(this,'q2','B','C')"><span class="opt-letter">B</span>③①②</button>
+    <button class="mc-btn" onclick="answerMC(this,'q2','C','C')"><span class="opt-letter">C</span>②①③</button>
+    <button class="mc-btn" onclick="answerMC(this,'q2','D','C')"><span class="opt-letter">D</span>①③②</button>
+  </div>
+  <div class="q-feedback" id="fb_q2"></div>
+</div>
+
+<!-- Q3 TF -->
+<div class="q-card" id="q3">
+  <div class="q-header">
+    <div class="q-num">3</div>
+    <div class="q-text">在投資分析階段（1920年代後），財務報表分析的重心從<strong>收益性分析</strong>轉向<strong>稳定性分析</strong>，利润表的重要性大幅提升。</div>
+    <span class="q-tag tag-tf">是非題</span>
+  </div>
+  <div class="tf-options">
+    <button class="tf-btn" onclick="answerTF(this,'q3',true,false)">○ 正確</button>
+    <button class="tf-btn" onclick="answerTF(this,'q3',false,false)">✕ 錯誤</button>
+  </div>
+  <div class="q-feedback" id="fb_q3"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION B：1.2 概念、主體與目的
+═══════════════════════════════════════════ -->
+<div class="section-label">
+  <span class="section-num">1.2</span>
+  <span class="section-name">概念、主體與目的</span>
+  <span class="section-count">Q4 – Q6</span>
+</div>
+
+<!-- Q4 MC -->
+<div class="q-card" id="q4">
+  <div class="q-header">
+    <div class="q-num">4</div>
+    <div class="q-text">財務報表分析的<strong>廣義概念</strong>與狹義概念最主要的差別在於？</div>
+    <span class="q-tag tag-mc">選擇題</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q4','A','B')"><span class="opt-letter">A</span>廣義不使用比率分析，僅採用文字敘述</button>
+    <button class="mc-btn" onclick="answerMC(this,'q4','B','B')"><span class="opt-letter">B</span>廣義以財務及非財務資訊（含公開與不公開）為基礎，進行企業戰略、競爭格局等更廣泛的分析</button>
+    <button class="mc-btn" onclick="answerMC(this,'q4','C','B')"><span class="opt-letter">C</span>廣義只分析上市公司，狹義則分析所有企業</button>
+    <button class="mc-btn" onclick="answerMC(this,'q4','D','B')"><span class="opt-letter">D</span>廣義由外部審計師執行，狹義由企業內部人員執行</button>
+  </div>
+  <div class="q-feedback" id="fb_q4"></div>
+</div>
+
+<!-- Q5 Fill -->
+<div class="q-card" id="q5">
+  <div class="q-header">
+    <div class="q-num">5</div>
+    <div class="q-text">財務報表分析主體（利益相關者）共有六類，請填入其中<strong>兩類</strong>（任填兩類即可）：</div>
+    <span class="q-tag tag-fill">填充題</span>
+  </div>
+  <div class="fill-wrap">
+    <input class="fill-input" id="fill_q5" type="text" placeholder="請填寫（以頓號分隔兩類）" autocomplete="off">
+    <button class="fill-submit" onclick="answerFill('q5', ['企業所有者','股東','債權人','企業債權人','經營管理者','管理者','政府職能機構','政府','社會中介機構','中介機構','其他主體'])">確認</button>
+  </div>
+  <div class="q-feedback" id="fb_q5"></div>
+</div>
+
+<!-- Q6 TF -->
+<div class="q-card" id="q6">
+  <div class="q-header">
+    <div class="q-num">6</div>
+    <div class="q-text">狹義財務報表分析主要以<strong>對外提供的財務報表及附注</strong>為依據，運用比率分析、項目品質分析等方法，為報表使用者的經濟決策提供財務資訊支持。</div>
+    <span class="q-tag tag-tf">是非題</span>
+  </div>
+  <div class="tf-options">
+    <button class="tf-btn" onclick="answerTF(this,'q6',true,true)">○ 正確</button>
+    <button class="tf-btn" onclick="answerTF(this,'q6',false,true)">✕ 錯誤</button>
+  </div>
+  <div class="q-feedback" id="fb_q6"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION C：1.3 對象、資訊來源與財務報告構成
+═══════════════════════════════════════════ -->
+<div class="section-label">
+  <span class="section-num">1.3</span>
+  <span class="section-name">對象、資訊來源與財務報告構成</span>
+  <span class="section-count">Q7 – Q10</span>
+</div>
+
+<!-- Q7 MC -->
+<div class="q-card" id="q7">
+  <div class="q-header">
+    <div class="q-num">7</div>
+    <div class="q-text">下列哪一項財務報表屬於<strong>靜態報表</strong>，反映特定日期全部資產、負債和所有者權益？</div>
+    <span class="q-tag tag-mc">選擇題</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q7','A','A')"><span class="opt-letter">A</span>資產負債表</button>
+    <button class="mc-btn" onclick="answerMC(this,'q7','B','A')"><span class="opt-letter">B</span>利潤表</button>
+    <button class="mc-btn" onclick="answerMC(this,'q7','C','A')"><span class="opt-letter">C</span>現金流量表</button>
+    <button class="mc-btn" onclick="answerMC(this,'q7','D','A')"><span class="opt-letter">D</span>所有者權益變動表</button>
+  </div>
+  <div class="q-feedback" id="fb_q7"></div>
+</div>
+
+<!-- Q8 MC -->
+<div class="q-card" id="q8">
+  <div class="q-header">
+    <div class="q-num">8</div>
+    <div class="q-text">關於<strong>報表附注</strong>，下列敘述何者正確？</div>
+    <span class="q-tag tag-mc">選擇題</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q8','A','C')"><span class="opt-letter">A</span>附注是審計師出具的獨立意見書</button>
+    <button class="mc-btn" onclick="answerMC(this,'q8','B','C')"><span class="opt-letter">B</span>附注約占整個年報的 1/4，屬於補充資料</button>
+    <button class="mc-btn" onclick="answerMC(this,'q8','C','C')"><span class="opt-letter">C</span>附注約占整個年報的 1/2，是分析人員了解各項目當期變動原因的重要資料</button>
+    <button class="mc-btn" onclick="answerMC(this,'q8','D','C')"><span class="opt-letter">D</span>附注只包含會計政策說明，不含數字資料</button>
+  </div>
+  <div class="q-feedback" id="fb_q8"></div>
+</div>
+
+<!-- Q9 MC -->
+<div class="q-card" id="q9">
+  <div class="q-header">
+    <div class="q-num">9</div>
+    <div class="q-text">財務報表的<strong>四大局限性</strong>中，「財務報表僅反映能以貨幣計量的資產，大量無形資產（如品牌、人力資源）無法列示」，是屬於哪項局限？</div>
+    <span class="q-tag tag-mc">選擇題</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q9','A','A')"><span class="opt-letter">A</span>不完整性</button>
+    <button class="mc-btn" onclick="answerMC(this,'q9','B','A')"><span class="opt-letter">B</span>滯後性與無關性</button>
+    <button class="mc-btn" onclick="answerMC(this,'q9','C','A')"><span class="opt-letter">C</span>口徑差異性</button>
+    <button class="mc-btn" onclick="answerMC(this,'q9','D','A')"><span class="opt-letter">D</span>主觀性</button>
+  </div>
+  <div class="q-feedback" id="fb_q9"></div>
+</div>
+
+<!-- Q10 Fill -->
+<div class="q-card" id="q10">
+  <div class="q-header">
+    <div class="q-num">10</div>
+    <div class="q-text">企業的三類經濟活動中，「發行股票和債券、取得借款、利用內部積累資金」反映於現金流量表<strong>第幾部分</strong>？（請填入中文數字，如：第一）</div>
+    <span class="q-tag tag-fill">填充題</span>
+  </div>
+  <div class="fill-wrap">
+    <input class="fill-input" id="fill_q10" type="text" placeholder="第＿部分" autocomplete="off">
+    <button class="fill-submit" onclick="answerFill('q10', ['第三','三','第3','3'])">確認</button>
+  </div>
+  <div class="q-feedback" id="fb_q10"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION D：1.4 基本前提（會計假設）
+═══════════════════════════════════════════ -->
+<div class="section-label">
+  <span class="section-num">1.4</span>
+  <span class="section-name">基本前提（四大會計假設）</span>
+  <span class="section-count">Q11 – Q13</span>
+</div>
+
+<!-- Q11 MC -->
+<div class="q-card" id="q11">
+  <div class="q-header">
+    <div class="q-num">11</div>
+    <div class="q-text">「以貨幣作為計量單位，凡無法以貨幣計量的事項不在財務報表中列示」，此屬於哪一項基本會計假設？</div>
+    <span class="q-tag tag-mc">選擇題</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q11','A','D')"><span class="opt-letter">A</span>會計主體假設</button>
+    <button class="mc-btn" onclick="answerMC(this,'q11','B','D')"><span class="opt-letter">B</span>持續經營假設</button>
+    <button class="mc-btn" onclick="answerMC(this,'q11','C','D')"><span class="opt-letter">C</span>會計分期假設</button>
+    <button class="mc-btn" onclick="answerMC(this,'q11','D','D')"><span class="opt-letter">D</span>貨幣計量假設</button>
+  </div>
+  <div class="q-feedback" id="fb_q11"></div>
+</div>
+
+<!-- Q12 TF -->
+<div class="q-card" id="q12">
+  <div class="q-header">
+    <div class="q-num">12</div>
+    <div class="q-text">「持續經營假設」是各項資產計量、費用分攤等會計政策選擇的基礎；一旦企業面臨破產清算，此假設即不再適用。</div>
+    <span class="q-tag tag-tf">是非題</span>
+  </div>
+  <div class="tf-options">
+    <button class="tf-btn" onclick="answerTF(this,'q12',true,true)">○ 正確</button>
+    <button class="tf-btn" onclick="answerTF(this,'q12',false,true)">✕ 錯誤</button>
+  </div>
+  <div class="q-feedback" id="fb_q12"></div>
+</div>
+
+<!-- Q13 MC -->
+<div class="q-card" id="q13">
+  <div class="q-header">
+    <div class="q-num">13</div>
+    <div class="q-text">在上市公司中，<strong>會計主體假設</strong>規定哪些主體可以成為會計主體？</div>
+    <span class="q-tag tag-mc">選擇題</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q13','A','D')"><span class="opt-letter">A</span>只有母公司</button>
+    <button class="mc-btn" onclick="answerMC(this,'q13','B','D')"><span class="opt-letter">B</span>只有各子公司</button>
+    <button class="mc-btn" onclick="answerMC(this,'q13','C','D')"><span class="opt-letter">C</span>只有合併後的企業集團</button>
+    <button class="mc-btn" onclick="answerMC(this,'q13','D','D')"><span class="opt-letter">D</span>上市公司本身和企業集團均可成為會計主體</button>
+  </div>
+  <div class="q-feedback" id="fb_q13"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION E：1.5 一般會計原則（八大原則）
+═══════════════════════════════════════════ -->
+<div class="section-label">
+  <span class="section-num">1.5</span>
+  <span class="section-name">一般會計原則（八大原則）</span>
+  <span class="section-count">Q14 – Q16</span>
+</div>
+
+<!-- Q14 MC -->
+<div class="q-card" id="q14">
+  <div class="q-header">
+    <div class="q-num">14</div>
+    <div class="q-text">融資租入固定資產在會計上視同自有資產入帳，而非按租賃合約的法律形式僅列為費用，此做法體現了哪項會計原則？</div>
+    <span class="q-tag tag-mc">選擇題</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q14','A','C')"><span class="opt-letter">A</span>客觀性原則</button>
+    <button class="mc-btn" onclick="answerMC(this,'q14','B','C')"><span class="opt-letter">B</span>謹慎性原則</button>
+    <button class="mc-btn" onclick="answerMC(this,'q14','C','C')"><span class="opt-letter">C</span>實質重於形式原則</button>
+    <button class="mc-btn" onclick="answerMC(this,'q14','D','C')"><span class="opt-letter">D</span>可比性原則</button>
+  </div>
+  <div class="q-feedback" id="fb_q14"></div>
+</div>
+
+<!-- Q15 TF -->
+<div class="q-card" id="q15">
+  <div class="q-header">
+    <div class="q-num">15</div>
+    <div class="q-text">依謹慎性原則，對不確定的收入應予以確認，但對不確定的損失與費用則不予確認，以避免高估資產或收益。</div>
+    <span class="q-tag tag-tf">是非題</span>
+  </div>
+  <div class="tf-options">
+    <button class="tf-btn" onclick="answerTF(this,'q15',true,false)">○ 正確</button>
+    <button class="tf-btn" onclick="answerTF(this,'q15',false,false)">✕ 錯誤</button>
+  </div>
+  <div class="q-feedback" id="fb_q15"></div>
+</div>
+
+<!-- Q16 Fill -->
+<div class="q-card" id="q16">
+  <div class="q-header">
+    <div class="q-num">16</div>
+    <div class="q-text">八大一般會計原則中，要求「同一企業不同時期，以及不同企業同一時期，應採用相同的會計政策，確保會計資訊口徑一致」的是<strong>___</strong>原則。</div>
+    <span class="q-tag tag-fill">填充題</span>
+  </div>
+  <div class="fill-wrap">
+    <input class="fill-input" id="fill_q16" type="text" placeholder="輸入原則名稱" autocomplete="off">
+    <button class="fill-submit" onclick="answerFill('q16', ['可比性','可比性原則','可比'])">確認</button>
+  </div>
+  <div class="q-feedback" id="fb_q16"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION F：1.6 核算基礎與計量屬性
+═══════════════════════════════════════════ -->
+<div class="section-label">
+  <span class="section-num">1.6</span>
+  <span class="section-name">核算基礎與計量屬性</span>
+  <span class="section-count">Q17 – Q19</span>
+</div>
+
+<!-- Q17 MC -->
+<div class="q-card" id="q17">
+  <div class="q-header">
+    <div class="q-num">17</div>
+    <div class="q-text">「以業務實際發生時間為入帳標準，無論款項是否收付，均作為當期處理」描述的是哪種核算基礎？</div>
+    <span class="q-tag tag-mc">選擇題</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q17','A','B')"><span class="opt-letter">A</span>收付實現制（現金制）</button>
+    <button class="mc-btn" onclick="answerMC(this,'q17','B','B')"><span class="opt-letter">B</span>權責發生制（應計制）</button>
+    <button class="mc-btn" onclick="answerMC(this,'q17','C','B')"><span class="opt-letter">C</span>混合制</button>
+    <button class="mc-btn" onclick="answerMC(this,'q17','D','B')"><span class="opt-letter">D</span>歷史成本制</button>
+  </div>
+  <div class="q-feedback" id="fb_q17"></div>
+</div>
+
+<!-- Q18 MC -->
+<div class="q-card" id="q18">
+  <div class="q-header">
+    <div class="q-num">18</div>
+    <div class="q-text">五種會計計量屬性中，「公平交易中，熟悉情況的交易雙方自願進行資產交換或債務清償的金額」是指？</div>
+    <span class="q-tag tag-mc">選擇題</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q18','A','D')"><span class="opt-letter">A</span>歷史成本</button>
+    <button class="mc-btn" onclick="answerMC(this,'q18','B','D')"><span class="opt-letter">B</span>重置成本</button>
+    <button class="mc-btn" onclick="answerMC(this,'q18','C','D')"><span class="opt-letter">C</span>現值</button>
+    <button class="mc-btn" onclick="answerMC(this,'q18','D','D')"><span class="opt-letter">D</span>公允價值</button>
+  </div>
+  <div class="q-feedback" id="fb_q18"></div>
+</div>
+
+<!-- Q19 TF -->
+<div class="q-card" id="q19">
+  <div class="q-header">
+    <div class="q-num">19</div>
+    <div class="q-text">收付實現制（現金制）因能更準確反映真實經營業績，為全球各國會計準則普遍採用的核算基礎。</div>
+    <span class="q-tag tag-tf">是非題</span>
+  </div>
+  <div class="tf-options">
+    <button class="tf-btn" onclick="answerTF(this,'q19',true,false)">○ 正確</button>
+    <button class="tf-btn" onclick="answerTF(this,'q19',false,false)">✕ 錯誤</button>
+  </div>
+  <div class="q-feedback" id="fb_q19"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION G：1.7 法規體系與信披制度
+═══════════════════════════════════════════ -->
+<div class="section-label">
+  <span class="section-num">1.7</span>
+  <span class="section-name">法規體系與資訊揭露制度</span>
+  <span class="section-count">Q20 – Q22</span>
+</div>
+
+<!-- Q20 MC -->
+<div class="q-card" id="q20">
+  <div class="q-header">
+    <div class="q-num">20</div>
+    <div class="q-text">中國企業會計準則體系的結構，由上至下依序為？</div>
+    <span class="q-tag tag-mc">選擇題</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q20','A','B')"><span class="opt-letter">A</span>具體準則 → 基本準則 → 應用指南</button>
+    <button class="mc-btn" onclick="answerMC(this,'q20','B','B')"><span class="opt-letter">B</span>基本準則 → 具體準則（38項）→ 應用指南＋解釋公告</button>
+    <button class="mc-btn" onclick="answerMC(this,'q20','C','B')"><span class="opt-letter">C</span>《會計法》→ 應用指南 → 具體準則</button>
+    <button class="mc-btn" onclick="answerMC(this,'q20','D','B')"><span class="opt-letter">D</span>基本準則 → 解釋公告 → 具體準則</button>
+  </div>
+  <div class="q-feedback" id="fb_q20"></div>
+</div>
+
+<!-- Q21 TF -->
+<div class="q-card" id="q21">
+  <div class="q-header">
+    <div class="q-num">21</div>
+    <div class="q-text">上市公司資訊揭露法規體系共分四個層次，由高至低依序為：國家法律 → 行政法規 → 部門規章 → 自律性規則。</div>
+    <span class="q-tag tag-tf">是非題</span>
+  </div>
+  <div class="tf-options">
+    <button class="tf-btn" onclick="answerTF(this,'q21',true,true)">○ 正確</button>
+    <button class="tf-btn" onclick="answerTF(this,'q21',false,true)">✕ 錯誤</button>
+  </div>
+  <div class="q-feedback" id="fb_q21"></div>
+</div>
+
+<!-- Q22 Fill -->
+<div class="q-card" id="q22">
+  <div class="q-header">
+    <div class="q-num">22</div>
+    <div class="q-text">根據規定，上市公司年度報告須於每個會計年度結束之日起<strong>___個月</strong>內完成並揭露。（請填入阿拉伯數字）</div>
+    <span class="q-tag tag-fill">填充題</span>
+  </div>
+  <div class="fill-wrap">
+    <input class="fill-input" id="fill_q22" type="text" placeholder="＿個月" autocomplete="off">
+    <button class="fill-submit" onclick="answerFill('q22', ['4','四','4個月','四個月'])">確認</button>
+  </div>
+  <div class="q-feedback" id="fb_q22"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION H：思考題（綜合應用）
+═══════════════════════════════════════════ -->
+<div class="section-label">
+  <span class="section-num">綜合</span>
+  <span class="section-name">思考與應用</span>
+  <span class="section-count">Q23 – Q24</span>
+</div>
+
+<!-- Q23 Think -->
+<div class="q-card" id="q23">
+  <div class="q-header">
+    <div class="q-num">23</div>
+    <div class="q-text">財務報表具有「滯後性與無關性」的局限性。請說明：這對投資決策者在使用財務報表時，應注意哪些事項？（至少說明兩點）</div>
+    <span class="q-tag tag-think">思考題</span>
+  </div>
+  <textarea class="think-area" id="think_q23" placeholder="請在此輸入您的想法..."></textarea>
+  <button class="hint-btn" onclick="toggleHint('hint_q23', this)">💡 查看參考要點</button>
+  <div class="think-hint" id="hint_q23">
+    <strong>參考要點：</strong><br>
+    ① 財務報表呈現的是已發生的<em>歷史資訊</em>，具明顯滯後性，無法直接反映企業當前或未來狀況。<br>
+    ② 歷史成本在決策中屬<em>沉沒成本</em>，投資者需關注前瞻性資訊（如管理層討論、行業趨勢）。<br>
+    ③ 不同時點貨幣數據簡單加總，在通脹環境下會使資訊<em>準確性下降</em>。<br>
+    ④ 建議結合<em>非財務資訊</em>（如管理品質、市場地位、ESG指標）進行綜合分析。
+  </div>
+</div>
+
+<!-- Q24 Think -->
+<div class="q-card" id="q24">
+  <div class="q-header">
+    <div class="q-num">24</div>
+    <div class="q-text">以格力電器與美的集團為例，請從<strong>財務報表分析的角度</strong>討論：「專業化戰略」與「多元化戰略」各有什麼財務特徵？您認為哪種策略在財務上更具優勢？說明理由。</div>
+    <span class="q-tag tag-think">思考題</span>
+  </div>
+  <textarea class="think-area" id="think_q24" placeholder="請在此輸入您的想法..."></textarea>
+  <button class="hint-btn" onclick="toggleHint('hint_q24', this)">💡 查看參考要點</button>
+  <div class="think-hint" id="hint_q24">
+    <strong>參考分析框架：</strong><br>
+    ① <em>專業化（格力）</em>：單一產品毛利率高、品牌護城河深，但收入結構集中、抗風險能力較弱。<br>
+    ② <em>多元化（美的）</em>：收入來源分散、可用多業務交叉補貼，但管理複雜度上升、資本回報率可能被稀釋。<br>
+    ③ 可從利潤表（毛利率、營業利益率）、資產負債表（資產結構）、現金流量表（自由現金流）三個維度比較。<br>
+    ④ 可參考兩家公司近年股價表現與市值差距，思考市場如何對兩種策略進行定價。<br>
+    ⑤ 注意：本題無標準答案，重在論述邏輯是否嚴謹。
+  </div>
+</div>
+
+<!-- ── Key Terms ── -->
+<div class="key-terms">
+  <div class="key-terms-title">本章關鍵術語</div>
+  <div class="key-terms-list">
+    <span class="key-term">財務報表分析</span>
+    <span class="key-term">信用分析</span>
+    <span class="key-term">投資分析</span>
+    <span class="key-term">內部分析</span>
+    <span class="key-term">狹義／廣義概念</span>
+    <span class="key-term">資產負債表</span>
+    <span class="key-term">利潤表</span>
+    <span class="key-term">現金流量表</span>
+    <span class="key-term">報表附注</span>
+    <span class="key-term">審計報告</span>
+    <span class="key-term">四大局限性</span>
+    <span class="key-term">會計主體</span>
+    <span class="key-term">持續經營</span>
+    <span class="key-term">會計分期</span>
+    <span class="key-term">貨幣計量</span>
+    <span class="key-term">八大原則</span>
+    <span class="key-term">實質重於形式</span>
+    <span class="key-term">謹慎性</span>
+    <span class="key-term">可比性</span>
+    <span class="key-term">權責發生制</span>
+    <span class="key-term">公允價值</span>
+    <span class="key-term">歷史成本</span>
+    <span class="key-term">會計準則體系</span>
+    <span class="key-term">資訊揭露制度</span>
+  </div>
+</div>
+
+<!-- ── Submit ── -->
+<div class="submit-zone">
+  <button class="submit-btn" onclick="submitAll()">📋 提交選擇 / 是非 / 填充題，查看結果</button>
+  <div class="result-card" id="resultCard">
+    <div class="result-title">練習成績</div>
+    <div class="result-score-big" id="resultScore">—</div>
+    <div class="result-sub" id="resultSub">共 20 題（不含思考題）</div>
+    <div class="result-breakdown">
+      <div class="breakdown-item"><div class="breakdown-num" id="r-correct">0</div><div class="breakdown-label">答對</div></div>
+      <div class="breakdown-item"><div class="breakdown-num" id="r-wrong">0</div><div class="breakdown-label">答錯</div></div>
+      <div class="breakdown-item"><div class="breakdown-num" id="r-skip">0</div><div class="breakdown-label">未作答</div></div>
+    </div>
+    <div class="result-msg" id="resultMsg"></div>
+    <button class="retry-btn" onclick="retryAll()">🔄 重新作答</button>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+// ── State ──────────────────────────────────────────────
+const TOTAL_SCORABLE = 20; // Q1-Q22 (填充題 Q5 算bonus)
+let answered = {}; // qid → {correct: bool}
+let scores = 0;
+
+const MC_EXPLAIN = {
+  q1: '19世紀末至20世紀初，美國銀行家為控制信貸風險，主動要求企業提供資產負債表，以評估其償債能力與信用狀況，此即信用分析階段，為財務報表分析的起源。',
+  q2: '財務報表分析三階段時序：②信用分析（19世紀末~20世紀初）→ ①投資分析（1920年代後）→ ③內部分析（二次大戰後至今）。',
+  q3: '錯誤。1920年代之後進入投資分析階段，分析重心從「稳定性分析（償債能力）」轉向「收益性分析（盈利能力）」，利潤表重要性大幅提升，選項描述方向顛倒。',
+  q4: '廣義概念以財務資訊及非財務資訊（含公開與不公開）為基礎，進行企業戰略制定、管理模式、行業競爭格局、發展前景等更廣泛的分析，遠超過狹義的比率分析範疇。',
+  q5: '六類分析主體：① 企業所有者（股東）② 企業債權人 ③ 經營管理者 ④ 政府職能機構 ⑤ 社會中介機構 ⑥ 其他主體。',
+  q6: '正確。狹義財務報表分析即以對外提供的財務報表及附注為主要依據，運用比率分析等方法分析償債、盈利、營運等能力。',
+  q7: '資產負債表為靜態報表，反映特定日期（時點）的財務狀況；利潤表、現金流量表、所有者權益變動表均為動態報表，反映一段期間的變動情況。',
+  q8: '報表附注是對資產負債表、利潤表等項目的文字說明和詳細資料，約占整個年報的1/2，是分析人員了解報表各項目當期變動原因的重要資料。',
+  q9: '財務報表只反映能以貨幣計量的資產，無法反映人力資源、品牌等大量無形資產，這是「不完整性」的局限。「滯後性與無關性」指歷史資訊、沉沒成本問題。',
+  q10: '三類經濟活動中，籌資活動（發行股票和債券、取得借款、利用內部積累資金）反映於現金流量表第三部分。第一部分為經營活動，第二部分為投資活動。',
+  q11: '貨幣計量假設規定以貨幣作為統一計量單位，凡無法以貨幣計量的事項不在財務報表中列示，這也是財務報表不完整性的根本原因之一。',
+  q12: '正確。持續經營假設是各項資產計量、費用分攤等會計政策選擇的基礎。當企業面臨清算時，此假設不再適用，各資產應改以清算價值計量。',
+  q13: '在上市公司中，上市公司本身和企業集團均可成為獨立的會計主體，分別編製個別財務報表和合併財務報表。',
+  q14: '融資租入的固定資產依其「經濟實質」視同自有資產，而非僅依法律上未擁有所有權的「形式」處理，體現了實質重於形式原則。',
+  q15: '錯誤。謹慎性原則規定：對不確定的損失和費用應予以確認（保守認列），但對不確定的收入則不予確認，以避免高估資產或收益。題目描述方向顛倒。',
+  q16: '可比性原則要求同一企業不同時期、以及不同企業同一時期採用相同的會計政策，確保資訊可相互比較。',
+  q17: '權責發生制（應計制）以業務實際發生時間（而非款項收付時間）為入帳標準，已實現的收入和已發生的費用無論是否收付，均作當期處理。全球通行，能更準確反映經營業績。',
+  q18: '公允價值指在公平交易中，熟悉情況的雙方自願交換資產或清償債務的金額。美國GAAP和IFRS均較側重公允價值的應用。',
+  q19: '錯誤。收付實現制（現金制）僅以款項實際收付為入帳標準，優點是現金含量高，但缺點是不能反映真實經營業績；全球各國均未採用（或極少採用），普遍採用的是權責發生制。',
+  q20: '企業會計準則體系由上至下為：基本準則（框架性原則）→ 具體準則（38項，含一般業務、特殊行業、特定業務）→ 應用指南與解釋公告（實務操作細則）。',
+  q21: '正確。上市公司資訊揭露法規體系共四個層次：國家法律（最高，如《公司法》《證券法》）→ 行政法規 → 部門規章（如《上市公司資訊揭露管理辦法》）→ 自律性規則（如交易所上市規則）。',
+  q22: '根據規定，年度報告須於每個會計年度結束之日起4個月內完成並依據中國證監會相關規定揭露。'
+};
+
+// ── Answer MC ──────────────────────────────────────────
+function answerMC(btn, qid, chosen, correct) {
+  if (answered[qid] !== undefined) return;
+  const card = document.getElementById(qid);
+  const btns = card.querySelectorAll('.mc-btn');
+  btns.forEach(b => {
+    b.disabled = true;
+    const letter = b.querySelector('.opt-letter').textContent.trim();
+    if (letter === correct) b.classList.add(chosen === correct ? 'correct' : 'reveal-correct');
+  });
+  const isCorrect = chosen === correct;
+  if (isCorrect) btn.classList.add('correct');
+  else btn.classList.add('wrong');
+  answered[qid] = isCorrect;
+  showFeedback(qid, isCorrect, MC_EXPLAIN[qid]);
+  updateProgress();
+}
+
+// ── Answer TF ──────────────────────────────────────────
+function answerTF(btn, qid, chosen, correct) {
+  if (answered[qid] !== undefined) return;
+  const card = document.getElementById(qid);
+  const btns = card.querySelectorAll('.tf-btn');
+  btns.forEach(b => {
+    b.disabled = true;
+    const isTrue = b.textContent.includes('正確');
+    if (isTrue === correct) b.classList.add(chosen === correct ? 'correct' : 'reveal-correct');
+  });
+  const isCorrect = chosen === correct;
+  if (isCorrect) btn.classList.add('correct');
+  else btn.classList.add('wrong');
+  answered[qid] = isCorrect;
+  showFeedback(qid, isCorrect, MC_EXPLAIN[qid]);
+  updateProgress();
+}
+
+// ── Answer Fill ────────────────────────────────────────
+function answerFill(qid, acceptedList) {
+  if (answered[qid] !== undefined) return;
+  const input = document.getElementById('fill_' + qid);
+  const val = input.value.trim();
+  if (!val) return;
+  const isCorrect = acceptedList.some(a => val.includes(a));
+  // Special handling for Q5 (any 2 valid terms)
+  if (qid === 'q5') {
+    const count = acceptedList.filter(a => val.includes(a)).length;
+    const ok = count >= 2 || (count >= 1 && val.length > 2);
+    input.classList.add(ok ? 'correct' : 'wrong');
+    input.disabled = true;
+    document.querySelector(`#${qid} .fill-submit`).disabled = true;
+    answered[qid] = ok;
+    showFeedback(qid, ok, MC_EXPLAIN[qid]);
+    updateProgress();
+    return;
+  }
+  input.classList.add(isCorrect ? 'correct' : 'wrong');
+  input.disabled = true;
+  document.querySelector(`#${qid} .fill-submit`).disabled = true;
+  answered[qid] = isCorrect;
+  showFeedback(qid, isCorrect, MC_EXPLAIN[qid]);
+  updateProgress();
+}
+
+// ── Show Feedback ──────────────────────────────────────
+function showFeedback(qid, isCorrect, explain) {
+  const fb = document.getElementById('fb_' + qid);
+  if (!fb) return;
+  fb.className = 'q-feedback show ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
+  fb.innerHTML = `<span class="fb-icon">${isCorrect ? '✓ 正確！' : '✗ 錯誤。'}</span>${explain}`;
+}
+
+// ── Toggle Hint ────────────────────────────────────────
+function toggleHint(hintId, btn) {
+  const hint = document.getElementById(hintId);
+  const isShown = hint.classList.contains('show');
+  hint.classList.toggle('show');
+  btn.textContent = isShown ? '💡 查看參考要點' : '🙈 收起要點';
+}
+
+// ── Progress ───────────────────────────────────────────
+function updateProgress() {
+  const total = 22; // Q1-Q22
+  const done = Object.keys(answered).length;
+  const correct = Object.values(answered).filter(Boolean).length;
+  const pct = Math.round((done / total) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('scoreLive').textContent = correct + ' 題答對（' + done + '/' + total + ' 已作答）';
+}
+
+// ── Submit All ─────────────────────────────────────────
+function submitAll() {
+  // Force mark unanswered scorable Qs
+  const allQids = ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10',
+                   'q11','q12','q13','q14','q15','q16','q17','q18','q19','q20','q21','q22'];
+  allQids.forEach(qid => {
+    if (answered[qid] === undefined) answered[qid] = false;
+  });
+  updateProgress();
+  const correct = Object.values(answered).filter(Boolean).length;
+  const wrong = allQids.filter(q => answered[q] === false).length;
+  const skip = 0;
+  const pct = Math.round((correct / allQids.length) * 100);
+  document.getElementById('resultScore').textContent = pct + ' 分';
+  document.getElementById('resultSub').textContent = `共 ${allQids.length} 題`;
+  document.getElementById('r-correct').textContent = correct;
+  document.getElementById('r-wrong').textContent = wrong;
+  document.getElementById('r-skip').textContent = skip;
+  let msg = '';
+  if (pct >= 90) msg = '🎉 優秀！您對第1章的內容掌握得非常扎實，請繼續保持！';
+  else if (pct >= 75) msg = '👍 良好！大部分概念都已掌握，可以回頭複習一下答錯的題目。';
+  else if (pct >= 60) msg = '📚 及格！建議重新閱讀第1章1.4（基本假設）與1.5（八大原則）的部分，鞏固基礎。';
+  else msg = '💪 繼續加油！建議重新仔細閱讀第1章各節的核心概念後，再做一次練習。';
+  document.getElementById('resultMsg').textContent = msg;
+  document.getElementById('resultCard').classList.add('show');
+  document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── Retry ──────────────────────────────────────────────
+function retryAll() {
+  answered = {};
+  scores = 0;
+  // Reset MCs
+  document.querySelectorAll('.mc-btn').forEach(b => {
+    b.disabled = false;
+    b.classList.remove('correct','wrong','reveal-correct');
+  });
+  // Reset TFs
+  document.querySelectorAll('.tf-btn').forEach(b => {
+    b.disabled = false;
+    b.classList.remove('correct','wrong','reveal-correct');
+  });
+  // Reset fills
+  document.querySelectorAll('.fill-input').forEach(inp => {
+    inp.disabled = false;
+    inp.value = '';
+    inp.classList.remove('correct','wrong');
+  });
+  document.querySelectorAll('.fill-submit').forEach(b => b.disabled = false);
+  // Reset feedbacks
+  document.querySelectorAll('.q-feedback').forEach(fb => {
+    fb.className = 'q-feedback';
+    fb.innerHTML = '';
+  });
+  // Reset hints
+  document.querySelectorAll('.think-hint').forEach(h => h.classList.remove('show'));
+  document.querySelectorAll('.hint-btn').forEach(b => b.textContent = '💡 查看參考要點');
+  // Reset result
+  document.getElementById('resultCard').classList.remove('show');
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Init
+updateProgress();
+</script>
+</body>
+</html>
