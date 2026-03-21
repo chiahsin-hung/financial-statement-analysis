@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>财务报表分析 第2章 练习题</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0f2240;
+  --navy2: #1a3560;
+  --gold: #c9902a;
+  --gold-light: #e8b84b;
+  --cream: #faf7f2;
+  --paper: #f5f0e8;
+  --ink: #1a1a2e;
+  --ink2: #2d3560;
+  --muted: #6b7280;
+  --correct: #166534;
+  --correct-bg: #dcfce7;
+  --wrong: #991b1b;
+  --wrong-bg: #fee2e2;
+  --rule: #d4c9b0;
+  --shadow: 0 4px 24px rgba(15,34,64,0.10);
+  --teal: #0d7377;
+  --teal-bg: #e0f7fa;
+  --orange: #c45200;
+  --orange-bg: #fff3e0;
+  --purple: #5b21b6;
+  --purple-bg: #f5f3ff;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+  min-height: 100vh;
+}
+
+/* ── Page Header ── */
+.page-header {
+  background: var(--navy);
+  color: #fff;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+.page-header::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 260px; height: 260px;
+  border-radius: 50%;
+  background: rgba(201,144,42,0.18);
+}
+.page-header::after {
+  content: '';
+  position: absolute;
+  bottom: -40px; left: 40px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: rgba(13,115,119,0.15);
+}
+.header-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 44px 32px 36px;
+  position: relative;
+  z-index: 1;
+}
+.header-label {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: var(--gold-light);
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.header-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 6px;
+}
+.header-sub { font-size: 13px; color: rgba(255,255,255,0.55); margin-top: 8px; }
+.header-meta { display: flex; gap: 14px; margin-top: 20px; flex-wrap: wrap; }
+.meta-chip {
+  background: rgba(255,255,255,0.09);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.75);
+}
+
+/* ── Progress Bar ── */
+.progress-bar-wrap {
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  padding: 12px 32px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(15,34,64,0.06);
+}
+.progress-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.progress-text { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.progress-track {
+  flex: 1; height: 5px;
+  background: var(--rule);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--navy2), var(--gold));
+  border-radius: 99px;
+  transition: width 0.5s ease;
+  width: 0%;
+}
+.score-display { font-size: 12px; font-weight: 700; color: var(--navy2); white-space: nowrap; }
+
+/* ── Main ── */
+.main { max-width: 900px; margin: 0 auto; padding: 32px 24px 80px; }
+
+/* ══ Preview Section ══ */
+.preview-section {
+  background: var(--navy);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 44px;
+  box-shadow: 0 8px 32px rgba(15,34,64,0.18);
+}
+.preview-header {
+  background: linear-gradient(135deg, #0f2240, #1a3560);
+  padding: 22px 28px 18px;
+  border-bottom: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.preview-icon {
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 18px;
+  width: 40px; height: 40px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-weight: 700;
+}
+.preview-title { font-family: 'Noto Serif SC', serif; font-size: 18px; font-weight: 700; color: #fff; }
+.preview-subtitle { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+.preview-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+@media (max-width: 680px) { .preview-body { grid-template-columns: 1fr; } }
+.preview-left { padding: 22px 24px; border-right: 1px solid rgba(255,255,255,0.1); }
+.preview-right { padding: 22px 24px; }
+.preview-col-title {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  color: var(--gold-light);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+.think-list { list-style: none; }
+.think-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.think-item:last-child { border-bottom: none; }
+.think-num {
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 11px;
+  font-weight: 700;
+  min-width: 22px; height: 22px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.think-q { font-size: 13.5px; color: rgba(255,255,255,0.85); line-height: 1.65; }
+.case-title-box {
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px 14px;
+  border-radius: 7px;
+  text-align: center;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+.case-body { font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.75; }
+.case-body p { margin-bottom: 10px; }
+.case-body .label { color: var(--gold-light); font-weight: 600; font-size: 12.5px; margin-right: 4px; }
+.case-req {
+  margin-top: 14px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.07);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 6px 6px 0;
+  font-size: 13px;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.7;
+}
+.core-focus {
+  margin: 0;
+  padding: 12px 24px;
+  background: rgba(201,144,42,0.15);
+  border-top: 1px solid rgba(201,144,42,0.3);
+  font-size: 12px;
+  color: var(--gold-light);
+  text-align: center;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+.preview-terms {
+  padding: 14px 24px;
+  background: rgba(0,0,0,0.2);
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.terms-label { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; margin-bottom: 8px; }
+.terms-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.term-chip {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.13);
+  color: rgba(255,255,255,0.7);
+  font-size: 11.5px;
+  padding: 2px 10px;
+  border-radius: 4px;
+}
+.preview-toggle { display: flex; justify-content: flex-end; padding: 0 28px 14px; }
+.toggle-btn {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.65);
+  border-radius: 20px;
+  padding: 5px 16px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: 'Noto Sans SC', sans-serif;
+  transition: all 0.18s;
+}
+.toggle-btn:hover { background: rgba(255,255,255,0.14); }
+.preview-collapsible.collapsed { display: none; }
+
+/* ── Section Headers ── */
+.section-label {
+  display: flex; align-items: center; gap: 12px;
+  margin: 44px 0 20px;
+}
+.section-label:first-of-type { margin-top: 8px; }
+.section-num {
+  background: var(--navy);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+.section-name {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--navy);
+  border-bottom: 2px solid var(--gold);
+  padding-bottom: 2px;
+}
+.section-count { font-size: 12px; color: var(--muted); margin-left: auto; }
+
+/* ── Question Cards ── */
+.q-card {
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 22px 24px 18px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+  transition: border-color 0.2s;
+}
+.q-card:hover { border-color: #b8a88a; }
+.q-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+.q-num {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  color: var(--navy2);
+  font-size: 11px; font-weight: 700;
+  min-width: 32px; height: 24px;
+  border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px;
+}
+.q-text { font-size: 15px; color: var(--ink); line-height: 1.75; flex: 1; }
+.q-tag {
+  font-size: 10px; padding: 2px 8px;
+  border-radius: 99px; font-weight: 500;
+  flex-shrink: 0; margin-top: 3px;
+}
+.tag-mc { background: #e0e7ff; color: #3730a3; }
+.tag-tf { background: #fef3c7; color: #92400e; }
+.tag-fill { background: #d1fae5; color: #065f46; }
+.tag-think { background: #fce7f3; color: #831843; }
+.tag-calc { background: #e0f2fe; color: #075985; }
+
+/* ── MC Options ── */
+.mc-options { display: grid; gap: 8px; margin-top: 4px; }
+.mc-btn {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: var(--paper);
+  border: 1.5px solid transparent;
+  border-radius: 7px;
+  padding: 10px 14px;
+  cursor: pointer; text-align: left;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 14px; color: var(--ink2);
+  transition: all 0.18s ease;
+  line-height: 1.6; width: 100%;
+}
+.mc-btn:hover:not(:disabled) { background: #eef2ff; border-color: var(--navy2); }
+.mc-btn:disabled { cursor: default; }
+.mc-btn .opt-letter { font-weight: 700; font-size: 13px; color: var(--muted); min-width: 18px; margin-top: 1px; }
+.mc-btn.correct { background: var(--correct-bg); border-color: #16a34a; color: var(--correct); }
+.mc-btn.correct .opt-letter { color: var(--correct); }
+.mc-btn.wrong { background: var(--wrong-bg); border-color: #dc2626; color: var(--wrong); }
+.mc-btn.wrong .opt-letter { color: var(--wrong); }
+.mc-btn.reveal-correct { background: var(--correct-bg); border-color: #86efac; color: var(--correct); }
+
+/* ── TF ── */
+.tf-options { display: flex; gap: 10px; margin-top: 4px; }
+.tf-btn {
+  flex: 1; padding: 10px;
+  border: 1.5px solid transparent;
+  border-radius: 7px; cursor: pointer;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 14px; font-weight: 500;
+  transition: all 0.18s;
+  background: var(--paper); color: var(--ink2);
+}
+.tf-btn:hover:not(:disabled) { background: #eef2ff; border-color: var(--navy2); }
+.tf-btn:disabled { cursor: default; }
+.tf-btn.correct { background: var(--correct-bg); border-color: #16a34a; color: var(--correct); }
+.tf-btn.wrong { background: var(--wrong-bg); border-color: #dc2626; color: var(--wrong); }
+.tf-btn.reveal-correct { background: var(--correct-bg); border-color: #86efac; color: var(--correct); }
+
+/* ── Fill ── */
+.fill-wrap { display: flex; align-items: center; gap: 10px; margin-top: 6px; flex-wrap: wrap; }
+.fill-input {
+  border: 1.5px solid var(--rule);
+  border-radius: 7px; padding: 8px 12px;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 14px; color: var(--ink);
+  background: var(--paper); outline: none;
+  min-width: 180px; transition: border-color 0.18s;
+}
+.fill-input:focus { border-color: var(--navy2); }
+.fill-input.correct { border-color: #16a34a; background: var(--correct-bg); color: var(--correct); }
+.fill-input.wrong { border-color: #dc2626; background: var(--wrong-bg); color: var(--wrong); }
+.fill-input:disabled { cursor: default; }
+.fill-submit {
+  background: var(--navy); color: #fff;
+  border: none; border-radius: 7px;
+  padding: 8px 16px; cursor: pointer;
+  font-size: 13px; font-family: 'Noto Sans SC', sans-serif;
+  transition: background 0.18s;
+}
+.fill-submit:hover:not(:disabled) { background: var(--navy2); }
+.fill-submit:disabled { opacity: 0.4; cursor: default; }
+
+/* ── Feedback ── */
+.q-feedback {
+  margin-top: 12px; border-radius: 7px;
+  padding: 10px 14px; font-size: 13.5px;
+  line-height: 1.7; display: none;
+}
+.q-feedback.show { display: block; }
+.q-feedback.correct-fb { background: var(--correct-bg); border-left: 3px solid #16a34a; color: #14532d; }
+.q-feedback.wrong-fb { background: var(--wrong-bg); border-left: 3px solid #dc2626; color: #7f1d1d; }
+.fb-icon { font-weight: 700; margin-right: 6px; }
+
+/* ── Think / Calc ── */
+.think-area {
+  width: 100%; border: 1.5px solid var(--rule);
+  border-radius: 7px; padding: 10px 14px;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 14px; color: var(--ink);
+  background: var(--paper); resize: vertical;
+  min-height: 80px; outline: none; margin-top: 8px;
+  transition: border-color 0.18s;
+}
+.think-area:focus { border-color: var(--navy2); }
+.think-hint {
+  margin-top: 10px; padding: 10px 14px;
+  background: #fffbeb; border-left: 3px solid var(--gold);
+  border-radius: 0 6px 6px 0;
+  font-size: 13px; color: #78350f; display: none;
+}
+.think-hint.show { display: block; }
+.hint-btn {
+  background: none; border: 1.5px solid var(--gold);
+  color: var(--gold); border-radius: 6px;
+  padding: 5px 12px; cursor: pointer;
+  font-size: 12px; font-family: 'Noto Sans SC', sans-serif;
+  margin-top: 8px; transition: all 0.18s;
+}
+.hint-btn:hover { background: #fffbeb; }
+
+/* ── Sample Answer ── */
+.sample-answer {
+  margin-top: 14px;
+  border: 1.5px solid #c7d2fe;
+  border-radius: 10px;
+  overflow: hidden;
+  display: none;
+}
+.sample-answer.show { display: block; }
+.sample-header {
+  background: linear-gradient(90deg, #1a3560, #2a4a80);
+  color: #fff;
+  padding: 10px 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.sample-badge {
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 10px; font-weight: 700;
+  padding: 2px 8px; border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+.sample-header-text { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.9); }
+.sample-disclaimer { font-size: 11px; color: rgba(255,255,255,0.5); margin-left: auto; }
+.sample-body {
+  background: #f8f9ff;
+  padding: 18px 20px;
+  font-size: 13.5px;
+  color: var(--ink2);
+  line-height: 1.85;
+}
+.sample-section { margin-bottom: 16px; }
+.sample-section:last-child { margin-bottom: 0; }
+.sample-section-title {
+  font-weight: 700;
+  color: var(--navy);
+  font-size: 13px;
+  margin-bottom: 6px;
+  padding-left: 8px;
+  border-left: 3px solid var(--gold);
+  line-height: 1.4;
+}
+.sample-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+  font-size: 13px;
+}
+.sample-table th {
+  background: #1a3560;
+  color: #fff;
+  padding: 7px 10px;
+  text-align: center;
+  font-weight: 600;
+}
+.sample-table td {
+  padding: 7px 10px;
+  border: 1px solid #d4d8e8;
+  vertical-align: top;
+  line-height: 1.65;
+}
+.sample-table tr:nth-child(even) td { background: #eef1fb; }
+.sample-table .col-label { font-weight: 600; color: var(--navy2); background: #e8ecf8 !important; }
+.sample-table .formula { color: #0d6e72; font-family: monospace; font-size: 12px; }
+.sample-table .result { color: #0f5c36; font-weight: 700; }
+.sample-table .note { color: #78350f; font-size: 12px; font-style: italic; }
+.sample-conclusion {
+  background: #1a3560;
+  color: rgba(255,255,255,0.9);
+  padding: 12px 16px;
+  border-radius: 7px;
+  font-size: 13px;
+  line-height: 1.8;
+  margin-top: 12px;
+}
+.sample-conclusion strong { color: var(--gold-light); }
+.sample-note {
+  margin-top: 12px; padding: 8px 12px;
+  background: #fffbeb; border-left: 3px solid var(--gold);
+  font-size: 12px; color: #78350f; border-radius: 0 5px 5px 0;
+}
+.sample-btn {
+  background: none; border: 1.5px solid var(--navy2);
+  color: var(--navy2); border-radius: 6px;
+  padding: 5px 12px; cursor: pointer;
+  font-size: 12px; font-family: 'Noto Sans SC', sans-serif;
+  margin-top: 8px; margin-left: 8px;
+  transition: all 0.18s;
+}
+.sample-btn:hover { background: var(--navy2); color: #fff; }
+
+/* ── Haitian case box ── */
+.haitian-box {
+  background: linear-gradient(135deg, #7c3400 0%, #c45200 100%);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin: 10px 0 6px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.92);
+  line-height: 1.8;
+}
+.haitian-box strong { color: #ffd580; }
+.haitian-data-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+.haitian-cell {
+  background: rgba(255,255,255,0.12);
+  border-radius: 6px;
+  padding: 8px 10px;
+  text-align: center;
+}
+.haitian-cell .hc-label { font-size: 10px; color: rgba(255,255,255,0.6); margin-bottom: 3px; }
+.haitian-cell .hc-val { font-size: 13px; font-weight: 700; color: #ffd580; }
+.ratio-section-badge {
+  display: inline-block;
+  background: var(--navy2);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+
+/* ── Submit & Results ── */
+.submit-zone { margin-top: 48px; text-align: center; }
+.submit-btn {
+  background: var(--navy); color: #fff;
+  border: none; border-radius: 10px;
+  padding: 14px 40px; font-size: 15px;
+  font-weight: 600; font-family: 'Noto Sans SC', sans-serif;
+  cursor: pointer; transition: background 0.2s, transform 0.15s;
+  box-shadow: 0 4px 16px rgba(15,34,64,0.2);
+  letter-spacing: 0.05em;
+}
+.submit-btn:hover { background: var(--navy2); transform: translateY(-1px); }
+.result-card {
+  display: none; margin-top: 32px;
+  background: #fff; border: 1px solid var(--rule);
+  border-radius: 12px; padding: 32px;
+  box-shadow: var(--shadow);
+}
+.result-card.show { display: block; }
+.result-title { font-family: 'Noto Serif SC', serif; font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+.result-score-big { font-family: 'Noto Serif SC', serif; font-size: 56px; font-weight: 700; color: var(--gold); line-height: 1.1; margin: 12px 0 4px; }
+.result-sub { font-size: 14px; color: var(--muted); margin-bottom: 20px; }
+.result-breakdown { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+.breakdown-item { background: var(--paper); border-radius: 8px; padding: 12px; text-align: center; border: 1px solid var(--rule); }
+.breakdown-num { font-size: 24px; font-weight: 700; color: var(--navy); }
+.breakdown-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.result-msg { font-size: 14px; color: var(--ink2); padding: 14px 16px; background: var(--paper); border-radius: 8px; line-height: 1.7; margin-top: 12px; }
+.retry-btn {
+  margin-top: 20px; background: none;
+  border: 1.5px solid var(--navy); color: var(--navy);
+  border-radius: 8px; padding: 10px 24px;
+  cursor: pointer; font-size: 14px;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 500; transition: all 0.18s;
+}
+.retry-btn:hover { background: var(--navy); color: #fff; }
+
+/* ── Divider ── */
+.practice-divider {
+  display: flex; align-items: center; gap: 16px;
+  margin: 36px 0 28px;
+}
+.practice-divider::before, .practice-divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--rule);
+}
+.divider-label {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 15px; font-weight: 600;
+  color: var(--navy); white-space: nowrap;
+  padding: 6px 18px;
+  border: 1.5px solid var(--navy);
+  border-radius: 20px;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 600px) {
+  .header-inner { padding: 28px 18px 22px; }
+  .header-title { font-size: 20px; }
+  .main { padding: 20px 14px 60px; }
+  .q-card { padding: 16px 16px 14px; }
+  .haitian-data-row { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ PAGE HEADER ══ -->
+<div class="page-header">
+  <div class="header-inner">
+    <div class="header-label">财务报表分析（第6版）· 第2章</div>
+    <div class="header-title">财务报表分析方法<br><span style="font-size:18px;font-weight:400;opacity:0.75">Financial Statement Analysis — Methods</span></div>
+    <div class="header-meta">
+      <span class="meta-chip">✦ 选择题 · 判断题 · 填空题 · 计算题 · 思考题</span>
+      <span class="meta-chip">共 25 题</span>
+      <span class="meta-chip">涵盖 2.1 — 2.5 节</span>
+      <span class="meta-chip">案例：格力电器 · 海天味业</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PROGRESS ══ -->
+<div class="progress-bar-wrap">
+  <div class="progress-inner">
+    <span class="progress-text">答题进度</span>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="score-display" id="scoreLive">0 题答对（0/22 已作答）</span>
+  </div>
+</div>
+
+<!-- ══ MAIN ══ -->
+<div class="main">
+
+<!-- ══ 预习区 ══ -->
+<div class="preview-section">
+  <div class="preview-header">
+    <div class="preview-icon">预</div>
+    <div class="preview-title-wrap">
+      <div class="preview-title">课前预习 — 思考题 &amp; 案例讨论</div>
+      <div class="preview-subtitle">来自教材第2章 · 练习前请先思考以下问题</div>
+    </div>
+    <div class="preview-toggle" style="margin-left:auto;padding:0;">
+      <button class="toggle-btn" onclick="togglePreview(this)">▲ 收起预习区</button>
+    </div>
+  </div>
+
+  <div class="preview-collapsible" id="previewContent">
+    <div class="preview-body">
+      <!-- Left: 思考题 -->
+      <div class="preview-left">
+        <div class="preview-col-title">思考题（5题）</div>
+        <ul class="think-list">
+          <li class="think-item">
+            <span class="think-num">1</span>
+            <span class="think-q">几种传统财务报表分析方法各自的基本要求是什么？它们存在哪些局限性？</span>
+          </li>
+          <li class="think-item">
+            <span class="think-num">2</span>
+            <span class="think-q">试举例说明（至少四个例子）财务比率分析法被用于解决哪些基本问题？</span>
+          </li>
+          <li class="think-item">
+            <span class="think-num">3</span>
+            <span class="think-q">财务比率分析这些财务报表中的特点及在合并财务报表和母公司财务报表中的适用范围是什么？财务比率分析的局限性？</span>
+          </li>
+          <li class="think-item">
+            <span class="think-num">4</span>
+            <span class="think-q">如何理解这些财务比率运用也不尽相同，财务比率分析的基本分析框架是什么？</span>
+          </li>
+          <li class="think-item">
+            <span class="think-num">5</span>
+            <span class="think-q">项目质量分析法的特点及优越性？该方法的基本概念和框架是什么？</span>
+          </li>
+        </ul>
+      </div>
+      <!-- Right: 海天味业案例 -->
+      <div class="preview-right">
+        <div class="preview-col-title">章末案例讨论</div>
+        <div class="case-title-box">
+          海天味业的财务比率分析<br>
+          <span style="font-size:12px;font-weight:400">（603288 · 2020—2021年）</span>
+        </div>
+        <div class="case-body">
+          <p><span class="label">背景：</span>佛山市海天调味食品股份有限公司（海天味业）是中国调味品行业龙头，主营酱油、蠔油、醤料等产品，品牌深入家庭及餐饮行业。</p>
+          <p><span class="label">分析任务：</span>利用2020与2021年年报财务数据展开如下分析：</p>
+          <div class="case-req">
+            ① 以合并财务报表为基础，进行年度间<strong>变化趋势</strong>比较分析<br>
+            ② 以合并财务报表为基础，对主要资产项目的<strong>资产结构</strong>比重分析<br>
+            ③ 分别以合并报表与母公司报表计算<strong>12项财务比率</strong>，评价偿债、营运、盈利能力<br>
+            ④ 进一步采用<strong>项目质量分析法</strong>，选择重点分析对象
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="core-focus">
+      核心考察：将传统财务比率与项目质量分析法结合，深入理解合并报表与母公司报表的差异
+    </div>
+    <div class="preview-terms">
+      <div class="terms-label">关键术语 KEY TERMS</div>
+      <div class="terms-chips">
+        <span class="term-chip">结构分析法</span>
+        <span class="term-chip">趋势分析法</span>
+        <span class="term-chip">比率分析法</span>
+        <span class="term-chip">流动比率</span>
+        <span class="term-chip">速动比率</span>
+        <span class="term-chip">资产负债率</span>
+        <span class="term-chip">毛利率</span>
+        <span class="term-chip">核心利润率</span>
+        <span class="term-chip">ROA / ROE</span>
+        <span class="term-chip">杜邦分析</span>
+        <span class="term-chip">应收账款周转率</span>
+        <span class="term-chip">存货周转率</span>
+        <span class="term-chip">项目质量分析法</span>
+        <span class="term-chip">合并财务报表</span>
+        <span class="term-chip">核心利润获现率</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="practice-divider"><div class="divider-label">↓ 开始练习题</div></div>
+
+<!-- ══════════════════════════════
+     2.1 传统财务报表分析方法
+══════════════════════════════ -->
+<div class="section-label">
+  <span class="section-num">2.1</span>
+  <span class="section-name">传统财务报表分析方法概述</span>
+  <span class="section-count">Q1 – Q4</span>
+</div>
+
+<div class="q-card" id="q1">
+  <div class="q-header">
+    <div class="q-num">1</div>
+    <div class="q-text">结构分析法（百分比分析法）中，分析利润表时通常将哪个项目设定为100%基数？</div>
+    <span class="q-tag tag-mc">选择题</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q1','A','B')"><span class="opt-letter">A</span>毛利</button>
+    <button class="mc-btn" onclick="answerMC(this,'q1','B','B')"><span class="opt-letter">B</span>营业收入</button>
+    <button class="mc-btn" onclick="answerMC(this,'q1','C','B')"><span class="opt-letter">C</span>净利润</button>
+    <button class="mc-btn" onclick="answerMC(this,'q1','D','B')"><span class="opt-letter">D</span>营业成本</button>
+  </div>
+  <div class="q-feedback" id="fb_q1"></div>
+</div>
+
+<div class="q-card" id="q2">
+  <div class="q-header">
+    <div class="q-num">2</div>
+    <div class="q-text">趋势分析法中，「<strong>定基变动百分比</strong>」的计算公式为？</div>
+    <span class="q-tag tag-mc">选择题</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q2','A','C')"><span class="opt-letter">A</span>（本期末数值 − 前期末数值）÷ 前期末数值 × 100%</button>
+    <button class="mc-btn" onclick="answerMC(this,'q2','B','C')"><span class="opt-letter">B</span>（本期数值 − 前期数值）/ 本期数值 × 100%</button>
+    <button class="mc-btn" onclick="answerMC(this,'q2','C','C')"><span class="opt-letter">C</span>（分析期数值 − 基期数值）÷ 基期数值 × 100%</button>
+    <button class="mc-btn" onclick="answerMC(this,'q2','D','C')"><span class="opt-letter">D</span>本期数值 ÷ 上期数值 × 100%</button>
+  </div>
+  <div class="q-feedback" id="fb_q2"></div>
+</div>
+
+<div class="q-card" id="q3">
+  <div class="q-header">
+    <div class="q-num">3</div>
+    <div class="q-text">比较分析法的基期标准共有三种：基期标准（历史数据）、预期标准（计划目标）和<strong>行业标准</strong>（与同行业平均或先进水平对比）。</div>
+    <span class="q-tag tag-tf">判断题</span>
+  </div>
+  <div class="tf-options">
+    <button class="tf-btn" onclick="answerTF(this,'q3',true,true)">○ 正确</button>
+    <button class="tf-btn" onclick="answerTF(this,'q3',false,true)">✕ 错误</button>
+  </div>
+  <div class="q-feedback" id="fb_q3"></div>
+</div>
+
+<div class="q-card" id="q4">
+  <div class="q-header">
+    <div class="q-num">4</div>
+    <div class="q-text">依据格力电器案例（表2-2），2021年营业收入相对于2019年基期的<strong>定基变动百分比</strong>约为？</div>
+    <span class="q-tag tag-mc">选择题</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q4','A','C')"><span class="opt-letter">A</span>+11.69%（2021年比2020年增加）</button>
+    <button class="mc-btn" onclick="answerMC(this,'q4','B','C')"><span class="opt-letter">B</span>−15.12%（2020年比2019年减少）</button>
+    <button class="mc-btn" onclick="answerMC(this,'q4','C','C')"><span class="opt-letter">C</span>−5.19%（2021年比2019年基期减少）</button>
+    <button class="mc-btn" onclick="answerMC(this,'q4','D','C')"><span class="opt-letter">D</span>+3.75%（2021年毛利增幅）</button>
+  </div>
+  <div class="q-feedback" id="fb_q4"></div>
+</div>
+
+<!-- ══════════════════════════════
+     2.2 偿债能力比率
+══════════════════════════════ -->
+<div class="section-label">
+  <span class="section-num">2.2.1-A</span>
+  <span class="section-name">基本财务比率 — 偿债能力</span>
+  <span class="section-count">Q5 – Q8</span>
+</div>
+
+<div class="q-card" id="q5">
+  <div class="q-header">
+    <div class="q-num">5</div>
+    <div class="q-text">速动比率的计算公式中，从流动资产中剔除的主要项目是？</div>
+    <span class="q-tag tag-mc">选择题</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q5','A','B')"><span class="opt-letter">A</span>应收账款</button>
+    <button class="mc-btn" onclick="answerMC(this,'q5','B','B')"><span class="opt-letter">B</span>存货</button>
+    <button class="mc-btn" onclick="answerMC(this,'q5','C','B')"><span class="opt-letter">C</span>货币资金</button>
+    <button class="mc-btn" onclick="answerMC(this,'q5','D','B')"><span class="opt-letter">D</span>预付款项</button>
+  </div>
+  <div class="q-feedback" id="fb_q5"></div>
+</div>
+
+<div class="q-card" id="q6">
+  <div class="q-header">
+    <div class="q-num">6</div>
+    <div class="q-text">流动比率传统上认为2:1较为合适，流动比率越高，企业的短期偿债能力一定越强。</div>
+    <span class="q-tag tag-tf">判断题</span>
+  </div>
+  <div class="tf-options">
+    <button class="tf-btn" onclick="answerTF(this,'q6',true,false)">○ 正确</button>
+    <button class="tf-btn" onclick="answerTF(this,'q6',false,false)">✕ 错误</button>
+  </div>
+  <div class="q-feedback" id="fb_q6"></div>
+</div>
+
+<div class="q-card" id="q7">
+  <div class="q-header">
+    <div class="q-num">7</div>
+    <div class="q-text">杜邦分析法将ROE分解为三个因子，其中「<strong>权益乘数</strong>」代表的是？</div>
+    <span class="q-tag tag-mc">选择题</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q7','A','C')"><span class="opt-letter">A</span>盈利能力（净利润/营业收入）</button>
+    <button class="mc-btn" onclick="answerMC(this,'q7','B','C')"><span class="opt-letter">B</span>营运能力（营业收入/平均总资产）</button>
+    <button class="mc-btn" onclick="answerMC(this,'q7','C','C')"><span class="opt-letter">C</span>财务杠杆（总资产/股东权益）</button>
+    <button class="mc-btn" onclick="answerMC(this,'q7','D','C')"><span class="opt-letter">D</span>现金获取能力（经营现金流/净利润）</button>
+  </div>
+  <div class="q-feedback" id="fb_q7"></div>
+</div>
+
+<div class="q-card" id="q8">
+  <div class="q-header">
+    <div class="q-num">8</div>
+    <div class="q-text">利息保障倍数（息税前利润 ÷ 利息费用）的数值只要大于1，就足以证明企业具备充分的长期偿债能力。</div>
+    <span class="q-tag tag-tf">判断题</span>
+  </div>
+  <div class="tf-options">
+    <button class="tf-btn" onclick="answerTF(this,'q8',true,false)">○ 正确</button>
+    <button class="tf-btn" onclick="answerTF(this,'q8',false,false)">✕ 错误</button>
+  </div>
+  <div class="q-feedback" id="fb_q8"></div>
+</div>
+
+<!-- ══════════════════════════════
+     2.2 盈利 & 营运能力
+══════════════════════════════ -->
+<div class="section-label">
+  <span class="section-num">2.2.1-B</span>
+  <span class="section-name">盈利能力 &amp; 营运能力比率</span>
+  <span class="section-count">Q9 – Q13</span>
+</div>
+
+<div class="q-card" id="q9">
+  <div class="q-header">
+    <div class="q-num">9</div>
+    <div class="q-text">下列哪个指标最能直接反映企业<strong>主营业务盈利能力</strong>（剔除非经营性收益干扰）？</div>
+    <span class="q-tag tag-mc">选择题</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q9','A','C')"><span class="opt-letter">A</span>销售净利率（净利润 ÷ 营业收入）</button>
+    <button class="mc-btn" onclick="answerMC(this,'q9','B','C')"><span class="opt-letter">B</span>毛利率（毛利 ÷ 营业收入）</button>
+    <button class="mc-btn" onclick="answerMC(this,'q9','C','C')"><span class="opt-letter">C</span>核心利润率（核心利润 ÷ 营业收入）</button>
+    <button class="mc-btn" onclick="answerMC(this,'q9','D','C')"><span class="opt-letter">D</span>总营业费用率（总营业费用 ÷ 营业收入）</button>
+  </div>
+  <div class="q-feedback" id="fb_q9"></div>
+</div>
+
+<div class="q-card" id="q10">
+  <div class="q-header">
+    <div class="q-num">10</div>
+    <div class="q-text">存货周转率通常以<strong>营业成本</strong>（而非营业收入）为分子计算，请问这样做的主要原因是？</div>
+    <span class="q-tag tag-mc">选择题</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q10','A','B')"><span class="opt-letter">A</span>营业成本数据更易取得</button>
+    <button class="mc-btn" onclick="answerMC(this,'q10','B','B')"><span class="opt-letter">B</span>存货以成本计量，用成本口径更具可比性，避免不同毛利率影响结果</button>
+    <button class="mc-btn" onclick="answerMC(this,'q10','C','B')"><span class="opt-letter">C</span>会计准则明确规定必须用营业成本</button>
+    <button class="mc-btn" onclick="answerMC(this,'q10','D','B')"><span class="opt-letter">D</span>营业收入含税，而成本不含税，口径更一致</button>
+  </div>
+  <div class="q-feedback" id="fb_q10"></div>
+</div>
+
+<div class="q-card" id="q11">
+  <div class="q-header">
+    <div class="q-num">11</div>
+    <div class="q-text">应收账款周转率越高，表明企业收账速度越快，应收账款管理越有效。</div>
+    <span class="q-tag tag-tf">判断题</span>
+  </div>
+  <div class="tf-options">
+    <button class="tf-btn" onclick="answerTF(this,'q11',true,true)">○ 正确</button>
+    <button class="tf-btn" onclick="answerTF(this,'q11',false,true)">✕ 错误</button>
+  </div>
+  <div class="q-feedback" id="fb_q11"></div>
+</div>
+
+<div class="q-card" id="q12">
+  <div class="q-header">
+    <div class="q-num">12</div>
+    <div class="q-text">核心利润获现率的计算公式是？</div>
+    <span class="q-tag tag-fill">填空题</span>
+  </div>
+  <div class="fill-wrap">
+    <input class="fill-input" id="fill_q12" type="text" placeholder="请填写分子 ÷ 分母" autocomplete="off" style="min-width:260px">
+    <button class="fill-submit" onclick="answerFill('q12',['经营活动现金流量','经营现金流','经营活动产生的现金流量'])">确认</button>
+  </div>
+  <div class="q-feedback" id="fb_q12"></div>
+</div>
+
+<div class="q-card" id="q13">
+  <div class="q-header">
+    <div class="q-num">13</div>
+    <div class="q-text">总资产周转率（营业收入 ÷ 平均资产总额）是杜邦分析中的核心要素之一，代表企业的<strong>营运能力（资产使用效率）</strong>。</div>
+    <span class="q-tag tag-tf">判断题</span>
+  </div>
+  <div class="tf-options">
+    <button class="tf-btn" onclick="answerTF(this,'q13',true,true)">○ 正确</button>
+    <button class="tf-btn" onclick="answerTF(this,'q13',false,true)">✕ 错误</button>
+  </div>
+  <div class="q-feedback" id="fb_q13"></div>
+</div>
+
+<!-- ══════════════════════════════
+     2.2.2 上市公司特殊比率
+══════════════════════════════ -->
+<div class="section-label">
+  <span class="section-num">2.2.2</span>
+  <span class="section-name">与上市公司有关的特殊财务比率</span>
+  <span class="section-count">Q14 – Q16</span>
+</div>
+
+<div class="q-card" id="q14">
+  <div class="q-header">
+    <div class="q-num">14</div>
+    <div class="q-text">市盈率（P/E ratio）的计算公式为？</div>
+    <span class="q-tag tag-mc">选择题</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q14','A','B')"><span class="opt-letter">A</span>每股收益 ÷ 每股市价</button>
+    <button class="mc-btn" onclick="answerMC(this,'q14','B','B')"><span class="opt-letter">B</span>普通股每股市价 ÷ 每股收益</button>
+    <button class="mc-btn" onclick="answerMC(this,'q14','C','B')"><span class="opt-letter">C</span>每股净资产 ÷ 每股市价</button>
+    <button class="mc-btn" onclick="answerMC(this,'q14','D','B')"><span class="opt-letter">D</span>每股股利 ÷ 每股收益</button>
+  </div>
+  <div class="q-feedback" id="fb_q14"></div>
+</div>
+
+<div class="q-card" id="q15">
+  <div class="q-header">
+    <div class="q-num">15</div>
+    <div class="q-text">「每股经营活动现金流量」比「每股收益（EPS）」更能反映企业真实的<strong>现金获取能力</strong>，因为前者不受会计政策选择影响。</div>
+    <span class="q-tag tag-tf">判断题</span>
+  </div>
+  <div class="tf-options">
+    <button class="tf-btn" onclick="answerTF(this,'q15',true,true)">○ 正确</button>
+    <button class="tf-btn" onclick="answerTF(this,'q15',false,true)">✕ 错误</button>
+  </div>
+  <div class="q-feedback" id="fb_q15"></div>
+</div>
+
+<div class="q-card" id="q16">
+  <div class="q-header">
+    <div class="q-num">16</div>
+    <div class="q-text">市净率（P/B）= ______</div>
+    <span class="q-tag tag-fill">填空题</span>
+  </div>
+  <div class="fill-wrap">
+    <input class="fill-input" id="fill_q16" type="text" placeholder="填写计算公式" autocomplete="off" style="min-width:240px">
+    <button class="fill-submit" onclick="answerFill('q16',['每股市价','股价','市价'])">确认</button>
+  </div>
+  <div class="q-feedback" id="fb_q16"></div>
+</div>
+
+<!-- ══════════════════════════════
+     2.3 财务比率局限性
+══════════════════════════════ -->
+<div class="section-label">
+  <span class="section-num">2.3</span>
+  <span class="section-name">财务比率分析法的局限性</span>
+  <span class="section-count">Q17 – Q19</span>
+</div>
+
+<div class="q-card" id="q17">
+  <div class="q-header">
+    <div class="q-num">17</div>
+    <div class="q-text">流动比率的主要局限性之一是：流动资产中各项目的<strong>流动性质量差异很大</strong>，例如现金与存货的变现能力存在根本差异，单一比率无法体现这种差异。</div>
+    <span class="q-tag tag-tf">判断题</span>
+  </div>
+  <div class="tf-options">
+    <button class="tf-btn" onclick="answerTF(this,'q17',true,true)">○ 正确</button>
+    <button class="tf-btn" onclick="answerTF(this,'q17',false,true)">✕ 错误</button>
+  </div>
+  <div class="q-feedback" id="fb_q17"></div>
+</div>
+
+<div class="q-card" id="q18">
+  <div class="q-header">
+    <div class="q-num">18</div>
+    <div class="q-text">下列哪项不属于应收账款周转率存在的局限性？</div>
+    <span class="q-tag tag-mc">选择题</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q18','A','D')"><span class="opt-letter">A</span>季节性企业年末应收账款远低于平均水平，会高估周转次数</button>
+    <button class="mc-btn" onclick="answerMC(this,'q18','B','D')"><span class="opt-letter">B</span>赊销与现销混合，仅用营业收入计算不够准确</button>
+    <button class="mc-btn" onclick="answerMC(this,'q18','C','D')"><span class="opt-letter">C</span>应收账款质量（坏账比例）无法从周转率中体现</button>
+    <button class="mc-btn" onclick="answerMC(this,'q18','D','D')"><span class="opt-letter">D</span>应收账款周转率反映的是盈利能力，与流动性无关</button>
+  </div>
+  <div class="q-feedback" id="fb_q18"></div>
+</div>
+
+<div class="q-card" id="q19">
+  <div class="q-header">
+    <div class="q-num">19</div>
+    <div class="q-text">资产负债率采用账面价值，以下哪一点是其主要局限性？</div>
+    <span class="q-tag tag-mc">选择题</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q19','A','A')"><span class="opt-letter">A</span>账面价值未必反映资产的真实市场价值；同时经营性负债与金融性负债性质不同，不加区分可能误导分析</button>
+    <button class="mc-btn" onclick="answerMC(this,'q19','B','A')"><span class="opt-letter">B</span>资产负债率只能用于制造业，服务业不适用</button>
+    <button class="mc-btn" onclick="answerMC(this,'q19','C','A')"><span class="opt-letter">C</span>比率越高说明财务风险一定越大，没有例外</button>
+    <button class="mc-btn" onclick="answerMC(this,'q19','D','A')"><span class="opt-letter">D</span>该比率不受宏观经济环境影响</button>
+  </div>
+  <div class="q-feedback" id="fb_q19"></div>
+</div>
+
+<!-- ══════════════════════════════
+     2.4 合并报表应用
+══════════════════════════════ -->
+<div class="section-label">
+  <span class="section-num">2.4</span>
+  <span class="section-name">财务比率在合并财务报表中的应用</span>
+  <span class="section-count">Q20 – Q21</span>
+</div>
+
+<div class="q-card" id="q20">
+  <div class="q-header">
+    <div class="q-num">20</div>
+    <div class="q-text">以下哪项财务比率在合并财务报表中需要<strong>慎重运用</strong>（而非直接适用）？</div>
+    <span class="q-tag tag-mc">选择题</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q20','A','D')"><span class="opt-letter">A</span>毛利率</button>
+    <button class="mc-btn" onclick="answerMC(this,'q20','B','D')"><span class="opt-letter">B</span>核心利润率</button>
+    <button class="mc-btn" onclick="answerMC(this,'q20','C','D')"><span class="opt-letter">C</span>销售费用率</button>
+    <button class="mc-btn" onclick="answerMC(this,'q20','D','D')"><span class="opt-letter">D</span>总资产周转率</button>
+  </div>
+  <div class="q-feedback" id="fb_q20"></div>
+</div>
+
+<div class="q-card" id="q21">
+  <div class="q-header">
+    <div class="q-num">21</div>
+    <div class="q-text">在合并财务报表中，母公司持有大量对子公司的长期股权投资，会导致合并报表的<strong>总资产周转率</strong>低于实际经营层面的运营效率。</div>
+    <span class="q-tag tag-tf">判断题</span>
+  </div>
+  <div class="tf-options">
+    <button class="tf-btn" onclick="answerTF(this,'q21',true,true)">○ 正确</button>
+    <button class="tf-btn" onclick="answerTF(this,'q21',false,true)">✕ 错误</button>
+  </div>
+  <div class="q-feedback" id="fb_q21"></div>
+</div>
+
+<!-- ══════════════════════════════
+     2.5 项目质量分析法
+══════════════════════════════ -->
+<div class="section-label">
+  <span class="section-num">2.5</span>
+  <span class="section-name">项目质量分析法</span>
+  <span class="section-count">Q22</span>
+</div>
+
+<div class="q-card" id="q22">
+  <div class="q-header">
+    <div class="q-num">22</div>
+    <div class="q-text">项目质量分析法与传统比率分析法最核心的差异在于？</div>
+    <span class="q-tag tag-mc">选择题</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q22','A','B')"><span class="opt-letter">A</span>项目质量分析法只适用于上市公司，比率分析适用所有企业</button>
+    <button class="mc-btn" onclick="answerMC(this,'q22','B','B')"><span class="opt-letter">B</span>项目质量分析法从质量维度（非数量维度）深入分析，结合企业经营逻辑与行业背景进行个性化分析，而非套用统一公式</button>
+    <button class="mc-btn" onclick="answerMC(this,'q22','C','B')"><span class="opt-letter">C</span>项目质量分析法不需要使用财务数据，纯粹定性分析</button>
+    <button class="mc-btn" onclick="answerMC(this,'q22','D','B')"><span class="opt-letter">D</span>项目质量分析法只分析利润表项目，不涉及资产负债表</button>
+  </div>
+  <div class="q-feedback" id="fb_q22"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     ★ 海天味业案例 — 综合计算题（题3 解答提示）
+══════════════════════════════════════════════════════ -->
+<div class="practice-divider"><div class="divider-label">★ 综合计算题 — 海天味业案例</div></div>
+
+<div class="section-label">
+  <span class="section-num">案例</span>
+  <span class="section-name">海天味业 — 12项财务比率计算（合并报表）</span>
+  <span class="section-count">Q23 – Q25</span>
+</div>
+
+<!-- 海天味业背景数据 -->
+<div class="haitian-box">
+  <strong>📊 海天味业合并财务报表关键数据（亿元）</strong>
+  <div class="haitian-data-row" style="margin-top:12px;">
+    <div class="haitian-cell"><div class="hc-label">营业收入 2021</div><div class="hc-val">250.04</div></div>
+    <div class="haitian-cell"><div class="hc-label">营业收入 2020</div><div class="hc-val">227.92</div></div>
+    <div class="haitian-cell"><div class="hc-label">营业成本 2021</div><div class="hc-val">143.97</div></div>
+  </div>
+  <div class="haitian-data-row">
+    <div class="haitian-cell"><div class="hc-label">毛利 2021</div><div class="hc-val">106.07</div></div>
+    <div class="haitian-cell"><div class="hc-label">核心利润 2021</div><div class="hc-val">64.29</div></div>
+    <div class="haitian-cell"><div class="hc-label">净利润 2021</div><div class="hc-val">66.60</div></div>
+  </div>
+  <div class="haitian-data-row">
+    <div class="haitian-cell"><div class="hc-label">流动资产 2021</div><div class="hc-val">225.56</div></div>
+    <div class="haitian-cell"><div class="hc-label">流动负债 2021</div><div class="hc-val">101.99</div></div>
+    <div class="haitian-cell"><div class="hc-label">资产总额 2021</div><div class="hc-val">345.74</div></div>
+  </div>
+  <div class="haitian-data-row">
+    <div class="haitian-cell"><div class="hc-label">负债总额 2021</div><div class="hc-val">108.71</div></div>
+    <div class="haitian-cell"><div class="hc-label">金融负债 2021</div><div class="hc-val">约 2.50</div></div>
+    <div class="haitian-cell"><div class="hc-label">存货（期末）2021</div><div class="hc-val">22.60</div></div>
+  </div>
+  <div class="haitian-data-row">
+    <div class="haitian-cell"><div class="hc-label">存货（期初）2021</div><div class="hc-val">17.68</div></div>
+    <div class="haitian-cell"><div class="hc-label">经营活动现金流量</div><div class="hc-val">58.72</div></div>
+    <div class="haitian-cell"><div class="hc-label">投资收益获现额</div><div class="hc-val">约 3.20</div></div>
+  </div>
+  <div style="margin-top:10px;font-size:11.5px;color:rgba(255,255,255,0.55);">
+    ※ 固定资产原值2021约80.04亿，平均经营资产约160亿，平均资产总额约316亿，平均股东权益约225亿。数据取自合并财务报表，供计算练习参考。
+  </div>
+</div>
+
+<div class="q-card" id="q23">
+  <div class="q-header">
+    <div class="q-num">23</div>
+    <div class="q-text">根据上述海天味业2021年合并财务报表数据，计算以下<strong>偿债能力比率</strong>（3项）：<br>
+    <span style="color:#075985;font-size:13px;">① 流动比率　② 资产负债率　③ 资产金融负债率</span></div>
+    <span class="q-tag tag-calc">计算题</span>
+  </div>
+  <textarea class="think-area" placeholder="请写出计算过程及结果（如：流动比率 = 225.56 ÷ 101.99 = ？）"></textarea>
+  <button class="hint-btn" onclick="toggleHint('hint_q23',this)">💡 查看计算提示与答案</button>
+  <div class="think-hint" id="hint_q23">
+    <div class="ratio-section-badge">A. 偿债能力比率</div>
+    <table class="sample-table" style="margin-top:8px;">
+      <thead>
+        <tr><th>比率</th><th>公式</th><th>计算过程</th><th>结果</th><th>解读</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-label">① 流动比率</td>
+          <td class="formula">流动资产 ÷ 流动负债</td>
+          <td>225.56 ÷ 101.99</td>
+          <td class="result">≈ 2.21</td>
+          <td>高于2:1传统标准，短期偿债能力充足；但需分析流动资产构成质量</td>
+        </tr>
+        <tr>
+          <td class="col-label">② 资产负债率</td>
+          <td class="formula">负债总额 ÷ 资产总额 × 100%</td>
+          <td>108.71 ÷ 345.74 × 100%</td>
+          <td class="result">≈ 31.4%</td>
+          <td>负债率偏低，财务结构稳健，杠杆使用保守，与调味品行业特征相符</td>
+        </tr>
+        <tr>
+          <td class="col-label">③ 资产金融负债率</td>
+          <td class="formula">金融负债 ÷ 资产总额 × 100%</td>
+          <td>2.50 ÷ 345.74 × 100%</td>
+          <td class="result">≈ 0.72%</td>
+          <td>金融性债务极少，企业几乎无有息负债，资金自给能力极强，信用风险极低</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="sample-note" style="margin-top:10px;">📌 <strong>分析提示：</strong>海天味业资产金融负债率极低（&lt;1%），说明公司主要依靠经营性负债（应付账款等预收款）而非银行借款融资，这是调味品龙头的竞争优势体现。</div>
+  </div>
+</div>
+
+<div class="q-card" id="q24">
+  <div class="q-header">
+    <div class="q-num">24</div>
+    <div class="q-text">根据海天味业2021年数据，计算以下<strong>营运能力比率</strong>（4项）：<br>
+    <span style="color:#075985;font-size:13px;">④ 存货周转率　⑤ 固定资产周转率　⑥ 总资产周转率　⑦ 经营资产周转率</span></div>
+    <span class="q-tag tag-calc">计算题</span>
+  </div>
+  <textarea class="think-area" placeholder="请写出计算过程及结果..."></textarea>
+  <button class="hint-btn" onclick="toggleHint('hint_q24',this)">💡 查看计算提示与答案</button>
+  <div class="think-hint" id="hint_q24">
+    <div class="ratio-section-badge">B. 营运能力比率</div>
+    <table class="sample-table" style="margin-top:8px;">
+      <thead>
+        <tr><th>比率</th><th>公式</th><th>计算过程</th><th>结果</th><th>解读</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-label">④ 存货周转率</td>
+          <td class="formula">营业成本 ÷ 平均存货</td>
+          <td>143.97 ÷ [(22.60+17.68)/2]<br>= 143.97 ÷ 20.14</td>
+          <td class="result">≈ 7.15次</td>
+          <td>存货周转较快，约每51天周转一次（365÷7.15），库存管理高效</td>
+        </tr>
+        <tr>
+          <td class="col-label">⑤ 固定资产周转率</td>
+          <td class="formula">营业收入 ÷ 平均固定资产原值</td>
+          <td>250.04 ÷ 80.04<br>（期末原值约数）</td>
+          <td class="result">≈ 3.12次</td>
+          <td>固定资产利用效率良好；但需注意用原值（非账面净值）计算，避免折旧影响</td>
+        </tr>
+        <tr>
+          <td class="col-label">⑥ 总资产周转率</td>
+          <td class="formula">营业收入 ÷ 平均资产总额</td>
+          <td>250.04 ÷ 316.00<br>（平均资产约数）</td>
+          <td class="result">≈ 0.79次</td>
+          <td>总资产周转不足1次，反映大量流动资产（货币资金等）沉淀；食品行业属正常水平</td>
+        </tr>
+        <tr>
+          <td class="col-label">⑦ 经营资产周转率</td>
+          <td class="formula">营业收入 ÷ 平均经营资产</td>
+          <td>250.04 ÷ 160.00<br>（平均经营资产约数）</td>
+          <td class="result">≈ 1.56次</td>
+          <td>经营资产周转率高于总资产，显示投资资产（货币资金等）占比较大，经营性资产本身使用效率可接受</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="sample-note" style="margin-top:10px;">📌 <strong>注意：</strong>固定资产周转率应使用固定资产<em>原值</em>而非净值，以避免折旧程度不同影响可比性。在合并报表中，总资产含大量投资性资产，会导致总资产周转率偏低。</div>
+  </div>
+</div>
+
+<div class="q-card" id="q25">
+  <div class="q-header">
+    <div class="q-num">25</div>
+    <div class="q-text">根据海天味业2021年数据，计算以下<strong>盈利能力及现金流量比率</strong>（5项）：<br>
+    <span style="color:#075985;font-size:13px;">⑧ 毛利率　⑨ 销售费用率　⑩ 核心利润率　⑪ 核心利润获现率　⑫ 投资收益获现率</span><br>
+    <span style="color:#78350f;font-size:12px;">（已知：销售费用2021年约21.60亿元；投资收益2021年约3.80亿元）</span></div>
+    <span class="q-tag tag-calc">计算题</span>
+  </div>
+  <textarea class="think-area" placeholder="请写出计算过程及结果..."></textarea>
+  <button class="hint-btn" onclick="toggleHint('hint_q25',this)">💡 查看计算提示与答案</button>
+  <div class="think-hint" id="hint_q25">
+    <div class="ratio-section-badge">C. 盈利能力 &amp; 现金流量比率</div>
+    <table class="sample-table" style="margin-top:8px;">
+      <thead>
+        <tr><th>比率</th><th>公式</th><th>计算过程</th><th>结果</th><th>解读</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-label">⑧ 毛利率</td>
+          <td class="formula">毛利 ÷ 营业收入 × 100%</td>
+          <td>106.07 ÷ 250.04 × 100%</td>
+          <td class="result">≈ 42.4%</td>
+          <td>毛利率超过42%，远高于一般制造业，反映品牌溢价与成本控制能力极强</td>
+        </tr>
+        <tr>
+          <td class="col-label">⑨ 销售费用率</td>
+          <td class="formula">销售费用 ÷ 营业收入 × 100%</td>
+          <td>21.60 ÷ 250.04 × 100%</td>
+          <td class="result">≈ 8.6%</td>
+          <td>销售费用占比适中；反映渠道铺设和品牌维护成本，需与同业比较</td>
+        </tr>
+        <tr>
+          <td class="col-label">⑩ 核心利润率</td>
+          <td class="formula">核心利润 ÷ 营业收入 × 100%</td>
+          <td>64.29 ÷ 250.04 × 100%</td>
+          <td class="result">≈ 25.7%</td>
+          <td>核心利润率超过25%，主营业务盈利能力极强，是食品行业中的顶尖水平</td>
+        </tr>
+        <tr>
+          <td class="col-label">⑪ 核心利润获现率</td>
+          <td class="formula">经营活动现金流量 ÷ 核心利润</td>
+          <td>58.72 ÷ 64.29</td>
+          <td class="result">≈ 0.91</td>
+          <td>获现率约0.91，接近1.0，说明核心利润含金量较高，但略低于1，需关注应收账款变化</td>
+        </tr>
+        <tr>
+          <td class="col-label">⑫ 投资收益获现率</td>
+          <td class="formula">取得投资收益现金 ÷ 投资收益</td>
+          <td>3.20 ÷ 3.80</td>
+          <td class="result">≈ 0.84</td>
+          <td>投资收益获现率约0.84，说明大部分投资收益已实际收现，质量较好</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 综合评估 -->
+    <div class="sample-conclusion" style="margin-top:14px;">
+      <strong>🏆 海天味业2021年合并报表综合评估：</strong><br>
+      • <strong>偿债能力：</strong>流动比率2.21，资产金融负债率仅0.72%，财务结构极为稳健，几乎无有息债务压力。<br>
+      • <strong>盈利能力：</strong>毛利率42.4%、核心利润率25.7%，在食品调味品行业中属顶尖水平，护城河深厚。<br>
+      • <strong>营运能力：</strong>存货周转率7.15次，经营资产周转率1.56次，显示良好的资产管理能力。<br>
+      • <strong>现金质量：</strong>核心利润获现率0.91，利润含金量较高，现金流与盈利基本吻合。<br><br>
+      <span style="color:rgba(255,255,255,0.65);font-size:12px;">
+      ⚠ 注意：合并报表与母公司报表的差异——母公司对子公司的大量长期股权投资会导致母公司总资产周转率显著低于合并报表口径，盈利比率也因口径不同而差异显著（详见2.4节）。
+      </span>
+    </div>
+    <div class="sample-note" style="margin-top:10px;">
+      📌 <strong>项目质量分析延伸（题4）：</strong>若进一步采用项目质量分析法，建议重点关注：<br>
+      ① 应收账款质量（是否存在关联交易或坏账风险）<br>
+      ② 存货构成（成品/原材料比例及季节性影响）<br>
+      ③ 预收款项（反映渠道议价能力与提前回款能力）<br>
+      ④ 货币资金规模（大量闲置资金的使用效率与投资方向）
+    </div>
+  </div>
+</div>
+
+<!-- ── Submit ── -->
+<div class="submit-zone">
+  <button class="submit-btn" onclick="submitAll()">📋 提交选择 / 判断 / 填空题，查看成绩</button>
+  <div class="result-card" id="resultCard">
+    <div class="result-title">练习成绩</div>
+    <div class="result-score-big" id="resultScore">—</div>
+    <div class="result-sub">共 22 题（选择 + 判断 + 填空，不含计算思考题）</div>
+    <div class="result-breakdown">
+      <div class="breakdown-item"><div class="breakdown-num" id="r-correct">0</div><div class="breakdown-label">答对</div></div>
+      <div class="breakdown-item"><div class="breakdown-num" id="r-wrong">0</div><div class="breakdown-label">答错</div></div>
+      <div class="breakdown-item"><div class="breakdown-num" id="r-skip">0</div><div class="breakdown-label">未作答</div></div>
+    </div>
+    <div class="result-msg" id="resultMsg"></div>
+    <button class="retry-btn" onclick="retryAll()">🔄 重新作答</button>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+const MC_EXPLAIN = {
+  q1: '结构分析法（百分比分析法）分析利润表时，以「营业收入」为100%，计算各项目占营业收入的比重，例如毛利率、销售费用率、净利润率等，方便横向与纵向比较。',
+  q2: '定基变动百分比 = （分析期数值 − 基期数值）÷ 基期数值 × 100%。它反映各期相对于固定基期的累积变动幅度，适合观察多年趋势。环比变动百分比则是与"上一期"对比，两者意义不同。',
+  q3: '正确。比较分析法的三种基期标准：① 基期标准（历史数据，反映自身趋势）② 预期标准（计划目标，反映预算执行）③ 行业标准（同行比较，反映竞争地位）。',
+  q4: '格力电器2021年营业收入1878.69亿，2019年基期为1981.53亿。定基变动百分比 = (1878.69−1981.53)÷1981.53×100% ≈ −5.19%。即2021年虽然比2020年回升11.69%，但相对2019年基期仍下降约5.19%。',
+  q5: '速动比率 = （流动资产 − 存货）÷ 流动负债。从流动资产中剔除存货，因为存货变现速度慢，无法快速用于偿债，速动比率因此更能反映企业即时偿债能力，又称"酸性测试比率"。',
+  q6: '错误。流动比率越高并不意味着偿债能力越强。流动资产中若存在大量质量低下的存货（滞销、过时）或难以回收的应收款，即使比率很高，实际偿债能力也可能不足。需结合资产质量综合判断。',
+  q7: '杜邦分析：ROE = 销售净利率（盈利能力）× 总资产周转率（营运能力）× 权益乘数（财务杠杆）。权益乘数 = 总资产 ÷ 股东权益，数值越大表明财务杠杆越高，即企业借债越多。',
+  q8: '错误。利息保障倍数仅大于1表示当期利润能够覆盖利息，但并不足以证明"充分"的长期偿债能力。企业还需偿还本金、维持投资、应对经营波动。教材指出，一般需要远高于1才算稳健。',
+  q9: '核心利润率最能反映主营业务盈利能力。核心利润 = 营业利润 − 投资收益等非经营性项目，剔除了投资收益、公允价值变动等与主营业务无关的收益，聚焦于企业核心经营活动创造的利润。',
+  q10: '存货在账面上以成本计量，用营业成本（=销售商品的成本价）作为分子，与存货的计量口径一致，更具可比性。若用营业收入，则含毛利成分，不同企业毛利率不同会影响周转率的可比性。',
+  q11: '正确。应收账款周转率 = 营业收入（或赊销收入）÷ 平均应收账款。周转次数越多，说明从赊销到回款的周期越短，资金占用越少，管理效率越高。周转天数 = 365 ÷ 周转率。',
+  q12: '核心利润获现率 = 经营活动现金流量 ÷ 核心利润。分子需填「经营活动现金流量」（或经营现金流）。该比率反映核心利润的含金量：比率越接近1说明利润质量越高，若远低于1则需警惕应收款积压或会计政策问题。',
+  q13: '正确。杜邦分析将ROE分解为：ROE = 销售净利率 × 总资产周转率 × 权益乘数。其中总资产周转率（营业收入÷平均资产总额）代表营运能力，是杜邦体系三要素之一。',
+  q14: '市盈率（P/E）= 普通股每股市价 ÷ 每股收益（EPS）。它反映市场对每1元盈利愿意支付的价格，P/E越高说明市场预期越乐观（或相对高估）。股票收益率是市盈率的倒数。',
+  q15: '正确。每股经营活动现金流量直接来自现金流量表，不受权责发生制下会计政策（如折旧方法、存货计价、收入确认时间）的影响，因此比EPS更能真实反映企业现金创造能力。',
+  q16: '市净率（P/B）= 每股市价 ÷ 每股净资产。分子是「每股市价」（股价）。P/B反映市场对公司账面价值的定价溢价，高P/B通常对应高ROE（两者理论上正相关）。',
+  q17: '正确。流动资产涵盖货币资金、交易性金融资产、应收账款、存货、预付款等，各项变现能力相差悬殊。流动比率将其全部加总，无法区分高质量流动资产和低质量流动资产，存在明显局限。',
+  q18: '答案D。应收账款周转率反映的是资产的营运能力（即收账速度与流动性），与流动性高度相关，并非"与流动性无关"。A、B、C都是教材中明确指出的真实局限性。',
+  q19: '资产负债率的两大局限：① 使用账面价值，可能与资产市场价值出入较大；② 将经营性负债（应付账款，本质是供应商融资）与金融性负债（银行贷款，需付利息）混为一谈，不加区分会误导分析。',
+  q20: '总资产周转率在合并报表中需慎重运用。因为合并资产总额包含母公司大量对子公司的长期股权投资（投资性资产），这部分资产与营业收入不直接相关，会显著压低总资产周转率，使分析结论失真。',
+  q21: '正确。母公司将子公司纳入合并报表后，资产总额包含了大量对子公司的股权投资，而这些投资资产并不直接产生营业收入。因此合并报表的总资产周转率会低于子公司实际经营层面的运营效率水平。',
+  q22: '项目质量分析法的核心优势在于：它从「质量维度」而非「数量维度」出发，结合企业具体经营背景、行业特征、竞争策略进行个性化分析；它识别大项目和异动项目，而非对所有项目一视同仁（"一刀切"）。'
+};
+
+let answered = {};
+
+function answerMC(btn, qid, chosen, correct) {
+  if (answered[qid] !== undefined) return;
+  const card = document.getElementById(qid);
+  const btns = card.querySelectorAll('.mc-btn');
+  btns.forEach(b => {
+    b.disabled = true;
+    const letter = b.querySelector('.opt-letter').textContent.trim();
+    if (letter === correct) b.classList.add(chosen === correct ? 'correct' : 'reveal-correct');
+  });
+  const isCorrect = chosen === correct;
+  if (isCorrect) btn.classList.add('correct');
+  else btn.classList.add('wrong');
+  answered[qid] = isCorrect;
+  showFeedback(qid, isCorrect, MC_EXPLAIN[qid]);
+  updateProgress();
+}
+
+function answerTF(btn, qid, chosen, correct) {
+  if (answered[qid] !== undefined) return;
+  const card = document.getElementById(qid);
+  const btns = card.querySelectorAll('.tf-btn');
+  btns.forEach(b => {
+    b.disabled = true;
+    const isTrue = b.textContent.includes('正确');
+    if (isTrue === correct) b.classList.add(chosen === correct ? 'correct' : 'reveal-correct');
+  });
+  const isCorrect = chosen === correct;
+  if (isCorrect) btn.classList.add('correct');
+  else btn.classList.add('wrong');
+  answered[qid] = isCorrect;
+  showFeedback(qid, isCorrect, MC_EXPLAIN[qid]);
+  updateProgress();
+}
+
+function answerFill(qid, acceptedList) {
+  if (answered[qid] !== undefined) return;
+  const input = document.getElementById('fill_' + qid);
+  const val = input.value.trim();
+  if (!val) return;
+  const isCorrect = acceptedList.some(a => val.includes(a));
+  input.classList.add(isCorrect ? 'correct' : 'wrong');
+  input.disabled = true;
+  document.querySelector('#' + qid + ' .fill-submit').disabled = true;
+  answered[qid] = isCorrect;
+  showFeedback(qid, isCorrect, MC_EXPLAIN[qid]);
+  updateProgress();
+}
+
+function showFeedback(qid, isCorrect, explain) {
+  const fb = document.getElementById('fb_' + qid);
+  if (!fb) return;
+  fb.className = 'q-feedback show ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
+  fb.innerHTML = '<span class="fb-icon">' + (isCorrect ? '✓ 正确！' : '✗ 错误。') + '</span>' + explain;
+}
+
+function toggleHint(hintId, btn) {
+  const hint = document.getElementById(hintId);
+  hint.classList.toggle('show');
+  btn.textContent = hint.classList.contains('show') ? '🙈 收起提示' : '💡 查看计算提示与答案';
+}
+
+function togglePreview(btn) {
+  const content = document.getElementById('previewContent');
+  content.classList.toggle('collapsed');
+  btn.textContent = content.classList.contains('collapsed') ? '▼ 展开预习区' : '▲ 收起预习区';
+}
+
+function updateProgress() {
+  const total = 22;
+  const done = Object.keys(answered).length;
+  const correct = Object.values(answered).filter(Boolean).length;
+  const pct = Math.round((done / total) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('scoreLive').textContent = correct + ' 题答对（' + done + '/' + total + ' 已作答）';
+}
+
+function submitAll() {
+  const allQids = ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10',
+                   'q11','q12','q13','q14','q15','q16','q17','q18','q19','q20','q21','q22'];
+  allQids.forEach(qid => { if (answered[qid] === undefined) answered[qid] = false; });
+  updateProgress();
+  const correct = Object.values(answered).filter(Boolean).length;
+  const wrong = allQids.filter(q => answered[q] === false).length;
+  const pct = Math.round((correct / allQids.length) * 100);
+  document.getElementById('resultScore').textContent = pct + ' 分';
+  document.getElementById('r-correct').textContent = correct;
+  document.getElementById('r-wrong').textContent = wrong;
+  document.getElementById('r-skip').textContent = 0;
+  let msg = '';
+  if (pct >= 90) msg = '🎉 优秀！第2章的财务分析方法掌握得非常扎实，建议尝试计算题部分以进一步深化理解！';
+  else if (pct >= 75) msg = '👍 良好！大部分概念已掌握，建议回头复习答错的比率定义，特别注意局限性相关题目。';
+  else if (pct >= 60) msg = '📚 及格！建议重新阅读2.2节（各类财务比率）与2.3节（局限性），重点理解公式的分子分母含义。';
+  else msg = '💪 继续加油！建议先回顾第2章各小节的核心概念，特别是杜邦分析、核心利润与普通利润的差别，再做一次练习。';
+  document.getElementById('resultMsg').textContent = msg;
+  document.getElementById('resultCard').classList.add('show');
+  document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function retryAll() {
+  answered = {};
+  document.querySelectorAll('.mc-btn').forEach(b => { b.disabled = false; b.classList.remove('correct','wrong','reveal-correct'); });
+  document.querySelectorAll('.tf-btn').forEach(b => { b.disabled = false; b.classList.remove('correct','wrong','reveal-correct'); });
+  document.querySelectorAll('.fill-input').forEach(inp => { inp.disabled = false; inp.value = ''; inp.classList.remove('correct','wrong'); });
+  document.querySelectorAll('.fill-submit').forEach(b => b.disabled = false);
+  document.querySelectorAll('.q-feedback').forEach(fb => { fb.className = 'q-feedback'; fb.innerHTML = ''; });
+  document.querySelectorAll('.think-hint').forEach(h => h.classList.remove('show'));
+  document.querySelectorAll('.hint-btn').forEach(b => b.textContent = '💡 查看计算提示与答案');
+  document.getElementById('resultCard').classList.remove('show');
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+updateProgress();
+</script>
+</body>
+</html>
