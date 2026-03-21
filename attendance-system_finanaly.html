@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>課堂管理系統 — 24金融（商貿）</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=IBM+Plex+Mono:wght@400;600;700&display=swap');
+
+:root {
+  --bg: #0d0d0f;
+  --surface: #16161a;
+  --surface2: #1e1e24;
+  --border: #2a2a35;
+  --text: #e8e6e0;
+  --muted: #666672;
+  --accent-red: #e53e3e;
+  --accent-gold: #d4a843;
+  --accent-blue: #4a90d9;
+  --accent-green: #38a169;
+  --accent-orange: #dd6b20;
+  --accent-purple: #805ad5;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 14px;
+}
+
+/* ─── PAGES ─── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ═══════════════════════════════════════
+   TEACHER DASHBOARD
+═══════════════════════════════════════ */
+#teacher-page {
+  display: none;
+  min-height: 100vh;
+  grid-template-rows: 56px 1fr;
+  grid-template-columns: 260px 1fr;
+}
+#teacher-page.active { display: grid; }
+
+/* Top bar */
+.topbar {
+  grid-column: 1 / -1;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+}
+
+.topbar-left {
+  display: flex; align-items: center; gap: 16px;
+}
+
+.logo-mark {
+  width: 28px; height: 28px;
+  background: var(--accent-gold);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px; font-weight: 700;
+  color: #000;
+}
+
+.topbar-title {
+  font-size: 14px; font-weight: 700; letter-spacing: 0.05em;
+}
+
+.topbar-sub {
+  font-size: 11px; color: var(--muted); letter-spacing: 0.1em;
+}
+
+.topbar-right {
+  display: flex; align-items: center; gap: 12px;
+}
+
+.pill {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+  border: 1px solid;
+}
+
+.pill-blue { border-color: var(--accent-blue); color: var(--accent-blue); }
+.pill-gold { border-color: var(--accent-gold); color: var(--accent-gold); }
+.pill-green { border-color: var(--accent-green); color: var(--accent-green); }
+.pill-red { border-color: var(--accent-red); color: var(--accent-red); }
+
+/* Sidebar */
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 20px 16px;
+}
+
+.sidebar-section { margin-bottom: 28px; }
+
+.sidebar-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+  color: var(--muted); text-transform: uppercase;
+  padding: 0 8px; margin-bottom: 10px;
+}
+
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 13px; font-weight: 500;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+.nav-item:hover { background: var(--surface2); color: var(--text); }
+.nav-item.active { background: var(--surface2); color: var(--text); }
+.nav-item .icon { font-size: 16px; width: 20px; text-align: center; }
+
+.mini-stat {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.mini-stat-val {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 22px; font-weight: 700;
+}
+.mini-stat-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.green { color: var(--accent-green); }
+.red { color: var(--accent-red); }
+.gold { color: var(--accent-gold); }
+.blue { color: var(--accent-blue); }
+.orange { color: var(--accent-orange); }
+.purple { color: var(--accent-purple); }
+
+/* Main content */
+.main-content {
+  overflow-y: auto;
+  background: var(--bg);
+}
+
+.tab-panel { display: none; padding: 28px; }
+.tab-panel.active { display: block; }
+
+.panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 24px;
+}
+.panel-title { font-size: 20px; font-weight: 900; }
+.panel-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+/* Buttons */
+.btn {
+  padding: 10px 20px;
+  border-radius: 8px; border: none;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all 0.15s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary { background: var(--accent-red); color: white; }
+.btn-primary:hover { background: #fc5555; transform: translateY(-1px); }
+.btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { border-color: var(--accent-gold); color: var(--accent-gold); }
+.btn-blue { background: var(--accent-blue); color: white; }
+.btn-blue:hover { background: #5ba3ec; }
+.btn-gold { background: var(--accent-gold); color: #000; }
+.btn-gold:hover { background: #e8c062; }
+.btn-green { background: var(--accent-green); color: white; }
+.btn-green:hover { background: #48bb78; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+.btn-sm { padding: 6px 14px; font-size: 12px; }
+
+/* Grid cards */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.card-title { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-bottom: 16px; }
+
+/* QR Section */
+.qr-wrap {
+  display: flex; align-items: flex-start; gap: 24px;
+}
+
+.qr-box {
+  background: white;
+  padding: 12px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.qr-info { flex: 1; }
+
+.countdown-big {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 52px; font-weight: 700;
+  color: var(--accent-gold);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.countdown-big.urgent { color: var(--accent-red); animation: blink 0.6s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+.progress-bar-wrap { margin: 12px 0; }
+.progress-bar {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--accent-gold);
+  border-radius: 2px;
+  transition: width 1s linear;
+}
+
+/* Timer controls */
+.timer-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.timer-opt {
+  padding: 7px 16px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--muted);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all 0.15s;
+}
+.timer-opt:hover { border-color: var(--accent-gold); color: var(--accent-gold); }
+.timer-opt.sel { background: var(--accent-gold); color: #000; border-color: var(--accent-gold); }
+.custom-min-input {
+  width: 70px; padding: 7px 10px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 20px; color: var(--text);
+  font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 700;
+  text-align: center;
+}
+
+/* Student roster */
+.roster-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 6px;
+}
+
+.roster-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  display: flex; align-items: center; gap: 8px;
+  transition: all 0.3s;
+}
+.roster-card.present { background: #0f2a1a; border-color: var(--accent-green); }
+.roster-card.answered { border-color: var(--accent-blue); }
+.roster-card.present.answered { background: #0f1a2a; border-color: var(--accent-blue); }
+
+.roster-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: var(--muted); min-width: 18px;
+}
+.roster-name { font-size: 12px; font-weight: 500; flex: 1; }
+.roster-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--border);
+}
+.roster-card.present .roster-dot { background: var(--accent-green); }
+.roster-card.answered .roster-dot { background: var(--accent-blue); }
+.roster-card.present.answered .roster-dot { background: var(--accent-blue); }
+.roster-card.present .roster-name { color: #68d391; }
+.roster-card.answered .roster-name { color: #90cdf4; }
+
+/* Q&A panel */
+.qa-compose {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+textarea {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 14px;
+  padding: 12px 14px;
+  resize: vertical;
+  min-height: 80px;
+  transition: border-color 0.2s;
+}
+textarea:focus { outline: none; border-color: var(--accent-blue); }
+
+.answer-item {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  position: relative;
+}
+.answer-meta {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 8px;
+}
+.answer-student { font-size: 13px; font-weight: 700; color: var(--accent-blue); }
+.answer-time { font-size: 11px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
+.answer-text { font-size: 14px; line-height: 1.6; }
+
+.plagiarism-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px; font-weight: 700;
+  margin-top: 8px;
+}
+.plagiarism-badge.high { background: #3d1515; color: #fc8181; border: 1px solid #e53e3e44; }
+.plagiarism-badge.medium { background: #3d2a0a; color: #f6ad55; border: 1px solid #dd6b2044; }
+.plagiarism-badge.low { background: #0f2a1a; color: #68d391; border: 1px solid #38a16944; }
+
+.similarity-pair {
+  background: #1a0f0f;
+  border: 1px solid #e53e3e33;
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+}
+.sim-header { font-size: 12px; color: var(--accent-red); font-weight: 700; margin-bottom: 6px; }
+.sim-row { display: flex; gap: 10px; font-size: 12px; }
+.sim-text { flex: 1; color: var(--muted); font-style: italic; border-left: 2px solid var(--border); padding-left: 8px; }
+
+/* Question QR overlay */
+.qa-qr-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 200;
+  display: none;
+  align-items: center; justify-content: center;
+}
+.qa-qr-overlay.active { display: flex; }
+.qa-qr-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 36px;
+  max-width: 480px; width: 90%;
+  text-align: center;
+}
+.qa-qr-box h3 { font-size: 18px; font-weight: 900; margin-bottom: 8px; }
+.qa-question-preview {
+  background: var(--surface2);
+  border-left: 3px solid var(--accent-blue);
+  padding: 12px 14px;
+  border-radius: 4px;
+  text-align: left;
+  margin: 16px 0;
+  font-size: 14px; line-height: 1.6;
+  color: var(--text);
+}
+.qa-timer-display {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 36px; font-weight: 700;
+  color: var(--accent-blue);
+  margin: 12px 0;
+}
+.qa-timer-display.urgent { color: var(--accent-red); }
+
+/* Email modal */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.75); z-index: 300;
+  align-items: center; justify-content: center;
+}
+.modal-overlay.active { display: flex; }
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 460px; width: 90%;
+}
+.modal h3 { font-size: 18px; font-weight: 900; margin-bottom: 8px; }
+.modal p { font-size: 13px; color: var(--muted); margin-bottom: 20px; line-height: 1.6; }
+.modal-btns { display: flex; gap: 10px; }
+
+/* Input styles */
+input[type=text], input[type=number] {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 14px;
+  padding: 10px 12px;
+}
+input:focus { outline: none; border-color: var(--accent-blue); }
+
+/* Divider */
+.divider { height: 1px; background: var(--border); margin: 20px 0; }
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--muted);
+}
+.empty-icon { font-size: 40px; margin-bottom: 12px; }
+.empty-text { font-size: 14px; }
+
+/* Answered count chip */
+.chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 11px; font-family: 'IBM Plex Mono', monospace;
+  color: var(--muted);
+}
+
+
+/* ═══════════════════════════════════════
+   STUDENT PAGE
+═══════════════════════════════════════ */
+#student-page {
+  min-height: 100vh;
+  display: none;
+  background: #f7f5f0;
+  color: #1a1a1a;
+  align-items: center; justify-content: center;
+  padding: 32px 16px;
+}
+#student-page.active { display: flex; }
+
+.student-wrap { width: 100%; max-width: 400px; }
+
+.student-top {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.student-badge {
+  display: inline-block;
+  padding: 4px 14px;
+  background: #1a1a1a;
+  color: #d4a843;
+  border-radius: 20px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.15em;
+  margin-bottom: 16px;
+}
+
+.student-mode-title {
+  font-size: 26px; font-weight: 900;
+  color: #1a1a1a;
+  line-height: 1.2;
+}
+
+.student-course { font-size: 13px; color: #888; margin-top: 6px; }
+
+.s-timer-bar {
+  background: #1a1a1a;
+  border-radius: 12px;
+  padding: 14px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 24px;
+}
+.s-timer-lbl { font-size: 11px; color: #666; letter-spacing: 0.1em; }
+.s-timer-val {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 26px; font-weight: 700;
+  color: #d4a843;
+}
+.s-timer-val.urgent { color: #e53e3e; }
+
+.s-card {
+  background: white;
+  border: 1px solid #e0ddd6;
+  border-radius: 14px;
+  padding: 22px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.s-card-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+  color: #aaa; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.s-input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid #e0ddd6;
+  border-radius: 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px; font-weight: 700;
+  letter-spacing: 0.08em;
+  background: #fafaf8;
+  color: #1a1a1a;
+  transition: border-color 0.2s;
+}
+.s-input:focus { outline: none; border-color: #4a90d9; }
+.s-input.ok { border-color: #38a169; }
+.s-input.err { border-color: #e53e3e; }
+
+.s-match {
+  margin-top: 8px; padding: 10px 12px;
+  background: #f0fff4; border-left: 3px solid #38a169;
+  border-radius: 4px; font-size: 14px; font-weight: 600;
+  color: #276749; display: none;
+}
+.s-match.show { display: block; }
+.s-err { margin-top: 6px; font-size: 12px; color: #e53e3e; display: none; }
+.s-err.show { display: block; }
+
+.s-question-box {
+  background: #fffbf0;
+  border: 2px solid #d4a843;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+}
+.s-question-text {
+  font-size: 15px; line-height: 1.7; font-weight: 500;
+  color: #1a1a1a;
+}
+
+.s-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid #e0ddd6;
+  border-radius: 8px;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 14px; line-height: 1.6;
+  background: #fafaf8;
+  color: #1a1a1a;
+  resize: vertical;
+  min-height: 100px;
+  transition: border-color 0.2s;
+}
+.s-textarea:focus { outline: none; border-color: #4a90d9; }
+
+.s-btn {
+  width: 100%; padding: 14px;
+  border: none; border-radius: 10px;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 15px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+}
+.s-btn-dark { background: #1a1a1a; color: white; }
+.s-btn-dark:hover { background: #2d2d2d; }
+.s-btn-dark:disabled { background: #ccc; cursor: not-allowed; }
+.s-btn-blue { background: #4a90d9; color: white; margin-top: 10px; }
+.s-btn-blue:hover { background: #5ba3ec; }
+.s-btn-blue:disabled { background: #ccc; cursor: not-allowed; }
+
+/* Success/Expired */
+.s-result { text-align: center; padding: 20px 0; }
+.s-result-icon { font-size: 56px; margin-bottom: 16px; }
+.s-result-title { font-size: 24px; font-weight: 900; color: #1a1a1a; margin-bottom: 8px; }
+.s-result-sub { font-size: 14px; color: #888; }
+.s-result-sub2 { font-size: 13px; color: #4a90d9; margin-top: 8px; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ TEACHER PAGE ══════════════ -->
+<div id="teacher-page" class="page">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="logo-mark">RC</div>
+      <div>
+        <div class="topbar-title">課堂管理系統</div>
+        <div class="topbar-sub">CLASSROOM MANAGEMENT · 24金融（商貿）</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="pill pill-gold">財務報表分析</span>
+      <span class="pill pill-blue" id="session-status">待機中</span>
+      <button class="btn btn-secondary btn-sm" onclick="showEmailModal()">✉ 寄送報告</button>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">導航</div>
+      <div class="nav-item active" onclick="switchTab('attendance', this)">
+        <span class="icon">📋</span> 點名管理
+      </div>
+      <div class="nav-item" onclick="switchTab('qa', this)">
+        <span class="icon">💬</span> 課堂問答
+      </div>
+      <div class="nav-item" onclick="switchTab('plagiarism', this)">
+        <span class="icon">🔍</span> 抄襲偵測
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">即時狀況</div>
+      <div class="mini-stat">
+        <div>
+          <div class="mini-stat-val green" id="sb-present">0</div>
+          <div class="mini-stat-lbl">出席</div>
+        </div>
+        <div style="text-align:right">
+          <div class="mini-stat-val red" id="sb-absent">46</div>
+          <div class="mini-stat-lbl">缺席</div>
+        </div>
+      </div>
+      <div class="mini-stat">
+        <div>
+          <div class="mini-stat-val blue" id="sb-answered">0</div>
+          <div class="mini-stat-lbl">已答題</div>
+        </div>
+        <div style="text-align:right">
+          <div class="mini-stat-val orange" id="sb-flagged">0</div>
+          <div class="mini-stat-lbl">疑似抄襲</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">課程資訊</div>
+      <div style="font-size:12px; color:var(--muted); line-height:2; padding:0 4px;">
+        <div>教師：<span style="color:var(--text)">洪嘉馨</span></div>
+        <div>學期：<span style="color:var(--text)">2025-2026-2</span></div>
+        <div>地點：<span style="color:var(--text)">2-202</span></div>
+        <div>學分：<span style="color:var(--text)">2.0</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main-content">
+
+    <!-- ── 點名 TAB ── -->
+    <div id="tab-attendance" class="tab-panel active">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">點名管理</div>
+          <div class="panel-sub">產生 QR Code · 學生掃描完成點名</div>
+        </div>
+      </div>
+
+      <!-- Timer options -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">計時設定</div>
+        <div class="timer-controls">
+          <div class="timer-opt sel" onclick="selTimer(3,this)">3 分</div>
+          <div class="timer-opt" onclick="selTimer(5,this)">5 分</div>
+          <div class="timer-opt" onclick="selTimer(10,this)">10 分</div>
+          <input type="number" class="custom-min-input" placeholder="自訂" min="1" max="60"
+            oninput="selTimer(this.value, null)" title="自訂分鐘數">
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-primary" id="start-att-btn" onclick="startAttendance()">▶ 開始點名 / 產生 QR</button>
+          <button class="btn btn-secondary" onclick="resetAttendance()">↺ 重置</button>
+        </div>
+      </div>
+
+      <!-- QR + countdown -->
+      <div class="card" id="att-qr-card" style="margin-bottom:16px;display:none">
+        <div class="card-title">點名 QR Code</div>
+        <div class="qr-wrap">
+          <div class="qr-box" id="att-qr-container"></div>
+          <div class="qr-info">
+            <div class="countdown-big" id="att-countdown">--:--</div>
+            <div style="font-size:12px;color:var(--muted);margin-bottom:10px">剩餘點名時間</div>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar"><div class="progress-fill" id="att-progress" style="width:100%"></div></div>
+            </div>
+            <div style="font-size:11px;color:var(--muted);margin-top:8px;font-family:'IBM Plex Mono',monospace" id="att-session-code"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Roster -->
+      <div class="card">
+        <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
+          <span>學生名單</span>
+          <span class="chip" id="roster-count">0 / 46</span>
+        </div>
+        <div class="roster-grid" id="roster-grid"></div>
+      </div>
+    </div>
+
+    <!-- ── 問答 TAB ── -->
+    <div id="tab-qa" class="tab-panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">課堂問答</div>
+          <div class="panel-sub">出題 → 學生掃 QR Code 作答 → 即時收集回應</div>
+        </div>
+      </div>
+
+      <div class="qa-compose">
+        <div class="card-title">出題</div>
+        <textarea id="qa-question-input" placeholder="輸入問題，例如：請說明資產負債表的主要組成部分及其意義…" rows="3"></textarea>
+        <div style="display:flex;gap:10px;margin-top:12px;align-items:center;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)">
+            限時：
+            <select id="qa-timer-sel" style="background:var(--surface);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:6px;font-size:13px">
+              <option value="120">2 分鐘</option>
+              <option value="180" selected>3 分鐘</option>
+              <option value="300">5 分鐘</option>
+              <option value="600">10 分鐘</option>
+            </select>
+          </div>
+          <button class="btn btn-blue" onclick="publishQuestion()">📡 發布問題 / 產生 QR</button>
+          <button class="btn btn-secondary" onclick="clearAnswers()">清除答案</button>
+        </div>
+      </div>
+
+      <!-- Current question display -->
+      <div id="active-question-card" class="card" style="margin-bottom:16px;display:none">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+          <div class="card-title" style="margin-bottom:0">目前題目</div>
+          <div class="qa-timer-display" id="qa-countdown" style="font-size:22px">--:--</div>
+        </div>
+        <div style="background:var(--surface2);border-left:3px solid var(--accent-blue);padding:12px 14px;border-radius:4px;font-size:14px;line-height:1.7" id="active-question-text"></div>
+        <button class="btn btn-secondary btn-sm" style="margin-top:12px" onclick="showQaQr()">🔍 顯示 QR Code</button>
+      </div>
+
+      <!-- Answers -->
+      <div class="card">
+        <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
+          <span>學生回答</span>
+          <span class="chip" id="answer-count">0 則</span>
+        </div>
+        <div id="answers-container">
+          <div class="empty-state">
+            <div class="empty-icon">💬</div>
+            <div class="empty-text">尚未有學生作答</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 抄襲偵測 TAB ── -->
+    <div id="tab-plagiarism" class="tab-panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">抄襲偵測</div>
+          <div class="panel-sub">比對學生回答的相似度，標記可疑案例</div>
+        </div>
+        <button class="btn btn-primary" onclick="runPlagiarismCheck()">🔍 執行抄襲偵測</button>
+      </div>
+
+      <div class="grid-3" style="margin-bottom:20px">
+        <div class="card" style="text-align:center">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:32px;font-weight:700;color:var(--accent-green)" id="pl-low">0</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:4px">低相似度（&lt;50%）</div>
+        </div>
+        <div class="card" style="text-align:center">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:32px;font-weight:700;color:var(--accent-orange)" id="pl-med">0</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:4px">中相似度（50~80%）</div>
+        </div>
+        <div class="card" style="text-align:center">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:32px;font-weight:700;color:var(--accent-red)" id="pl-high">0</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:4px">高相似度（&gt;80%）</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">相似度比對報告</div>
+        <div id="plagiarism-report">
+          <div class="empty-state">
+            <div class="empty-icon">🔍</div>
+            <div class="empty-text">請先執行抄襲偵測</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /main-content -->
+</div><!-- /teacher-page -->
+
+
+<!-- ══════════════ STUDENT PAGE ══════════════ -->
+<div id="student-page" class="page">
+  <div class="student-wrap">
+
+    <div class="student-top">
+      <div class="student-badge">24金融（商貿）· 財務報表分析</div>
+      <div class="student-mode-title" id="s-mode-title">課堂點名</div>
+      <div class="student-course">任課教師：洪嘉馨</div>
+    </div>
+
+    <div class="s-timer-bar">
+      <div class="s-timer-lbl" id="s-timer-lbl">點名截止倒數</div>
+      <div class="s-timer-val" id="s-countdown">--:--</div>
+    </div>
+
+    <!-- Attendance form -->
+    <div id="s-att-form">
+      <div class="s-card">
+        <div class="s-card-label">輸入學號</div>
+        <input type="text" class="s-input" id="s-id-input" maxlength="10"
+          placeholder="2410115___"
+          oninput="sCheckId(this.value)" autocomplete="off">
+        <div class="s-match" id="s-match"></div>
+        <div class="s-err" id="s-err">找不到此學號，請確認後重試</div>
+      </div>
+      <button class="s-btn s-btn-dark" id="s-att-submit" onclick="sSubmitAtt()" disabled>確認點名</button>
+    </div>
+
+    <!-- Q&A form -->
+    <div id="s-qa-form" style="display:none">
+      <div class="s-card">
+        <div class="s-card-label">本堂問題</div>
+        <div class="s-question-box">
+          <div class="s-question-text" id="s-question-display"></div>
+        </div>
+      </div>
+      <div class="s-card" style="margin-bottom:0">
+        <div class="s-card-label">你的學號</div>
+        <input type="text" class="s-input" id="s-qa-id" maxlength="10"
+          placeholder="2410115___"
+          oninput="sCheckQaId(this.value)" autocomplete="off">
+        <div class="s-match" id="s-qa-match"></div>
+        <div class="s-err" id="s-qa-err">找不到此學號</div>
+      </div>
+      <div class="s-card">
+        <div class="s-card-label">你的回答</div>
+        <textarea class="s-textarea" id="s-answer-input" placeholder="請輸入你的答案…" rows="5"></textarea>
+      </div>
+      <button class="s-btn s-btn-blue" id="s-qa-submit" onclick="sSubmitQa()" disabled>提交回答</button>
+    </div>
+
+    <!-- Results -->
+    <div id="s-att-success" style="display:none">
+      <div class="s-result">
+        <div class="s-result-icon">✅</div>
+        <div class="s-result-title">點名成功！</div>
+        <div class="s-result-sub" id="s-att-success-name"></div>
+        <div class="s-result-sub2" id="s-att-qa-hint" style="display:none">
+          老師有出題，請掃描問答 QR Code 作答
+        </div>
+      </div>
+    </div>
+
+    <div id="s-qa-success" style="display:none">
+      <div class="s-result">
+        <div class="s-result-icon">📝</div>
+        <div class="s-result-title">回答已提交！</div>
+        <div class="s-result-sub" id="s-qa-success-name"></div>
+      </div>
+    </div>
+
+    <div id="s-expired" style="display:none">
+      <div class="s-result">
+        <div class="s-result-icon">⏰</div>
+        <div class="s-result-title" style="color:#e53e3e">時間已截止</div>
+        <div class="s-result-sub">請聯絡老師處理</div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /student-page -->
+
+
+<!-- QR Overlay for Q&A -->
+<div class="qa-qr-overlay" id="qa-qr-overlay">
+  <div class="qa-qr-box">
+    <h3>📡 問答 QR Code</h3>
+    <div style="font-size:12px;color:#888;margin-bottom:8px">學生掃描後可直接作答</div>
+    <div class="qa-question-preview" id="qa-overlay-question"></div>
+    <div id="qa-qr-container" style="display:inline-block;padding:10px;background:white;border-radius:8px;margin:8px 0"></div>
+    <div class="qa-timer-display" id="qa-overlay-countdown">--:--</div>
+    <div style="font-size:11px;color:#888;margin-bottom:16px">剩餘作答時間</div>
+    <button class="btn btn-secondary" onclick="closeQaOverlay()">收起</button>
+  </div>
+</div>
+
+<!-- Email Modal -->
+<div class="modal-overlay" id="email-modal">
+  <div class="modal">
+    <h3>📧 寄送課堂報告</h3>
+    <p>將出席名單、問答記錄及抄襲偵測結果寄送至<br><strong style="color:var(--text)">godloveme0103@gmail.com</strong></p>
+    <div class="modal-btns">
+      <button class="btn btn-secondary" onclick="closeEmailModal()">取消</button>
+      <button class="btn btn-primary" onclick="doSendEmail()">確認寄送</button>
+    </div>
+  </div>
+</div>
+
+<!-- Auto-email Modal -->
+<div class="modal-overlay" id="auto-email-modal">
+  <div class="modal">
+    <h3>⏰ 點名時間截止</h3>
+    <p>點名已結束！是否立即將出席名單寄送至 <strong style="color:var(--text)">godloveme0103@gmail.com</strong>？</p>
+    <div class="modal-btns">
+      <button class="btn btn-secondary" onclick="document.getElementById('auto-email-modal').classList.remove('active')">稍後</button>
+      <button class="btn btn-primary" onclick="doSendEmail(); document.getElementById('auto-email-modal').classList.remove('active')">立即寄送</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+// ═══════════════════════════════
+// DATA
+// ═══════════════════════════════
+const STUDENTS = [
+  {id:'2310115132',name:'秦梓棋'},{id:'2410115101',name:'粟壎釗'},
+  {id:'2410115103',name:'朱志彬'},{id:'2410115104',name:'张海晨'},
+  {id:'2410115105',name:'潘吴楠'},{id:'2410115106',name:'茶林雨'},
+  {id:'2410115107',name:'刘雅雯'},{id:'2410115108',name:'洪安宇'},
+  {id:'2410115109',name:'陈浩杨'},{id:'2410115110',name:'王思怡'},
+  {id:'2410115111',name:'颜嘉成'},{id:'2410115112',name:'吕思源'},
+  {id:'2410115113',name:'吴万宇'},{id:'2410115114',name:'陈曦'},
+  {id:'2410115115',name:'林娜'}, {id:'2410115116',name:'肖羽蓉'},
+  {id:'2410115117',name:'徐家豪'},{id:'2410115118',name:'管贺祥'},
+  {id:'2410115119',name:'王若晨'},{id:'2410115120',name:'舒瀚玄'},
+  {id:'2410115121',name:'叶晓龙'},{id:'2410115122',name:'陈灵烽'},
+  {id:'2410115123',name:'孙瑜菲'},{id:'2410115124',name:'张梓恒'},
+  {id:'2410115125',name:'杨佳颖'},{id:'2410115126',name:'郑馨'},
+  {id:'2410115127',name:'李彦韫'},{id:'2410115128',name:'黄梓析'},
+  {id:'2410115129',name:'王劲雄'},{id:'2410115130',name:'施远翔'},
+  {id:'2410115131',name:'林江月'},{id:'2410115132',name:'钱思琦'},
+  {id:'2410115133',name:'杜琪悦'},{id:'2410115134',name:'潘欣瑜'},
+  {id:'2410115135',name:'魏志信'},{id:'2410115136',name:'吴泽轩'},
+  {id:'2410115138',name:'王铭希'},{id:'2410115139',name:'李仕琪'},
+  {id:'2410115140',name:'郭炜琦'},{id:'2410115141',name:'徐明珠'},
+  {id:'2410115142',name:'庹钰琳'},{id:'2410115143',name:'王丹苇'},
+  {id:'2410115144',name:'李雨霜'},{id:'2410115145',name:'洪江志'},
+  {id:'2410115148',name:'田颖'},  {id:'2410115150',name:'张晓燕'}
+];
+
+const EMAIL = 'godloveme0103@gmail.com';
+
+// ═══════════════════════════════
+// STATE
+// ═══════════════════════════════
+let state = {
+  attMinutes: 3,
+  attSessionId: null,
+  attEndTime: null,
+  attInterval: null,
+  attTotalSecs: 0,
+  attendance: {}, // id -> { name, time }
+  emailSent: false,
+
+  qaSessionId: null,
+  qaEndTime: null,
+  qaInterval: null,
+  qaQuestion: '',
+  answers: [], // { id, name, text, time }
+
+  plagiarismDone: false,
+  plagiarismResults: []
+};
+
+// student-side
+let sMode = ''; // 'att' | 'qa'
+let sSessionId = null;
+let sEndTime = null;
+let sCountdownInterval = null;
+
+// ═══════════════════════════════
+// INIT
+// ═══════════════════════════════
+function init() {
+  const params = new URLSearchParams(location.search);
+  const mode = params.get('mode');
+  if (mode === 'att') {
+    showStudentAttPage(params.get('s'), parseInt(params.get('e')));
+  } else if (mode === 'qa') {
+    showStudentQaPage(params.get('s'), parseInt(params.get('e')));
+  } else {
+    document.getElementById('teacher-page').classList.add('active');
+    renderRoster();
+    setInterval(pollLS, 1000);
+  }
+}
+
+// ═══════════════════════════════
+// NAV
+// ═══════════════════════════════
+function switchTab(tab, el) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  el.classList.add('active');
+}
+
+// ═══════════════════════════════
+// ROSTER
+// ═══════════════════════════════
+function renderRoster() {
+  const g = document.getElementById('roster-grid');
+  g.innerHTML = STUDENTS.map((s,i) => `
+    <div class="roster-card" id="rc-${s.id}">
+      <div class="roster-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="roster-name">${s.name}</div>
+      <div class="roster-dot"></div>
+    </div>`).join('');
+}
+
+function updateRoster() {
+  const present = Object.keys(state.attendance).length;
+  const answered = state.answers.map(a => a.id);
+  STUDENTS.forEach(s => {
+    const c = document.getElementById('rc-' + s.id);
+    if (!c) return;
+    c.classList.toggle('present', !!state.attendance[s.id]);
+    c.classList.toggle('answered', answered.includes(s.id));
+  });
+  document.getElementById('roster-count').textContent = `${present} / 46`;
+  document.getElementById('sb-present').textContent = present;
+  document.getElementById('sb-absent').textContent = 46 - present;
+  document.getElementById('sb-answered').textContent = answered.length;
+}
+
+// ═══════════════════════════════
+// ATTENDANCE
+// ═══════════════════════════════
+function selTimer(mins, el) {
+  state.attMinutes = parseInt(mins) || 3;
+  document.querySelectorAll('.timer-opt').forEach(b => b.classList.remove('sel'));
+  if (el) el.classList.add('sel');
+}
+
+function startAttendance() {
+  state.attendance = {};
+  state.emailSent = false;
+  state.attSessionId = Date.now().toString(36).toUpperCase();
+  state.attEndTime = Date.now() + state.attMinutes * 60000;
+  state.attTotalSecs = state.attMinutes * 60;
+  updateRoster();
+
+  const base = location.href.split('?')[0];
+  const url = `${base}?mode=att&s=${state.attSessionId}&e=${state.attEndTime}`;
+
+  const el = document.getElementById('att-qr-container');
+  el.innerHTML = '';
+  new QRCode(el, { text: url, width: 180, height: 180, colorDark:'#0d0d0f', colorLight:'#ffffff', correctLevel: QRCode.CorrectLevel.H });
+  document.getElementById('att-session-code').textContent = `Session: ${state.attSessionId}`;
+  document.getElementById('att-qr-card').style.display = 'block';
+  document.getElementById('session-status').textContent = '點名中';
+  document.getElementById('session-status').className = 'pill pill-green';
+
+  if (state.attInterval) clearInterval(state.attInterval);
+  state.attInterval = setInterval(tickAttCountdown, 500);
+  tickAttCountdown();
+
+  // Write to LS so student pages can pick it up
+  lsSet('att_session', JSON.stringify({ id: state.attSessionId, end: state.attEndTime }));
+}
+
+function tickAttCountdown() {
+  const rem = state.attEndTime - Date.now();
+  const el = document.getElementById('att-countdown');
+  if (rem <= 0) {
+    el.textContent = '00:00';
+    el.classList.add('urgent');
+    clearInterval(state.attInterval);
+    document.getElementById('session-status').textContent = '點名結束';
+    document.getElementById('session-status').className = 'pill pill-red';
+    if (!state.emailSent) {
+      state.emailSent = true;
+      setTimeout(() => document.getElementById('auto-email-modal').classList.add('active'), 600);
+    }
+    document.getElementById('att-progress').style.width = '0%';
+    return;
+  }
+  const m = Math.floor(rem / 60000);
+  const s = Math.floor((rem % 60000) / 1000);
+  el.textContent = `${pad(m)}:${pad(s)}`;
+  el.classList.toggle('urgent', rem < 30000);
+  const pct = Math.min(100, (rem / (state.attTotalSecs * 1000)) * 100);
+  document.getElementById('att-progress').style.width = pct + '%';
+}
+
+function resetAttendance() {
+  if (state.attInterval) clearInterval(state.attInterval);
+  state.attendance = {};
+  state.attSessionId = null;
+  document.getElementById('att-qr-card').style.display = 'none';
+  document.getElementById('att-countdown').textContent = '--:--';
+  document.getElementById('att-countdown').classList.remove('urgent');
+  document.getElementById('att-progress').style.width = '100%';
+  document.getElementById('session-status').textContent = '待機中';
+  document.getElementById('session-status').className = 'pill pill-blue';
+  updateRoster();
+}
+
+// ═══════════════════════════════
+// Q&A
+// ═══════════════════════════════
+function publishQuestion() {
+  const q = document.getElementById('qa-question-input').value.trim();
+  if (!q) { alert('請先輸入問題！'); return; }
+  const secs = parseInt(document.getElementById('qa-timer-sel').value);
+
+  state.qaQuestion = q;
+  state.answers = [];
+  state.qaSessionId = 'Q' + Date.now().toString(36).toUpperCase();
+  state.qaEndTime = Date.now() + secs * 1000;
+  state.plagiarismDone = false;
+
+  // Update UI
+  document.getElementById('active-question-text').textContent = q;
+  document.getElementById('active-question-card').style.display = 'block';
+  document.getElementById('answers-container').innerHTML = `<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-text">等待學生作答…</div></div>`;
+  document.getElementById('answer-count').textContent = '0 則';
+
+  // LS
+  lsSet('qa_session', JSON.stringify({ id: state.qaSessionId, end: state.qaEndTime, question: q }));
+  lsSet('qa_answers_' + state.qaSessionId, '[]');
+
+  if (state.qaInterval) clearInterval(state.qaInterval);
+  state.qaInterval = setInterval(tickQaCountdown, 500);
+  tickQaCountdown();
+
+  showQaQr();
+}
+
+function tickQaCountdown() {
+  const rem = state.qaEndTime - Date.now();
+  const el = document.getElementById('qa-countdown');
+  const el2 = document.getElementById('qa-overlay-countdown');
+  if (rem <= 0) {
+    el.textContent = '00:00'; el.classList.add('urgent');
+    if (el2) { el2.textContent = '00:00'; el2.classList.add('urgent'); }
+    clearInterval(state.qaInterval);
+    return;
+  }
+  const m = Math.floor(rem / 60000);
+  const s = Math.floor((rem % 60000) / 1000);
+  const str = `${pad(m)}:${pad(s)}`;
+  el.textContent = str; el.classList.toggle('urgent', rem < 30000);
+  if (el2) { el2.textContent = str; el2.classList.toggle('urgent', rem < 30000); }
+}
+
+function showQaQr() {
+  const base = location.href.split('?')[0];
+  const url = `${base}?mode=qa&s=${state.qaSessionId}&e=${state.qaEndTime}`;
+  const el = document.getElementById('qa-qr-container');
+  el.innerHTML = '';
+  new QRCode(el, { text: url, width: 180, height: 180, colorDark:'#0d0d0f', colorLight:'#ffffff', correctLevel: QRCode.CorrectLevel.H });
+  document.getElementById('qa-overlay-question').textContent = state.qaQuestion;
+  document.getElementById('qa-qr-overlay').classList.add('active');
+}
+
+function closeQaOverlay() {
+  document.getElementById('qa-qr-overlay').classList.remove('active');
+}
+
+function clearAnswers() {
+  state.answers = [];
+  renderAnswers();
+  document.getElementById('active-question-card').style.display = 'none';
+  if (state.qaInterval) clearInterval(state.qaInterval);
+}
+
+function renderAnswers() {
+  const c = document.getElementById('answers-container');
+  document.getElementById('answer-count').textContent = `${state.answers.length} 則`;
+  document.getElementById('sb-answered').textContent = state.answers.length;
+  if (!state.answers.length) {
+    c.innerHTML = `<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-text">尚未有學生作答</div></div>`;
+    return;
+  }
+  c.innerHTML = state.answers.map(a => `
+    <div class="answer-item">
+      <div class="answer-meta">
+        <div class="answer-student">${a.name}（${a.id}）</div>
+        <div class="answer-time">${a.time}</div>
+      </div>
+      <div class="answer-text">${escHtml(a.text)}</div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════
+// PLAGIARISM
+// ═══════════════════════════════
+function runPlagiarismCheck() {
+  if (state.answers.length < 2) {
+    alert('至少需要 2 份答案才能進行比對！');
+    return;
+  }
+
+  const results = [];
+  for (let i = 0; i < state.answers.length; i++) {
+    for (let j = i + 1; j < state.answers.length; j++) {
+      const sim = similarity(state.answers[i].text, state.answers[j].text);
+      results.push({ a: state.answers[i], b: state.answers[j], sim });
+    }
+  }
+  results.sort((a, b) => b.sim - a.sim);
+  state.plagiarismResults = results;
+  state.plagiarismDone = true;
+
+  const high = results.filter(r => r.sim >= 0.8).length;
+  const med  = results.filter(r => r.sim >= 0.5 && r.sim < 0.8).length;
+  const low  = results.filter(r => r.sim < 0.5).length;
+
+  document.getElementById('pl-high').textContent = high;
+  document.getElementById('pl-med').textContent  = med;
+  document.getElementById('pl-low').textContent  = low;
+  document.getElementById('sb-flagged').textContent = high + med;
+
+  const container = document.getElementById('plagiarism-report');
+  if (!results.length) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">✅</div><div class="empty-text">沒有可疑相似案例</div></div>`;
+    return;
+  }
+
+  container.innerHTML = results.map(r => {
+    const pct = Math.round(r.sim * 100);
+    let level, label;
+    if (r.sim >= 0.8)      { level = 'high';   label = `⚠️ 高度相似 ${pct}%`; }
+    else if (r.sim >= 0.5) { level = 'medium'; label = `⚡ 中度相似 ${pct}%`; }
+    else                   { level = 'low';    label = `✅ 低相似度 ${pct}%`; }
+
+    return `
+      <div class="similarity-pair">
+        <div class="sim-header">${r.a.name} ↔ ${r.b.name}
+          <span class="plagiarism-badge ${level}" style="margin-left:10px">${label}</span>
+        </div>
+        <div class="sim-row">
+          <div class="sim-text"><strong>${r.a.name}</strong>：${escHtml(r.a.text.slice(0,120))}${r.a.text.length>120?'…':''}</div>
+          <div class="sim-text"><strong>${r.b.name}</strong>：${escHtml(r.b.text.slice(0,120))}${r.b.text.length>120?'…':''}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// Jaccard similarity on character bigrams
+function similarity(a, b) {
+  const clean = s => s.replace(/\s+/g, '').toLowerCase();
+  a = clean(a); b = clean(b);
+  if (!a.length || !b.length) return 0;
+  const bigrams = s => {
+    const set = new Set();
+    for (let i = 0; i < s.length - 1; i++) set.add(s[i] + s[i+1]);
+    return set;
+  };
+  const sa = bigrams(a), sb = bigrams(b);
+  let inter = 0;
+  sa.forEach(bg => { if (sb.has(bg)) inter++; });
+  const union = new Set([...sa, ...sb]).size;
+  return union === 0 ? 0 : inter / union;
+}
+
+// ═══════════════════════════════
+// EMAIL
+// ═══════════════════════════════
+function showEmailModal() {
+  document.getElementById('email-modal').classList.add('active');
+}
+function closeEmailModal() {
+  document.getElementById('email-modal').classList.remove('active');
+}
+
+function doSendEmail() {
+  closeEmailModal();
+  const now = new Date();
+  const presentList = STUDENTS.filter(s => state.attendance[s.id]);
+  const absentList  = STUDENTS.filter(s => !state.attendance[s.id]);
+
+  let body = `【課堂管理報告】財務報表分析 - ${now.toLocaleDateString('zh-TW')}\n`;
+  body += `班級：24金融（商貿）｜教師：洪嘉馨｜地點：2-202\n\n`;
+  body += `━━━ 出席記錄 (${presentList.length}/40) ━━━\n`;
+  presentList.forEach((s,i) => {
+    const e = state.attendance[s.id];
+    body += `${i+1}. ${s.name}（${s.id}）${e?.time||''}\n`;
+  });
+  body += `\n缺席 (${absentList.length}人)：`;
+  body += absentList.map(s=>s.name).join('、') || '無';
+  body += '\n\n';
+
+  if (state.qaQuestion) {
+    body += `━━━ 課堂問答 ━━━\n問題：${state.qaQuestion}\n\n`;
+    if (state.answers.length) {
+      state.answers.forEach((a,i) => {
+        body += `${i+1}. ${a.name}（${a.id}）${a.time}\n${a.text}\n\n`;
+      });
+    } else { body += '無學生作答\n\n'; }
+  }
+
+  if (state.plagiarismDone && state.plagiarismResults.length) {
+    body += `━━━ 抄襲偵測 ━━━\n`;
+    const flagged = state.plagiarismResults.filter(r => r.sim >= 0.5);
+    if (flagged.length) {
+      flagged.forEach(r => {
+        body += `⚠️ ${r.a.name} ↔ ${r.b.name}：相似度 ${Math.round(r.sim*100)}%\n`;
+      });
+    } else { body += '未發現可疑相似案例\n'; }
+  }
+
+  const subj = encodeURIComponent(`【課堂報告】財務報表分析 ${now.toLocaleDateString('zh-TW')}`);
+  window.open(`mailto:${EMAIL}?subject=${subj}&body=${encodeURIComponent(body)}`);
+}
+
+// ═══════════════════════════════
+// STUDENT — ATTENDANCE
+// ═══════════════════════════════
+function showStudentAttPage(sid, endTime) {
+  sMode = 'att'; sSessionId = sid; sEndTime = endTime;
+  document.getElementById('student-page').classList.add('active');
+  document.getElementById('s-mode-title').textContent = '課堂點名';
+  document.getElementById('s-timer-lbl').textContent = '點名截止倒數';
+  document.getElementById('s-att-form').style.display = 'block';
+  document.getElementById('s-qa-form').style.display = 'none';
+
+  if (Date.now() > endTime) { showSExpired(); return; }
+  sCountdownInterval = setInterval(tickSCountdown, 500);
+  tickSCountdown();
+}
+
+function sCheckId(val) {
+  const s = STUDENTS.find(x => x.id === val.trim());
+  const input = document.getElementById('s-id-input');
+  const match = document.getElementById('s-match');
+  const err   = document.getElementById('s-err');
+  const btn   = document.getElementById('s-att-submit');
+  if (val.length < 10) {
+    input.className = 's-input'; match.classList.remove('show'); err.classList.remove('show'); btn.disabled = true;
+    return;
+  }
+  if (s) {
+    input.className = 's-input ok';
+    match.textContent = `✓ ${s.name}`; match.classList.add('show');
+    err.classList.remove('show'); btn.disabled = false;
+  } else {
+    input.className = 's-input err';
+    match.classList.remove('show'); err.classList.add('show'); btn.disabled = true;
+  }
+}
+
+function sSubmitAtt() {
+  if (Date.now() > sEndTime) { showSExpired(); return; }
+  const id = document.getElementById('s-id-input').value.trim();
+  const s = STUDENTS.find(x => x.id === id);
+  if (!s) return;
+
+  const entry = { id, name: s.name, time: new Date().toLocaleTimeString('zh-TW') };
+  try {
+    const key = 'att_' + sSessionId;
+    const arr = JSON.parse(lsGet(key) || '[]');
+    if (!arr.find(e => e.id === id)) { arr.push(entry); lsSet(key, JSON.stringify(arr)); }
+  } catch(e) {}
+
+  clearInterval(sCountdownInterval);
+  document.getElementById('s-att-form').style.display = 'none';
+  document.getElementById('s-att-success').style.display = 'block';
+  document.getElementById('s-att-success-name').textContent = `${s.name}（${id}）· ${entry.time}`;
+}
+
+// ═══════════════════════════════
+// STUDENT — Q&A
+// ═══════════════════════════════
+function showStudentQaPage(sid, endTime) {
+  sMode = 'qa'; sSessionId = sid; sEndTime = endTime;
+  document.getElementById('student-page').classList.add('active');
+  document.getElementById('s-mode-title').textContent = '課堂問答';
+  document.getElementById('s-timer-lbl').textContent = '作答截止倒數';
+  document.getElementById('s-att-form').style.display = 'none';
+  document.getElementById('s-qa-form').style.display = 'block';
+
+  // Get question from LS
+  try {
+    const sess = JSON.parse(lsGet('qa_session') || '{}');
+    document.getElementById('s-question-display').textContent = sess.question || '（載入問題中）';
+  } catch(e) {}
+
+  if (Date.now() > endTime) { showSExpired(); return; }
+  sCountdownInterval = setInterval(tickSCountdown, 500);
+  tickSCountdown();
+  document.getElementById('s-qa-id').addEventListener('input', function(){ sCheckQaId(this.value); });
+}
+
+function sCheckQaId(val) {
+  const s = STUDENTS.find(x => x.id === val.trim());
+  const input = document.getElementById('s-qa-id');
+  const match = document.getElementById('s-qa-match');
+  const err   = document.getElementById('s-qa-err');
+  if (val.length < 10) {
+    input.className = 's-input'; match.classList.remove('show'); err.classList.remove('show');
+    updateQaSubmitBtn(); return;
+  }
+  if (s) {
+    input.className = 's-input ok';
+    match.textContent = `✓ ${s.name}`; match.classList.add('show'); err.classList.remove('show');
+  } else {
+    input.className = 's-input err'; match.classList.remove('show'); err.classList.add('show');
+  }
+  updateQaSubmitBtn();
+}
+
+function updateQaSubmitBtn() {
+  const id = document.getElementById('s-qa-id').value.trim();
+  const ans = document.getElementById('s-answer-input').value.trim();
+  const s = STUDENTS.find(x => x.id === id);
+  document.getElementById('s-qa-submit').disabled = !(s && ans.length > 0);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const ta = document.getElementById('s-answer-input');
+  if (ta) ta.addEventListener('input', updateQaSubmitBtn);
+});
+
+function sSubmitQa() {
+  if (Date.now() > sEndTime) { showSExpired(); return; }
+  const id  = document.getElementById('s-qa-id').value.trim();
+  const ans = document.getElementById('s-answer-input').value.trim();
+  const s = STUDENTS.find(x => x.id === id);
+  if (!s || !ans) return;
+
+  const entry = { id, name: s.name, text: ans, time: new Date().toLocaleTimeString('zh-TW') };
+  try {
+    const key = 'qa_answers_' + sSessionId;
+    const arr = JSON.parse(lsGet(key) || '[]');
+    const existing = arr.findIndex(e => e.id === id);
+    if (existing >= 0) arr[existing] = entry; else arr.push(entry);
+    lsSet(key, JSON.stringify(arr));
+  } catch(e) {}
+
+  clearInterval(sCountdownInterval);
+  document.getElementById('s-qa-form').style.display = 'none';
+  document.getElementById('s-qa-success').style.display = 'block';
+  document.getElementById('s-qa-success-name').textContent = `${s.name}（${id}）· ${entry.time}`;
+}
+
+function tickSCountdown() {
+  const rem = sEndTime - Date.now();
+  const el = document.getElementById('s-countdown');
+  if (rem <= 0) {
+    el.textContent = '00:00'; el.classList.add('urgent');
+    clearInterval(sCountdownInterval);
+    if (sMode === 'att') {
+      document.getElementById('s-att-form').style.display = 'none';
+      document.getElementById('s-expired').style.display = 'block';
+    } else {
+      document.getElementById('s-qa-form').style.display = 'none';
+      document.getElementById('s-expired').style.display = 'block';
+    }
+    return;
+  }
+  const m = Math.floor(rem / 60000);
+  const s = Math.floor((rem % 60000) / 1000);
+  el.textContent = `${pad(m)}:${pad(s)}`;
+  el.classList.toggle('urgent', rem < 30000);
+}
+
+function showSExpired() {
+  clearInterval(sCountdownInterval);
+  document.getElementById('s-att-form').style.display = 'none';
+  document.getElementById('s-qa-form').style.display = 'none';
+  document.getElementById('s-expired').style.display = 'block';
+  document.getElementById('s-countdown').textContent = '00:00';
+}
+
+// ═══════════════════════════════
+// POLLING (localStorage sync)
+// ═══════════════════════════════
+function pollLS() {
+  if (state.attSessionId) {
+    try {
+      const arr = JSON.parse(lsGet('att_' + state.attSessionId) || '[]');
+      arr.forEach(e => { if (!state.attendance[e.id]) state.attendance[e.id] = e; });
+      updateRoster();
+    } catch(e) {}
+  }
+  if (state.qaSessionId) {
+    try {
+      const arr = JSON.parse(lsGet('qa_answers_' + state.qaSessionId) || '[]');
+      if (arr.length !== state.answers.length) {
+        state.answers = arr;
+        renderAnswers();
+      }
+    } catch(e) {}
+  }
+}
+
+// ═══════════════════════════════
+// UTILS
+// ═══════════════════════════════
+function pad(n) { return String(n).padStart(2,'0'); }
+function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function lsGet(k) { try { return localStorage.getItem(k); } catch(e) { return null; } }
+function lsSet(k, v) { try { localStorage.setItem(k, v); } catch(e) {} }
+
+init();
+</script>
+</body>
+</html>
