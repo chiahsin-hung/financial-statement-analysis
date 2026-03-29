@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>财务报表分析 第5章 练习题</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0f2240;
+  --navy2: #1a3560;
+  --gold: #c9902a;
+  --gold-light: #e8b84b;
+  --cream: #faf7f2;
+  --paper: #f5f0e8;
+  --ink: #1a1a2e;
+  --ink2: #2d3560;
+  --muted: #6b7280;
+  --correct: #166534;
+  --correct-bg: #dcfce7;
+  --wrong: #991b1b;
+  --wrong-bg: #fee2e2;
+  --rule: #d4c9b0;
+  --shadow: 0 4px 24px rgba(15,34,64,0.10);
+  --teal: #0d7377;
+  --teal-bg: #e0f7fa;
+  --orange: #c45200;
+  --orange-bg: #fff3e0;
+  --red: #b91c1c;
+  --red-bg: #fef2f2;
+  --green: #15803d;
+  --green-bg: #f0fdf4;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+  min-height: 100vh;
+}
+
+/* ── Page Header ── */
+.page-header {
+  background: var(--navy);
+  color: #fff;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+.page-header::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 260px; height: 260px;
+  border-radius: 50%;
+  background: rgba(201,144,42,0.18);
+}
+.page-header::after {
+  content: '';
+  position: absolute;
+  bottom: -40px; left: 40px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: rgba(185,28,28,0.12);
+}
+.header-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 44px 32px 36px;
+  position: relative;
+  z-index: 1;
+}
+.header-label {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: var(--gold-light);
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.header-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 6px;
+}
+.header-sub { font-size: 13px; color: rgba(255,255,255,0.55); margin-top: 8px; }
+.header-meta { display: flex; gap: 14px; margin-top: 20px; flex-wrap: wrap; }
+.meta-chip {
+  background: rgba(255,255,255,0.09);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.75);
+}
+
+/* ── Progress Bar ── */
+.progress-bar-wrap {
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  padding: 12px 32px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(15,34,64,0.06);
+}
+.progress-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.progress-text { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.progress-track {
+  flex: 1; height: 5px;
+  background: var(--rule);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--navy2), var(--gold));
+  border-radius: 99px;
+  transition: width 0.5s ease;
+  width: 0%;
+}
+.score-display { font-size: 12px; font-weight: 700; color: var(--navy2); white-space: nowrap; }
+
+/* ── Main ── */
+.main { max-width: 900px; margin: 0 auto; padding: 32px 24px 80px; }
+
+/* ══ Preview Section ══ */
+.preview-section {
+  background: var(--navy);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 44px;
+  box-shadow: 0 8px 32px rgba(15,34,64,0.18);
+}
+.preview-header {
+  background: linear-gradient(135deg, #0f2240, #1a3560);
+  padding: 22px 28px 18px;
+  border-bottom: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.preview-icon {
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 18px;
+  width: 40px; height: 40px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-weight: 700;
+}
+.preview-title { font-family: 'Noto Serif SC', serif; font-size: 18px; font-weight: 700; color: #fff; }
+.preview-subtitle { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+.preview-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+@media (max-width: 680px) { .preview-body { grid-template-columns: 1fr; } }
+.preview-left { padding: 22px 24px; border-right: 1px solid rgba(255,255,255,0.1); }
+.preview-right { padding: 22px 24px; }
+.preview-col-title {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  color: var(--gold-light);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+.think-list { list-style: none; }
+.think-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.think-item:last-child { border-bottom: none; }
+.think-num {
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 11px;
+  font-weight: 700;
+  min-width: 22px; height: 22px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.think-q { font-size: 13.5px; color: rgba(255,255,255,0.85); line-height: 1.65; }
+.case-title-box {
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px 14px;
+  border-radius: 7px;
+  text-align: center;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+.case-body { font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.75; }
+.case-body p { margin-bottom: 10px; }
+.case-body .label { color: var(--gold-light); font-weight: 600; font-size: 12.5px; margin-right: 4px; }
+.case-req {
+  margin-top: 14px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.07);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 6px 6px 0;
+  font-size: 13px;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.7;
+}
+.core-focus {
+  margin: 0;
+  padding: 12px 24px;
+  background: rgba(201,144,42,0.15);
+  border-top: 1px solid rgba(201,144,42,0.3);
+  font-size: 12px;
+  color: var(--gold-light);
+  text-align: center;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+.preview-terms {
+  padding: 14px 24px;
+  background: rgba(0,0,0,0.2);
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.terms-label { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; margin-bottom: 8px; }
+.terms-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.term-chip {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.13);
+  color: rgba(255,255,255,0.7);
+  font-size: 11.5px;
+  padding: 2px 10px;
+  border-radius: 4px;
+}
+.preview-toggle { display: flex; justify-content: flex-end; padding: 0 28px 14px; }
+.toggle-btn {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.65);
+  border-radius: 20px;
+  padding: 5px 16px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: 'Noto Sans SC', sans-serif;
+  transition: all 0.18s;
+}
+.toggle-btn:hover { background: rgba(255,255,255,0.14); }
+.preview-collapsible.collapsed { display: none; }
+
+/* ── Section Headers ── */
+.section-label {
+  display: flex; align-items: center; gap: 12px;
+  margin: 44px 0 20px;
+}
+.section-label:first-of-type { margin-top: 8px; }
+.section-num {
+  background: var(--navy);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+.section-name {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--navy);
+  border-bottom: 2px solid var(--gold);
+  padding-bottom: 2px;
+}
+.section-count { font-size: 12px; color: var(--muted); margin-left: auto; }
+
+/* ── Question Cards ── */
+.q-card {
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 22px 24px 18px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+  transition: border-color 0.2s;
+}
+.q-card:hover { border-color: #b8a88a; }
+.q-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+.q-num {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  color: var(--navy2);
+  font-size: 11px; font-weight: 700;
+  min-width: 32px; height: 24px;
+  border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px;
+}
+.q-text { font-size: 15px; color: var(--ink); line-height: 1.75; flex: 1; }
+.q-tag {
+  font-size: 10px; padding: 2px 8px;
+  border-radius: 99px; font-weight: 500;
+  flex-shrink: 0; margin-top: 3px;
+}
+.tag-mc { background: #e0e7ff; color: #3730a3; }
+.tag-tf { background: #fef3c7; color: #92400e; }
+.tag-fill { background: #d1fae5; color: #065f46; }
+.tag-think { background: #fce7f3; color: #831843; }
+.tag-calc { background: #e0f2fe; color: #075985; }
+
+/* ── MC Options ── */
+.mc-options { display: grid; gap: 8px; margin-top: 4px; }
+.mc-btn {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: var(--paper);
+  border: 1.5px solid transparent;
+  border-radius: 7px;
+  padding: 10px 14px;
+  cursor: pointer; text-align: left;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 14px; color: var(--ink2);
+  transition: all 0.18s ease;
+  line-height: 1.6; width: 100%;
+}
+.mc-btn:hover:not(:disabled) { background: #eef2ff; border-color: var(--navy2); }
+.mc-btn:disabled { cursor: default; }
+.mc-btn .opt-letter { font-weight: 700; font-size: 13px; color: var(--muted); min-width: 18px; margin-top: 1px; }
+.mc-btn.correct { background: var(--correct-bg); border-color: #16a34a; color: var(--correct); }
+.mc-btn.correct .opt-letter { color: var(--correct); }
+.mc-btn.wrong { background: var(--wrong-bg); border-color: #dc2626; color: var(--wrong); }
+.mc-btn.wrong .opt-letter { color: var(--wrong); }
+.mc-btn.reveal-correct { background: var(--correct-bg); border-color: #86efac; color: var(--correct); }
+
+/* ── TF ── */
+.tf-options { display: flex; gap: 10px; margin-top: 4px; }
+.tf-btn {
+  flex: 1; padding: 10px;
+  border: 1.5px solid transparent;
+  border-radius: 7px; cursor: pointer;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 14px; font-weight: 500;
+  transition: all 0.18s;
+  background: var(--paper); color: var(--ink2);
+}
+.tf-btn:hover:not(:disabled) { background: #eef2ff; border-color: var(--navy2); }
+.tf-btn:disabled { cursor: default; }
+.tf-btn.correct { background: var(--correct-bg); border-color: #16a34a; color: var(--correct); }
+.tf-btn.wrong { background: var(--wrong-bg); border-color: #dc2626; color: var(--wrong); }
+.tf-btn.reveal-correct { background: var(--correct-bg); border-color: #86efac; color: var(--correct); }
+
+/* ── Fill ── */
+.fill-wrap { display: flex; align-items: center; gap: 10px; margin-top: 6px; flex-wrap: wrap; }
+.fill-input {
+  border: 1.5px solid var(--rule);
+  border-radius: 7px; padding: 8px 12px;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 14px; color: var(--ink);
+  background: var(--paper); outline: none;
+  min-width: 180px; transition: border-color 0.18s;
+}
+.fill-input:focus { border-color: var(--navy2); }
+.fill-input.correct { border-color: #16a34a; background: var(--correct-bg); color: var(--correct); }
+.fill-input.wrong { border-color: #dc2626; background: var(--wrong-bg); color: var(--wrong); }
+.fill-input:disabled { cursor: default; }
+.fill-submit {
+  background: var(--navy); color: #fff;
+  border: none; border-radius: 7px;
+  padding: 8px 16px; cursor: pointer;
+  font-size: 13px; font-family: 'Noto Sans SC', sans-serif;
+  transition: background 0.18s;
+}
+.fill-submit:hover:not(:disabled) { background: var(--navy2); }
+.fill-submit:disabled { opacity: 0.4; cursor: default; }
+
+/* ── Feedback ── */
+.q-feedback {
+  margin-top: 12px; border-radius: 7px;
+  padding: 10px 14px; font-size: 13.5px;
+  line-height: 1.7; display: none;
+}
+.q-feedback.show { display: block; }
+.q-feedback.correct-fb { background: var(--correct-bg); border-left: 3px solid #16a34a; color: #14532d; }
+.q-feedback.wrong-fb { background: var(--wrong-bg); border-left: 3px solid #dc2626; color: #7f1d1d; }
+.fb-icon { font-weight: 700; margin-right: 6px; }
+
+/* ── Think / Calc ── */
+.think-area {
+  width: 100%; border: 1.5px solid var(--rule);
+  border-radius: 7px; padding: 10px 14px;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 14px; color: var(--ink);
+  background: var(--paper); resize: vertical;
+  min-height: 80px; outline: none; margin-top: 8px;
+  transition: border-color 0.18s;
+}
+.think-area:focus { border-color: var(--navy2); }
+.think-hint {
+  margin-top: 10px; padding: 10px 14px;
+  background: #fffbeb; border-left: 3px solid var(--gold);
+  border-radius: 0 6px 6px 0;
+  font-size: 13px; color: #78350f; display: none;
+}
+.think-hint.show { display: block; }
+.hint-btn {
+  background: none; border: 1.5px solid var(--gold);
+  color: var(--gold); border-radius: 6px;
+  padding: 5px 12px; cursor: pointer;
+  font-size: 12px; font-family: 'Noto Sans SC', sans-serif;
+  margin-top: 8px; transition: all 0.18s;
+}
+.hint-btn:hover { background: #fffbeb; }
+
+/* ── Sample Answer ── */
+.sample-answer {
+  margin-top: 14px;
+  border: 1.5px solid #c7d2fe;
+  border-radius: 10px;
+  overflow: hidden;
+  display: none;
+}
+.sample-answer.show { display: block; }
+.sample-header {
+  background: linear-gradient(90deg, #1a3560, #2a4a80);
+  color: #fff;
+  padding: 10px 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.sample-badge {
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 10px; font-weight: 700;
+  padding: 2px 8px; border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+.sample-header-text { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.9); }
+.sample-disclaimer { font-size: 11px; color: rgba(255,255,255,0.5); margin-left: auto; }
+.sample-body {
+  background: #f8f9ff;
+  padding: 18px 20px;
+  font-size: 13.5px;
+  color: var(--ink2);
+  line-height: 1.85;
+}
+.sample-section { margin-bottom: 16px; }
+.sample-section:last-child { margin-bottom: 0; }
+.sample-section-title {
+  font-weight: 700;
+  color: var(--navy);
+  font-size: 13px;
+  margin-bottom: 6px;
+  padding-left: 8px;
+  border-left: 3px solid var(--gold);
+  line-height: 1.4;
+}
+.sample-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+  font-size: 13px;
+}
+.sample-table th {
+  background: #1a3560;
+  color: #fff;
+  padding: 7px 10px;
+  text-align: center;
+  font-weight: 600;
+}
+.sample-table td {
+  padding: 7px 10px;
+  border: 1px solid #d4d8e8;
+  vertical-align: top;
+  line-height: 1.65;
+}
+.sample-table tr:nth-child(even) td { background: #eef1fb; }
+.sample-table .col-label { font-weight: 600; color: var(--navy2); background: #e8ecf8 !important; }
+.sample-table .formula { color: #0d6e72; font-family: monospace; font-size: 12px; }
+.sample-table .result { color: #0f5c36; font-weight: 700; }
+.sample-table .warn { color: #b91c1c; font-weight: 700; }
+.sample-conclusion {
+  background: #1a3560;
+  color: rgba(255,255,255,0.9);
+  padding: 12px 16px;
+  border-radius: 7px;
+  font-size: 13px;
+  line-height: 1.8;
+  margin-top: 12px;
+}
+.sample-conclusion strong { color: var(--gold-light); }
+.sample-note {
+  margin-top: 12px; padding: 8px 12px;
+  background: #fffbeb; border-left: 3px solid var(--gold);
+  font-size: 12px; color: #78350f; border-radius: 0 5px 5px 0;
+}
+
+/* ── Case Data Box ── */
+.data-box {
+  background: linear-gradient(135deg, #0f2240 0%, #1a3560 100%);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin: 10px 0 6px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.92);
+  line-height: 1.8;
+}
+.data-box strong { color: #ffd580; }
+.data-box .data-title { font-size: 14px; font-weight: 700; color: var(--gold-light); margin-bottom: 10px; }
+.data-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+.data-cell {
+  background: rgba(255,255,255,0.10);
+  border-radius: 6px;
+  padding: 8px 10px;
+  text-align: center;
+}
+.data-cell .dc-label { font-size: 10px; color: rgba(255,255,255,0.6); margin-bottom: 3px; }
+.data-cell .dc-val { font-size: 13px; font-weight: 700; color: #ffd580; }
+.ratio-section-badge {
+  display: inline-block;
+  background: var(--navy2);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+
+/* ── Warning signal list ── */
+.signal-list { list-style: none; margin-top: 6px; }
+.signal-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  font-size: 13.5px;
+  line-height: 1.65;
+}
+.signal-item.warn-item { background: var(--red-bg); color: #7f1d1d; }
+.signal-item.ok-item { background: var(--green-bg); color: #14532d; }
+.signal-num {
+  font-weight: 700; font-size: 12px;
+  min-width: 22px; height: 22px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.warn-item .signal-num { background: var(--red); color: #fff; }
+.ok-item .signal-num { background: var(--green); color: #fff; }
+
+/* ── Submit & Results ── */
+.submit-zone { margin-top: 48px; text-align: center; }
+.submit-btn {
+  background: var(--navy); color: #fff;
+  border: none; border-radius: 10px;
+  padding: 14px 40px; font-size: 15px;
+  font-weight: 600; font-family: 'Noto Sans SC', sans-serif;
+  cursor: pointer; transition: background 0.2s, transform 0.15s;
+  box-shadow: 0 4px 16px rgba(15,34,64,0.2);
+  letter-spacing: 0.05em;
+}
+.submit-btn:hover { background: var(--navy2); transform: translateY(-1px); }
+.result-card {
+  display: none; margin-top: 32px;
+  background: #fff; border: 1px solid var(--rule);
+  border-radius: 12px; padding: 32px;
+  box-shadow: var(--shadow);
+}
+.result-card.show { display: block; }
+.result-title { font-family: 'Noto Serif SC', serif; font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+.result-score-big { font-family: 'Noto Serif SC', serif; font-size: 56px; font-weight: 700; color: var(--gold); line-height: 1.1; margin: 12px 0 4px; }
+.result-sub { font-size: 14px; color: var(--muted); margin-bottom: 20px; }
+.result-breakdown { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+.breakdown-item { background: var(--paper); border-radius: 8px; padding: 12px; text-align: center; border: 1px solid var(--rule); }
+.breakdown-num { font-size: 24px; font-weight: 700; color: var(--navy); }
+.breakdown-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.result-msg { font-size: 14px; color: var(--ink2); padding: 14px 16px; background: var(--paper); border-radius: 8px; line-height: 1.7; margin-top: 12px; }
+.retry-btn {
+  margin-top: 20px; background: none;
+  border: 1.5px solid var(--navy); color: var(--navy);
+  border-radius: 8px; padding: 10px 24px;
+  cursor: pointer; font-size: 14px;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 500; transition: all 0.18s;
+}
+.retry-btn:hover { background: var(--navy); color: #fff; }
+
+/* ── Divider ── */
+.practice-divider {
+  display: flex; align-items: center; gap: 16px;
+  margin: 36px 0 28px;
+}
+.practice-divider::before, .practice-divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--rule);
+}
+.divider-label {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 15px; font-weight: 600;
+  color: var(--navy); white-space: nowrap;
+  padding: 6px 18px;
+  border: 1.5px solid var(--navy);
+  border-radius: 20px;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 600px) {
+  .header-inner { padding: 28px 18px 22px; }
+  .header-title { font-size: 20px; }
+  .main { padding: 20px 14px 60px; }
+  .q-card { padding: 16px 16px 14px; }
+  .data-row { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── Fullscreen Button ── */
+#fsBtn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  background: var(--navy);
+  color: #fff;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(15,34,64,0.35);
+  transition: background 0.18s, transform 0.15s;
+  line-height: 1;
+}
+#fsBtn:hover {
+  background: var(--navy2);
+  transform: scale(1.08);
+}
+#fsBtn title { display: none; }
+
+/* ── Fullscreen: expand containers ── */
+:fullscreen .header-inner,
+:fullscreen .progress-inner,
+:fullscreen .main {
+  max-width: 100% !important;
+}
+:fullscreen .main {
+  padding-left: 40px !important;
+  padding-right: 40px !important;
+}
+:fullscreen .header-inner {
+  padding-left: 40px !important;
+  padding-right: 40px !important;
+}
+:fullscreen .progress-bar-wrap {
+  padding-left: 40px !important;
+  padding-right: 40px !important;
+}
+
+/* Webkit prefix */
+:-webkit-full-screen .header-inner,
+:-webkit-full-screen .progress-inner,
+:-webkit-full-screen .main {
+  max-width: 100% !important;
+}
+:-webkit-full-screen .main {
+  padding-left: 40px !important;
+  padding-right: 40px !important;
+}
+:-webkit-full-screen .header-inner {
+  padding-left: 40px !important;
+  padding-right: 40px !important;
+}
+:-webkit-full-screen .progress-bar-wrap {
+  padding-left: 40px !important;
+  padding-right: 40px !important;
+}
+</style>
+</head>
+<body>
+
+<!-- ══ PAGE HEADER ══ -->
+<div class="page-header">
+  <div class="header-inner">
+    <div class="header-label">财务报表分析（第6版）· 第5章</div>
+    <div class="header-title">利润质量分析<br><span style="font-size:18px;font-weight:400;opacity:0.75">Profit Quality Analysis</span></div>
+    <div class="header-meta">
+      <span class="meta-chip">✦ 选择题 · 判断题 · 填空题 · 计算题 · 思考题</span>
+      <span class="meta-chip">共 27 题</span>
+      <span class="meta-chip">涵盖 5.1 — 5.4 节</span>
+      <span class="meta-chip">案例：海天味业 · 海康威视</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PROGRESS ══ -->
+<div class="progress-bar-wrap">
+  <div class="progress-inner">
+    <span class="progress-text">答题进度</span>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="score-display" id="scoreLive">0 题答对（0/22 已作答）</span>
+  </div>
+</div>
+
+<!-- ══ MAIN ══ -->
+<div class="main">
+
+<!-- ══ 预习区 ══ -->
+<div class="preview-section">
+  <div class="preview-header">
+    <div class="preview-icon">预</div>
+    <div class="preview-title-wrap">
+      <div class="preview-title">课前预习 — 思考题 &amp; 案例讨论</div>
+      <div class="preview-subtitle">来自教材第5章 · 练习前请先思考以下问题</div>
+    </div>
+    <div class="preview-toggle" style="margin-left:auto;padding:0;">
+      <button class="toggle-btn" onclick="togglePreview(this)">▲ 收起预习区</button>
+    </div>
+  </div>
+
+  <div class="preview-collapsible" id="previewContent">
+    <div class="preview-body">
+      <!-- Left: 思考题 -->
+      <div class="preview-left">
+        <div class="preview-col-title">思考题（6题）</div>
+        <ul class="think-list">
+          <li class="think-item">
+            <span class="think-num">1</span>
+            <span class="think-q">企业利润表的基本内容和具体结构如何？</span>
+          </li>
+          <li class="think-item">
+            <span class="think-num">2</span>
+            <span class="think-q">如何理解利润表的作用？</span>
+          </li>
+          <li class="think-item">
+            <span class="think-num">3</span>
+            <span class="think-q">如何评价利润表各项目的质量？</span>
+          </li>
+          <li class="think-item">
+            <span class="think-num">4</span>
+            <span class="think-q">怎样看待公允价值变动收益和资产减值准备对企业利润的贡献？</span>
+          </li>
+          <li class="think-item">
+            <span class="think-num">5</span>
+            <span class="think-q">如何评价企业利润质量？（含金量、持续性、战略吻合度）</span>
+          </li>
+          <li class="think-item">
+            <span class="think-num">6</span>
+            <span class="think-q">企业利润质量恶化有哪些特征（外在表现）？如何识别？</span>
+          </li>
+        </ul>
+      </div>
+      <!-- Right: 海康威视案例 -->
+      <div class="preview-right">
+        <div class="preview-col-title">章末案例讨论</div>
+        <div class="case-title-box">
+          海康威视利润质量分析<br>
+          <span style="font-size:12px;font-weight:400">（002415 · 2020—2021年）</span>
+        </div>
+        <div class="case-body">
+          <p><span class="label">背景：</span>杭州海康威视数字技术股份有限公司是全球领先的视频监控解决方案供应商，研发费用占营业收入约10%，兼具制造业与科技属性。</p>
+          <p><span class="label">分析任务：</span>利用2020与2021年年报财务数据完成如下分析：</p>
+          <div class="case-req">
+            ① 连续两年企业的<strong>利润结构</strong>特征（可就母公司与合并数据分析）<br>
+            ② 企业<strong>销售费用</strong>与营业收入之间有什么关系？<br>
+            ③ 连续两年<strong>资产减值损失</strong>情况评价及年度间变化说明<br>
+            ④ 连续两年<strong>投资收益结构</strong>评价<br>
+            ⑤ 2021年<strong>核心利润、投资收益的含金量</strong>评价
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="core-focus">
+      核心考察：从利润质量三维度（含金量 · 持续性 · 战略吻合度）综合评价企业利润，识别利润质量恶化的外在信号
+    </div>
+    <div class="preview-terms">
+      <div class="terms-label">关键术语 KEY TERMS</div>
+      <div class="terms-chips">
+        <span class="term-chip">核心利润</span>
+        <span class="term-chip">核心利润率</span>
+        <span class="term-chip">核心利润获现率</span>
+        <span class="term-chip">利润质量</span>
+        <span class="term-chip">利润的持续性</span>
+        <span class="term-chip">利润的含金量</span>
+        <span class="term-chip">非经常性损益</span>
+        <span class="term-chip">利润的战略吻合度</span>
+        <span class="term-chip">资产的结构性盈利能力</span>
+        <span class="term-chip">经营资产报酬率</span>
+        <span class="term-chip">非经营资产报酬率</span>
+        <span class="term-chip">利润质量恶化</span>
+        <span class="term-chip">酌量性支出</span>
+        <span class="term-chip">毛利率</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="practice-divider"><div class="divider-label">↓ 开始练习题</div></div>
+
+<!-- ══════════════════════════════
+     5.1 利润表概述
+══════════════════════════════ -->
+<div class="section-label">
+  <span class="section-num">5.1</span>
+  <span class="section-name">利润表概述 — 要素、结构与作用</span>
+  <span class="section-count">Q1 – Q5</span>
+</div>
+
+<div class="q-card" id="q1">
+  <div class="q-header">
+    <div class="q-num">1</div>
+    <div class="q-text">利润表采用的是<strong>「多步式」</strong>结构，以下哪一项正确描述了其层级顺序？</div>
+    <span class="q-tag tag-mc">选择题</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q1','A','B')"><span class="opt-letter">A</span>净利润 → 营业利润 → 利润总额 → 综合收益总额</button>
+    <button class="mc-btn" onclick="answerMC(this,'q1','B','B')"><span class="opt-letter">B</span>营业利润 → 利润总额 → 净利润 → 综合收益总额</button>
+    <button class="mc-btn" onclick="answerMC(this,'q1','C','B')"><span class="opt-letter">C</span>利润总额 → 营业利润 → 净利润 → 综合收益总额</button>
+    <button class="mc-btn" onclick="answerMC(this,'q1','D','B')"><span class="opt-letter">D</span>综合收益总额 → 净利润 → 营业利润 → 利润总额</button>
+  </div>
+  <div class="q-feedback" id="fb_q1"></div>
+</div>
+
+<div class="q-card" id="q2">
+  <div class="q-header">
+    <div class="q-num">2</div>
+    <div class="q-text">「核心利润」的计算公式为？</div>
+    <span class="q-tag tag-fill">填空题</span>
+  </div>
+  <div class="fill-wrap">
+    <input class="fill-input" id="fill_q2" type="text" placeholder="请填写核心利润的计算方式" autocomplete="off" style="min-width:300px">
+    <button class="fill-submit" onclick="answerFill('q2',['毛利','营业收入减营业成本','收入减成本'])">确认</button>
+  </div>
+  <div class="q-feedback" id="fb_q2"></div>
+</div>
+
+<div class="q-card" id="q3">
+  <div class="q-header">
+    <div class="q-num">3</div>
+    <div class="q-text">利润表的作用之一是「评价战略实施效果」——高质量的利润结构意味着公司战略与核心业务高度契合。</div>
+    <span class="q-tag tag-tf">判断题</span>
+  </div>
+  <div class="tf-options">
+    <button class="tf-btn" onclick="answerTF(this,'q3',true,true)">○ 正确</button>
+    <button class="tf-btn" onclick="answerTF(this,'q3',false,true)">✕ 错误</button>
+  </div>
+  <div class="q-feedback" id="fb_q3"></div>
+</div>
+
+<div class="q-card" id="q4">
+  <div class="q-header">
+    <div class="q-num">4</div>
+    <div class="q-text">以下哪项属于「非经常性损益」？</div>
+    <span class="q-tag tag-mc">选择题</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q4','A','D')"><span class="opt-letter">A</span>酱油等主营产品的销售收入</button>
+    <button class="mc-btn" onclick="answerMC(this,'q4','B','D')"><span class="opt-letter">B</span>权益法核算的长期股权投资收益</button>
+    <button class="mc-btn" onclick="answerMC(this,'q4','C','D')"><span class="opt-letter">C</span>持有交易性金融资产的公允价值变动收益</button>
+    <button class="mc-btn" onclick="answerMC(this,'q4','D','D')"><span class="opt-letter">D</span>处置固定资产取得的一次性收益</button>
+  </div>
+  <div class="q-feedback" id="fb_q4"></div>
+</div>
+
+<div class="q-card" id="q5">
+  <div class="q-header">
+    <div class="q-num">5</div>
+    <div class="q-text">「其他综合收益」属于已实现并带来实际现金流入的利润，因此含金量极高。</div>
+    <span class="q-tag tag-tf">判断题</span>
+  </div>
+  <div class="tf-options">
+    <button class="tf-btn" onclick="answerTF(this,'q5',true,false)">○ 正确</button>
+    <button class="tf-btn" onclick="answerTF(this,'q5',false,false)">✕ 错误</button>
+  </div>
+  <div class="q-feedback" id="fb_q5"></div>
+</div>
+
+<!-- ══════════════════════════════
+     5.2 利润表项目质量分析
+══════════════════════════════ -->
+<div class="section-label">
+  <span class="section-num">5.2</span>
+  <span class="section-name">利润表项目质量分析</span>
+  <span class="section-count">Q6 – Q11</span>
+</div>
+
+<div class="q-card" id="q6">
+  <div class="q-header">
+    <div class="q-num">6</div>
+    <div class="q-text">高质量营业收入的判断标准是：有充足现金回款 + 持续增长态势 + 较高市场占有率与核心竞争力。以下哪项行为最可能<strong>降低</strong>营业收入质量？</div>
+    <span class="q-tag tag-mc">选择题</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q6','A','C')"><span class="opt-letter">A</span>扩大高毛利率的核心产品线产能</button>
+    <button class="mc-btn" onclick="answerMC(this,'q6','B','C')"><span class="opt-letter">B</span>减少客户集中度，拓展更多分散客户</button>
+    <button class="mc-btn" onclick="answerMC(this,'q6','C','C')"><span class="opt-letter">C</span>大幅放宽赊销信用政策，延长账期以刺激销售增长</button>
+    <button class="mc-btn" onclick="answerMC(this,'q6','D','C')"><span class="opt-letter">D</span>缩减关联方交易，增加市场化销售渠道</button>
+  </div>
+  <div class="q-feedback" id="fb_q6"></div>
+</div>
+
+<div class="q-card" id="q7">
+  <div class="q-header">
+    <div class="q-num">7</div>
+    <div class="q-text">营业成本分析中，当营业成本与期末存货余额相对规模出现异常波动，且无法用正常原因解释时，往往可能是企业通过「低转成本」或「高转成本」来操纵利润的信号。</div>
+    <span class="q-tag tag-tf">判断题</span>
+  </div>
+  <div class="tf-options">
+    <button class="tf-btn" onclick="answerTF(this,'q7',true,true)">○ 正确</button>
+    <button class="tf-btn" onclick="answerTF(this,'q7',false,true)">✕ 错误</button>
+  </div>
+  <div class="q-feedback" id="fb_q7"></div>
+</div>
+
+<div class="q-card" id="q8">
+  <div class="q-header">
+    <div class="q-num">8</div>
+    <div class="q-text">以下关于「研发费用」质量分析，哪项说法最为准确？</div>
+    <span class="q-tag tag-mc">选择题</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q8','A','C')"><span class="opt-letter">A</span>研发费用资本化比例越高，说明企业创新能力越强</button>
+    <button class="mc-btn" onclick="answerMC(this,'q8','B','C')"><span class="opt-letter">B</span>研发费用全部费用化最为稳健，资本化都是利润操纵</button>
+    <button class="mc-btn" onclick="answerMC(this,'q8','C','C')"><span class="opt-letter">C</span>研发费用资本化比例过高，可能是企业为了减少费用对当期利润冲击而进行会计操纵，形成「虚盈实亏」</span></button>
+    <button class="mc-btn" onclick="answerMC(this,'q8','D','C')"><span class="opt-letter">D</span>研发费用与利润质量无关，属于纯粹的战略投入</button>
+  </div>
+  <div class="q-feedback" id="fb_q8"></div>
+</div>
+
+<div class="q-card" id="q9">
+  <div class="q-header">
+    <div class="q-num">9</div>
+    <div class="q-text">「公允价值变动收益」属于已实现的真实收益，具有良好的含金量和持续性。</div>
+    <span class="q-tag tag-tf">判断题</span>
+  </div>
+  <div class="tf-options">
+    <button class="tf-btn" onclick="answerTF(this,'q9',true,false)">○ 正确</button>
+    <button class="tf-btn" onclick="answerTF(this,'q9',false,false)">✕ 错误</button>
+  </div>
+  <div class="q-feedback" id="fb_q9"></div>
+</div>
+
+<div class="q-card" id="q10">
+  <div class="q-header">
+    <div class="q-num">10</div>
+    <div class="q-text">以下哪类投资收益，其「含金量最低（完全没有质量）」？</div>
+    <span class="q-tag tag-mc">选择题</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q10','A','D')"><span class="opt-letter">A</span>短期闲置资金存入银行取得的利息收入</button>
+    <button class="mc-btn" onclick="answerMC(this,'q10','B','D')"><span class="opt-letter">B</span>权益法核算的长期股权投资持有收益</button>
+    <button class="mc-btn" onclick="answerMC(this,'q10','C','D')"><span class="opt-letter">C</span>出售交易性金融资产取得的处置收益</button>
+    <button class="mc-btn" onclick="answerMC(this,'q10','D','D')"><span class="opt-letter">D</span>债务重组收益（仅为账务处理，无任何现金流）</button>
+  </div>
+  <div class="q-feedback" id="fb_q10"></div>
+</div>
+
+<div class="q-card" id="q11">
+  <div class="q-header">
+    <div class="q-num">11</div>
+    <div class="q-text">资产减值损失和信用减值损失属于谨慎性原则下的估计项目，存在人为操纵空间，可能被企业用来「大洗澡（Big Bath）」或「平滑利润」。</div>
+    <span class="q-tag tag-tf">判断题</span>
+  </div>
+  <div class="tf-options">
+    <button class="tf-btn" onclick="answerTF(this,'q11',true,true)">○ 正确</button>
+    <button class="tf-btn" onclick="answerTF(this,'q11',false,true)">✕ 错误</button>
+  </div>
+  <div class="q-feedback" id="fb_q11"></div>
+</div>
+
+<!-- ══════════════════════════════
+     5.3 利润质量分析方法
+══════════════════════════════ -->
+<div class="section-label">
+  <span class="section-num">5.3</span>
+  <span class="section-name">利润质量分析方法 — 三个维度</span>
+  <span class="section-count">Q12 – Q18</span>
+</div>
+
+<div class="q-card" id="q12">
+  <div class="q-header">
+    <div class="q-num">12</div>
+    <div class="q-text">利润质量分析的三个核心维度是？</div>
+    <span class="q-tag tag-fill">填空题</span>
+  </div>
+  <div class="fill-wrap">
+    <input class="fill-input" id="fill_q12" type="text" placeholder="请填写三个维度（用·分隔）" autocomplete="off" style="min-width:280px">
+    <button class="fill-submit" onclick="answerFill('q12',['含金量','持续性','战略'])">确认</button>
+  </div>
+  <div class="q-feedback" id="fb_q12"></div>
+</div>
+
+<div class="q-card" id="q13">
+  <div class="q-header">
+    <div class="q-num">13</div>
+    <div class="q-text">「核心利润获现率」的计算公式为？其理想水平是多少？</div>
+    <span class="q-tag tag-mc">选择题</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q13','A','B')"><span class="opt-letter">A</span>净利润 ÷ 营业收入；理想值 ≥ 1.0</button>
+    <button class="mc-btn" onclick="answerMC(this,'q13','B','B')"><span class="opt-letter">B</span>经营活动产生的现金流量净额 ÷ 核心利润；理想值 1.2～1.5</button>
+    <button class="mc-btn" onclick="answerMC(this,'q13','C','B')"><span class="opt-letter">C</span>经营活动现金流量 ÷ 净利润；理想值 1.0</button>
+    <button class="mc-btn" onclick="answerMC(this,'q13','D','B')"><span class="opt-letter">D</span>核心利润 ÷ 平均经营资产 × 100%；理想值 ≥ 50%</button>
+  </div>
+  <div class="q-feedback" id="fb_q13"></div>
+</div>
+
+<div class="q-card" id="q14">
+  <div class="q-header">
+    <div class="q-num">14</div>
+    <div class="q-text">下列哪类企业的核心利润获现率通常<strong>最高</strong>？</div>
+    <span class="q-tag tag-mc">选择题</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q14','A','B')"><span class="opt-letter">A</span>初创期互联网企业，大量预付用户尚未使用服务</button>
+    <button class="mc-btn" onclick="answerMC(this,'q14','B','B')"><span class="opt-letter">B</span>采用预收款模式的成熟期企业（如航空公司、在线教育平台）</button>
+    <button class="mc-btn" onclick="answerMC(this,'q14','C','B')"><span class="opt-letter">C</span>建筑承包企业（通常先垫资建设，完工后收款）</button>
+    <button class="mc-btn" onclick="answerMC(this,'q14','D','B')"><span class="opt-letter">D</span>房地产开发企业（大量工程款在建设期垫付）</button>
+  </div>
+  <div class="q-feedback" id="fb_q14"></div>
+</div>
+
+<div class="q-card" id="q15">
+  <div class="q-header">
+    <div class="q-num">15</div>
+    <div class="q-text">分析利润的持续性时，上市公司年报会专门列示「扣除非经常性损益后的净利润」，可直接用于判断企业核心经营利润的可持续性。</div>
+    <span class="q-tag tag-tf">判断题</span>
+  </div>
+  <div class="tf-options">
+    <button class="tf-btn" onclick="answerTF(this,'q15',true,true)">○ 正确</button>
+    <button class="tf-btn" onclick="answerTF(this,'q15',false,true)">✕ 错误</button>
+  </div>
+  <div class="q-feedback" id="fb_q15"></div>
+</div>
+
+<div class="q-card" id="q16">
+  <div class="q-header">
+    <div class="q-num">16</div>
+    <div class="q-text">「利润的战略吻合度」分析中，「经营资产报酬率」的计算公式为？</div>
+    <span class="q-tag tag-fill">填空题</span>
+  </div>
+  <div class="fill-wrap">
+    <input class="fill-input" id="fill_q16" type="text" placeholder="请填写分子 ÷ 分母 × 100%" autocomplete="off" style="min-width:280px">
+    <button class="fill-submit" onclick="answerFill('q16',['核心利润','经营资产'])">确认</button>
+  </div>
+  <div class="q-feedback" id="fb_q16"></div>
+</div>
+
+<div class="q-card" id="q17">
+  <div class="q-header">
+    <div class="q-num">17</div>
+    <div class="q-text">某企业的「投资资产盈利能力 > 经营资产盈利能力」，以下哪种解读<strong>最为准确</strong>？</div>
+    <span class="q-tag tag-mc">选择题</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q17','A','C')"><span class="opt-letter">A</span>说明企业的对外投资策略非常成功，是正面信号</button>
+    <button class="mc-btn" onclick="answerMC(this,'q17','B','C')"><span class="opt-letter">B</span>说明企业应该完全退出主营业务，专注投资</button>
+    <button class="mc-btn" onclick="answerMC(this,'q17','C','C')"><span class="opt-letter">C</span>可能意味经营资产管理质量较低或产品竞争力不足；也可能存在投资收益确认存在泡沫，需具体分析</button>
+    <button class="mc-btn" onclick="answerMC(this,'q17','D','C')"><span class="opt-letter">D</span>这种情形在上市公司中不可能出现，属于数据错误</button>
+  </div>
+  <div class="q-feedback" id="fb_q17"></div>
+</div>
+
+<div class="q-card" id="q18">
+  <div class="q-header">
+    <div class="q-num">18</div>
+    <div class="q-text">海天味业2021年的经营资产报酬率约为90.13%，非经营资产报酬率约为3.27%，这说明海天味业的投资资产（货币资金、金融资产等）配置效率远超其主营业务盈利能力。</div>
+    <span class="q-tag tag-tf">判断题</span>
+  </div>
+  <div class="tf-options">
+    <button class="tf-btn" onclick="answerTF(this,'q18',true,false)">○ 正确</button>
+    <button class="tf-btn" onclick="answerTF(this,'q18',false,false)">✕ 错误</button>
+  </div>
+  <div class="q-feedback" id="fb_q18"></div>
+</div>
+
+<!-- ══════════════════════════════
+     5.4 利润质量恶化 12大信号
+══════════════════════════════ -->
+<div class="section-label">
+  <span class="section-num">5.4</span>
+  <span class="section-name">利润质量恶化的外在表现 — 12大信号</span>
+  <span class="section-count">Q19 – Q22</span>
+</div>
+
+<div class="q-card" id="q19">
+  <div class="q-header">
+    <div class="q-num">19</div>
+    <div class="q-text">以下12项中，哪些属于「利润质量恶化的外在表现」？（多选，可以多个）请判断每项是否为教材所列的预警信号。<br><span style="font-size:13px;color:#6b7280">（请作整体判断：以下哪项<strong>不是</strong>利润质量恶化信号？）</span></div>
+    <span class="q-tag tag-mc">选择题</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q19','A','D')"><span class="opt-letter">A</span>注册会计师频繁变更，审计报告出现非标准意见</button>
+    <button class="mc-btn" onclick="answerMC(this,'q19','B','D')"><span class="opt-letter">B</span>企业反常压缩研发费用、广告费用等酌量性支出</button>
+    <button class="mc-btn" onclick="answerMC(this,'q19','C','D')"><span class="opt-letter">C</span>有足够可分配利润但长期不进行现金分红</button>
+    <button class="mc-btn" onclick="answerMC(this,'q19','D','D')"><span class="opt-letter">D</span>营业收入增速连续三年超过30%，业务快速扩张</button>
+  </div>
+  <div class="q-feedback" id="fb_q19"></div>
+</div>
+
+<div class="q-card" id="q20">
+  <div class="q-header">
+    <div class="q-num">20</div>
+    <div class="q-text">企业应付账款规模不正常增加、平均付账期不正常延长，即使其购货与销售状况无大变化，这有可能是以下哪种情形的信号？</div>
+    <span class="q-tag tag-mc">选择题</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q20','A','B')"><span class="opt-letter">A</span>企业议价能力增强，成功向供应商争取了更好的付款条件</button>
+    <button class="mc-btn" onclick="answerMC(this,'q20','B','B')"><span class="opt-letter">B</span>企业支付能力恶化、资产质量恶化、利润质量恶化的外在表现</button>
+    <button class="mc-btn" onclick="answerMC(this,'q20','C','B')"><span class="opt-letter">C</span>企业主动采取保守财务策略，延长付款期限以提升现金持有量</button>
+    <button class="mc-btn" onclick="answerMC(this,'q20','D','B')"><span class="opt-letter">D</span>行业整体信用政策放宽，对企业没有特别影响</button>
+  </div>
+  <div class="q-feedback" id="fb_q20"></div>
+</div>
+
+<div class="q-card" id="q21">
+  <div class="q-header">
+    <div class="q-num">21</div>
+    <div class="q-text">企业为避免当期利润大幅下降，将部分「研发支出」资本化为无形资产（而非计入当期费用），这属于哪种利润质量恶化的信号？</div>
+    <span class="q-tag tag-mc">选择题</span>
+  </div>
+  <div class="mc-options">
+    <button class="mc-btn" onclick="answerMC(this,'q21','A','C')"><span class="opt-letter">A</span>信号②：企业过度举债</button>
+    <button class="mc-btn" onclick="answerMC(this,'q21','B','C')"><span class="opt-letter">B</span>信号④：企业变更会计政策和会计估计</button>
+    <button class="mc-btn" onclick="answerMC(this,'q21','C','C')"><span class="opt-letter">C</span>信号⑧：无形资产或开发支出等资产项目规模不正常增加</button>
+    <button class="mc-btn" onclick="answerMC(this,'q21','D','C')"><span class="opt-letter">D</span>信号⑪：企业反常压缩酌量性支出</button>
+  </div>
+  <div class="q-feedback" id="fb_q21"></div>
+</div>
+
+<div class="q-card" id="q22">
+  <div class="q-header">
+    <div class="q-num">22</div>
+    <div class="q-text">企业业绩过度依赖非经常性损益项目（如出售固定资产、政府补贴）时，这些项目按现行准则已被「上移至」营业利润中，使得普通读者难以识别这类「东拼西凑」的利润。</div>
+    <span class="q-tag tag-tf">判断题</span>
+  </div>
+  <div class="tf-options">
+    <button class="tf-btn" onclick="answerTF(this,'q22',true,true)">○ 正确</button>
+    <button class="tf-btn" onclick="answerTF(this,'q22',false,true)">✕ 错误</button>
+  </div>
+  <div class="q-feedback" id="fb_q22"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     ★ 综合计算题 — 海康威视 & 海天味业
+══════════════════════════════════════════════════════ -->
+<div class="practice-divider"><div class="divider-label">★ 综合计算题 — 案例分析</div></div>
+
+<div class="section-label">
+  <span class="section-num">案例</span>
+  <span class="section-name">海天味业 & 海康威视 — 利润质量综合分析</span>
+  <span class="section-count">Q23 – Q27</span>
+</div>
+
+<!-- 海天味业数据 -->
+<div class="data-box">
+  <div class="data-title">📊 海天味业 2021年关键数据（亿元，来自合并财务报表）</div>
+  <div class="data-row">
+    <div class="data-cell"><div class="dc-label">营业收入</div><div class="dc-val">250.04</div></div>
+    <div class="data-cell"><div class="dc-label">营业成本</div><div class="dc-val">143.97</div></div>
+    <div class="data-cell"><div class="dc-label">营业利润</div><div class="dc-val">78.20</div></div>
+  </div>
+  <div class="data-row">
+    <div class="data-cell"><div class="dc-label">核心利润</div><div class="dc-val">70.61</div></div>
+    <div class="data-cell"><div class="dc-label">经营活动现金流量净额</div><div class="dc-val">58.72</div></div>
+    <div class="data-cell"><div class="dc-label">投资收益</div><div class="dc-val">约 3.80</div></div>
+  </div>
+  <div class="data-row">
+    <div class="data-cell"><div class="dc-label">平均经营资产</div><div class="dc-val">78.34</div></div>
+    <div class="data-cell"><div class="dc-label">平均非经营资产</div><div class="dc-val">236.02</div></div>
+    <div class="data-cell"><div class="dc-label">取得投资收益收到的现金</div><div class="dc-val">约 3.20</div></div>
+  </div>
+  <div class="data-row">
+    <div class="data-cell"><div class="dc-label">非经营性收益（2021）</div><div class="dc-val">7.72</div></div>
+    <div class="data-cell"><div class="dc-label">营业收入（2020）</div><div class="dc-val">227.92</div></div>
+    <div class="data-cell"><div class="dc-label">核心利润率（2020）</div><div class="dc-val">约 28.55%</div></div>
+  </div>
+</div>
+
+<div class="q-card" id="q23">
+  <div class="q-header">
+    <div class="q-num">23</div>
+    <div class="q-text">根据海天味业2021年数据，计算以下<strong>含金量指标</strong>（2项）并评价：<br>
+    <span style="color:#075985;font-size:13px;">① 核心利润获现率　② 投资收益获现率</span></div>
+    <span class="q-tag tag-calc">计算题</span>
+  </div>
+  <textarea class="think-area" placeholder="请写出计算过程及结果（如：核心利润获现率 = 58.72 ÷ 70.61 = ？）"></textarea>
+  <button class="hint-btn" onclick="toggleHint('hint_q23',this)">💡 查看计算提示与答案</button>
+  <div class="think-hint" id="hint_q23">
+    <div class="ratio-section-badge">含金量分析</div>
+    <table class="sample-table" style="margin-top:8px;">
+      <thead>
+        <tr><th>指标</th><th>公式</th><th>计算过程</th><th>结果</th><th>解读</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-label">① 核心利润获现率</td>
+          <td class="formula">经营活动现金流量净额 ÷ 核心利润</td>
+          <td>58.72 ÷ 70.61</td>
+          <td class="result">≈ 0.83</td>
+          <td>低于理想值1.2～1.5，较2020年（约0.98）有所下降，含金量有所降低，需关注应收款变化</td>
+        </tr>
+        <tr>
+          <td class="col-label">② 投资收益获现率</td>
+          <td class="formula">取得投资收益现金 ÷ 投资收益</td>
+          <td>3.20 ÷ 3.80</td>
+          <td class="result">≈ 0.84</td>
+          <td>大部分投资收益已实际收现，投资收益质量尚可，但仍低于1.0，有小部分未实现</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="sample-note" style="margin-top:10px;">📌 <strong>综合评价：</strong>海天味业2021年利润含金量有所下降但仍属中等偏上水平。核心利润获现率0.83意味着每1元核心利润只转化为0.83元现金，需结合应收账款增减趋势进一步分析。</div>
+  </div>
+</div>
+
+<div class="q-card" id="q24">
+  <div class="q-header">
+    <div class="q-num">24</div>
+    <div class="q-text">根据海天味业2021年数据，计算以下<strong>利润持续性指标</strong>（2项）并评价：<br>
+    <span style="color:#075985;font-size:13px;">① 营业收入增长率　② 核心利润率（并与2020年比较）</span></div>
+    <span class="q-tag tag-calc">计算题</span>
+  </div>
+  <textarea class="think-area" placeholder="请写出计算过程及结果并评价增长性与波动性"></textarea>
+  <button class="hint-btn" onclick="toggleHint('hint_q24',this)">💡 查看计算提示与答案</button>
+  <div class="think-hint" id="hint_q24">
+    <div class="ratio-section-badge">持续性分析</div>
+    <table class="sample-table" style="margin-top:8px;">
+      <thead>
+        <tr><th>指标</th><th>公式</th><th>2021年</th><th>2020年</th><th>评价</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-label">① 营业收入增长率</td>
+          <td class="formula">（本期-上期）÷ 上期 × 100%</td>
+          <td class="result">（250.04-227.92）÷227.92 ≈ 8.66%</td>
+          <td>—</td>
+          <td>处于「稳定/即将衰退」区间（5%～10%），调味品行业刚需属性强，成长性整体稳健但增速放缓</td>
+        </tr>
+        <tr>
+          <td class="col-label">② 核心利润率</td>
+          <td class="formula">核心利润 ÷ 营业收入 × 100%</td>
+          <td class="warn">70.61 ÷ 250.04 ≈ 28.24%↓</td>
+          <td>约 28.55%</td>
+          <td>核心利润率小幅下降约0.31个百分点，主要与原材料价格上涨影响毛利率有关，持续性整体尚可</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="sample-note" style="margin-top:10px;">📌 <strong>综合评价：</strong>海天味业2021年收入增速8.66%属稳健增长，但核心利润率小幅下降，反映成本压力。行业刚需特性保障了一定的持续性，但短期内增速放缓值得持续关注。</div>
+  </div>
+</div>
+
+<div class="q-card" id="q25">
+  <div class="q-header">
+    <div class="q-num">25</div>
+    <div class="q-text">根据海天味业2021年数据，计算以下<strong>战略吻合度指标</strong>（2项）并评价：<br>
+    <span style="color:#075985;font-size:13px;">① 经营资产报酬率　② 非经营资产报酬率</span></div>
+    <span class="q-tag tag-calc">计算题</span>
+  </div>
+  <textarea class="think-area" placeholder="请写出计算过程，并分析两个报酬率的差异说明了什么？"></textarea>
+  <button class="hint-btn" onclick="toggleHint('hint_q25',this)">💡 查看计算提示与答案</button>
+  <div class="think-hint" id="hint_q25">
+    <div class="ratio-section-badge">战略吻合度分析</div>
+    <table class="sample-table" style="margin-top:8px;">
+      <thead>
+        <tr><th>指标</th><th>公式</th><th>计算过程</th><th>结果</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-label">① 经营资产报酬率</td>
+          <td class="formula">核心利润 ÷ 平均经营资产 × 100%</td>
+          <td>70.61 ÷ 78.34 × 100%</td>
+          <td class="result">≈ 90.13%</td>
+        </tr>
+        <tr>
+          <td class="col-label">② 非经营资产报酬率</td>
+          <td class="formula">非经营性收益 ÷ 平均非经营资产 × 100%</td>
+          <td>7.72 ÷ 236.02 × 100%</td>
+          <td class="warn">≈ 3.27%</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="sample-conclusion">
+      <strong>战略吻合度综合评价：</strong><br>
+      海天味业经营资产报酬率（90.13%）远高于非经营资产报酬率（3.27%），差距悬殊。说明：<br>
+      • <strong>主营业务盈利能力极强</strong>——酱油等调味品具有深厚的品牌护城河和竞争壁垒<br>
+      • <strong>非经营资产配置效率偏低</strong>——约3/4的资产配置在货币资金和交易性金融资产上，投资回报率极低（仅3.27%）<br>
+      • <strong>战略改进方向：</strong>海天未来应在非经营资产的战略选择与实施上做出更大胆的尝试，进一步提升整体资产的盈利能力
+    </div>
+  </div>
+</div>
+
+<!-- 海康威视数据 -->
+<div class="data-box" style="margin-top:32px;">
+  <div class="data-title">📊 海康威视 2020—2021年关键数据（亿元，来自合并财务报表）</div>
+  <div class="data-row">
+    <div class="data-cell"><div class="dc-label">营业收入 2021</div><div class="dc-val">814.20</div></div>
+    <div class="data-cell"><div class="dc-label">营业收入 2020</div><div class="dc-val">635.03</div></div>
+    <div class="data-cell"><div class="dc-label">营业利润 2021</div><div class="dc-val">184.74</div></div>
+  </div>
+  <div class="data-row">
+    <div class="data-cell"><div class="dc-label">销售费用 2021</div><div class="dc-val">85.86</div></div>
+    <div class="data-cell"><div class="dc-label">销售费用 2020</div><div class="dc-val">73.78</div></div>
+    <div class="data-cell"><div class="dc-label">研发费用 2021</div><div class="dc-val">82.52</div></div>
+  </div>
+  <div class="data-row">
+    <div class="data-cell"><div class="dc-label">经营活动现金流 2021</div><div class="dc-val">127.09</div></div>
+    <div class="data-cell"><div class="dc-label">经营活动现金流 2020</div><div class="dc-val">160.88</div></div>
+    <div class="data-cell"><div class="dc-label">取得投资收益现金 2021</div><div class="dc-val">1.16</div></div>
+  </div>
+  <div class="data-row">
+    <div class="data-cell"><div class="dc-label">资产减值损失 2021（合并）</div><div class="dc-val">−4.48亿</div></div>
+    <div class="data-cell"><div class="dc-label">资产减值损失 2020（合并）</div><div class="dc-val">−3.63亿</div></div>
+    <div class="data-cell"><div class="dc-label">投资收益 2021（合并）</div><div class="dc-val">1.74亿</div></div>
+  </div>
+</div>
+
+<div class="q-card" id="q26">
+  <div class="q-header">
+    <div class="q-num">26</div>
+    <div class="q-text">根据海康威视2021年数据，评价<strong>销售费用与营业收入的关系</strong>，并分析说明了什么？（计算销售费用率并比较年度间变化）</div>
+    <span class="q-tag tag-calc">计算题</span>
+  </div>
+  <textarea class="think-area" placeholder="请计算两年的销售费用率，并分析其变化趋势代表的含义"></textarea>
+  <button class="hint-btn" onclick="toggleHint('hint_q26',this)">💡 查看计算提示与答案</button>
+  <div class="think-hint" id="hint_q26">
+    <div class="ratio-section-badge">销售费用率分析</div>
+    <table class="sample-table" style="margin-top:8px;">
+      <thead>
+        <tr><th>年份</th><th>销售费用（亿元）</th><th>营业收入（亿元）</th><th>销售费用率</th><th>评价</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2021年</td><td>85.86</td><td>814.20</td>
+          <td class="result">≈ 10.5%</td>
+          <td>费用率小幅下降，营收增速（28.2%）高于销售费用增速（16.4%）</td>
+        </tr>
+        <tr>
+          <td>2020年</td><td>73.78</td><td>635.03</td>
+          <td>≈ 11.6%</td>
+          <td>费用率较高，当年营收增速受疫情影响</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="sample-note" style="margin-top:10px;">📌 <strong>分析结论：</strong>海康威视2021年销售费用率（10.5%）低于2020年（11.6%），且营收增速（28.2%）明显高于销售费用增速（16.4%），说明企业在收入快速增长的同时，销售效率有所提升，体现出一定的规模效应。这是正面信号，需排除是否存在反常压缩销售费用的情形。</div>
+  </div>
+</div>
+
+<div class="q-card" id="q27">
+  <div class="q-header">
+    <div class="q-num">27</div>
+    <div class="q-text">根据海康威视2021年数据，计算并评价<strong>核心利润含金量</strong>，并结合经营活动现金流量变化分析预警信号。<br>
+    <span style="color:#075985;font-size:13px;">核心利润获现率 = 经营活动现金流量净额 ÷ 营业利润</span></div>
+    <span class="q-tag tag-calc">计算题</span>
+  </div>
+  <textarea class="think-area" placeholder="请计算核心利润获现率，并分析2021年含金量下降的原因及预警信号"></textarea>
+  <button class="hint-btn" onclick="toggleHint('hint_q27',this)">💡 查看计算提示与答案</button>
+  <div class="think-hint" id="hint_q27">
+    <div class="ratio-section-badge">核心利润含金量</div>
+    <table class="sample-table" style="margin-top:8px;">
+      <thead>
+        <tr><th>年份</th><th>经营现金流（亿元）</th><th>营业利润（亿元）</th><th>获现率</th><th>评价</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2021年</td><td>127.09</td><td>184.74</td>
+          <td class="warn">≈ 0.69↓</td>
+          <td>低于1.0，含金量偏低；较2020年显著下降</td>
+        </tr>
+        <tr>
+          <td>2020年</td><td>160.88</td><td>151.97</td>
+          <td class="result">≈ 1.06</td>
+          <td>高于1.0，含金量良好</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="sample-conclusion">
+      <strong>预警信号分析：</strong><br>
+      2021年核心利润获现率从2020年的1.06大幅下降至0.69，主要原因：<br>
+      • <strong>应收账款信用减值损失</strong>从1.06亿增至5.66亿（应收账款质量下降）<br>
+      • <strong>存货跌价损失</strong>从3.61亿增至4.35亿（存货管控压力上升）<br>
+      • 信用减值损失合计从1.86亿增至5.70亿，说明客户回款风险上升<br><br>
+      结合5.4节的12大预警信号，海康威视2021年出现了<strong>信号⑤（应收账款不正常增加）</strong>的迹象，需持续关注后续年度的应收账款质量和坏账准备充分性。
+    </div>
+  </div>
+</div>
+
+<!-- ══ Submit ══ -->
+<div class="submit-zone">
+  <button class="submit-btn" onclick="submitAll()">提交答案 · 查看得分</button>
+  <div class="result-card" id="resultCard">
+    <div class="result-title">📊 本次练习得分</div>
+    <div class="result-score-big" id="resultScore">—</div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-breakdown" id="resultBreakdown"></div>
+    <div class="result-msg" id="resultMsg"></div>
+    <button class="retry-btn" onclick="retryAll()">↺ 重新作答</button>
+  </div>
+</div>
+
+</div><!-- /.main -->
+
+<script>
+// ── State ──
+let answered = {}; // qid → { correct: bool }
+const SCORABLE = ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11','q12','q13','q14','q15','q16','q17','q18','q19','q20','q21','q22'];
+const TOTAL_SCORE = SCORABLE.length;
+
+// ── Preview toggle ──
+function togglePreview(btn) {
+  const content = document.getElementById('previewContent');
+  if (content.classList.contains('collapsed')) {
+    content.classList.remove('collapsed');
+    btn.textContent = '▲ 收起预习区';
+  } else {
+    content.classList.add('collapsed');
+    btn.textContent = '▼ 展开预习区';
+  }
+}
+
+// ── Progress update ──
+function updateProgress() {
+  const answeredCount = Object.keys(answered).filter(k => SCORABLE.includes(k)).length;
+  const correctCount  = Object.keys(answered).filter(k => SCORABLE.includes(k) && answered[k].correct).length;
+  const pct = (answeredCount / TOTAL_SCORE) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('scoreLive').textContent = `${correctCount} 题答对（${answeredCount}/${TOTAL_SCORE} 已作答）`;
+}
+
+// ── MC ──
+function answerMC(btn, qid, chosen, correct) {
+  if (answered[qid]) return;
+  answered[qid] = { correct: chosen === correct };
+  const parent = btn.closest('.mc-options');
+  parent.querySelectorAll('.mc-btn').forEach(b => {
+    b.disabled = true;
+    const opt = b.querySelector('.opt-letter').textContent.trim();
+    if (opt === correct) b.classList.add('reveal-correct');
+  });
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    showFeedback(qid, true, correctFBMap[qid] || '✓ 正确！');
+  } else {
+    btn.classList.add('wrong');
+    showFeedback(qid, false, wrongFBMap[qid] || `✕ 错误。正确答案是 ${correct}。`);
+  }
+  updateProgress();
+}
+
+// ── TF ──
+function answerTF(btn, qid, chosen, correct) {
+  if (answered[qid]) return;
+  answered[qid] = { correct: chosen === correct };
+  btn.closest('.tf-options').querySelectorAll('.tf-btn').forEach(b => {
+    b.disabled = true;
+    if ((b.textContent.includes('正确') && correct) || (b.textContent.includes('错误') && !correct)) {
+      b.classList.add('reveal-correct');
+    }
+  });
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    showFeedback(qid, true, correctFBMap[qid] || '✓ 正确！');
+  } else {
+    btn.classList.add('wrong');
+    showFeedback(qid, false, wrongFBMap[qid] || `✕ 错误。正确答案是「${correct ? '正确' : '错误'}」。`);
+  }
+  updateProgress();
+}
+
+// ── Fill ──
+function answerFill(qid, keywords) {
+  if (answered[qid]) return;
+  const inp = document.getElementById('fill_' + qid);
+  const val = inp.value.trim();
+  if (!val) return;
+  const lower = val.toLowerCase();
+  const ok = keywords.some(kw => lower.includes(kw.toLowerCase()));
+  answered[qid] = { correct: ok };
+  inp.disabled = true;
+  inp.classList.add(ok ? 'correct' : 'wrong');
+  inp.closest('.q-card').querySelector('.fill-submit').disabled = true;
+  showFeedback(qid, ok, ok ? (correctFBMap[qid] || '✓ 正确！') : (wrongFBMap[qid] || '✕ 参考答案见解析。'));
+  updateProgress();
+}
+
+// ── Feedback display ──
+function showFeedback(qid, correct, msg) {
+  const fb = document.getElementById('fb_' + qid);
+  fb.className = 'q-feedback show ' + (correct ? 'correct-fb' : 'wrong-fb');
+  fb.innerHTML = `<span class="fb-icon">${correct ? '✓' : '✕'}</span>${msg}`;
+}
+
+// ── Hint toggle ──
+function toggleHint(id, btn) {
+  const el = document.getElementById(id);
+  if (el.classList.contains('show')) {
+    el.classList.remove('show');
+    btn.textContent = '💡 查看计算提示与答案';
+  } else {
+    el.classList.add('show');
+    btn.textContent = '▲ 收起提示';
+  }
+}
+
+// ── Submit ──
+function submitAll() {
+  const correct = SCORABLE.filter(k => answered[k]?.correct).length;
+  const answered_count = SCORABLE.filter(k => answered[k]).length;
+  const scoreEl = document.getElementById('resultScore');
+  const subEl   = document.getElementById('resultSub');
+  const brkEl   = document.getElementById('resultBreakdown');
+  const msgEl   = document.getElementById('resultMsg');
+  const pct = Math.round((correct / TOTAL_SCORE) * 100);
+  scoreEl.textContent = `${correct} / ${TOTAL_SCORE}`;
+  subEl.textContent = `得分率 ${pct}%　（已作答 ${answered_count} 题）`;
+  const wrong = answered_count - correct;
+  const skipped = TOTAL_SCORE - answered_count;
+  brkEl.innerHTML = `
+    <div class="breakdown-item"><div class="breakdown-num" style="color:#16a34a">${correct}</div><div class="breakdown-label">答对</div></div>
+    <div class="breakdown-item"><div class="breakdown-num" style="color:#dc2626">${wrong}</div><div class="breakdown-label">答错</div></div>
+    <div class="breakdown-item"><div class="breakdown-num" style="color:#9ca3af">${skipped}</div><div class="breakdown-label">未作答</div></div>`;
+  let msg;
+  if (pct >= 90) msg = '🏆 优秀！你对利润质量分析的三个维度及12大预警信号掌握扎实，继续保持！';
+  else if (pct >= 75) msg = '✅ 良好！基本掌握了核心利润、含金量、战略吻合度等重要概念，建议再复习5.4节的预警信号部分。';
+  else if (pct >= 60) msg = '📖 及格。建议重点回顾5.3节（利润质量三维度）的核心指标定义和5.4节（12大信号）的具体内容，再做一次练习。';
+  else msg = '💪 继续加油！建议先回顾第5章各小节的核心概念，特别是核心利润的计算、含金量的定义，以及利润质量恶化的12大外在表现，再做一次练习。';
+  msgEl.textContent = msg;
+  document.getElementById('resultCard').classList.add('show');
+  document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── Retry ──
+function retryAll() {
+  answered = {};
+  document.querySelectorAll('.mc-btn').forEach(b => { b.disabled = false; b.classList.remove('correct','wrong','reveal-correct'); });
+  document.querySelectorAll('.tf-btn').forEach(b => { b.disabled = false; b.classList.remove('correct','wrong','reveal-correct'); });
+  document.querySelectorAll('.fill-input').forEach(inp => { inp.disabled = false; inp.value = ''; inp.classList.remove('correct','wrong'); });
+  document.querySelectorAll('.fill-submit').forEach(b => b.disabled = false);
+  document.querySelectorAll('.q-feedback').forEach(fb => { fb.className = 'q-feedback'; fb.innerHTML = ''; });
+  document.querySelectorAll('.think-hint').forEach(h => h.classList.remove('show'));
+  document.querySelectorAll('.hint-btn').forEach(b => b.textContent = '💡 查看计算提示与答案');
+  document.getElementById('resultCard').classList.remove('show');
+  updateProgress();
+  window.scrollTo({ behavior: 'smooth', top: 0 });
+}
+
+// ── Feedback Messages ──
+const correctFBMap = {
+  q1: '✓ 正确！多步式利润表的四层结构：营业利润 → 利润总额 → 净利润 → 综合收益总额，层层递进。',
+  q2: '✓ 正确！核心利润 = 毛利（营业收入−营业成本）− 税金及附加 − 期间费用 + 其他收益，是最能反映主营业务盈利能力的利润口径。',
+  q3: '✓ 正确！利润结构体现公司战略选择，高质量利润结构意味着战略与业务高度契合，这是利润表「评价战略实施效果」功能的体现。',
+  q4: '✓ 正确！处置固定资产一次性收益是典型的非经常性损益，与主营业务无关，不具可持续性。',
+  q5: '✓ 正确！其他综合收益是「未在当期损益中确认」的利得和损失，属于未实现损益，不带来现金流，因此含金量极低。',
+  q6: '✓ 正确！大幅放宽赊销信用政策虽然短期刺激销售增长，但会导致应收账款堆积、坏账风险上升，收入含金量显著下降。',
+  q7: '✓ 正确！这是教材中关于营业成本质量分析的核心警示，异常的成本与存货比例往往是利润操纵的迹象。',
+  q8: '✓ 正确！研发费用资本化比例过高（尤其是在企业面临业绩压力时），可能是将费用资本化的会计操纵手段，形成「虚盈实亏」。',
+  q9: '✓ 正确！公允价值变动收益属于未实现的浮盈/浮亏，不带来现金流，既影响含金量也影响持续性，质量较差。',
+  q10: '✓ 正确！债务重组收益仅为账务处理，无任何现金流，质量最差，是教材明确指出「完全没有质量」的项目。',
+  q11: '✓ 正确！企业可以通过资产减值损失的多提或少提来调节利润，既可「洗澡」也可「平滑」，直接影响利润真实性。',
+  q12: '✓ 正确！利润质量三维度：含金量（现金实现程度）、持续性（成长性+波动性）、战略吻合度（与资产结构匹配）。',
+  q13: '✓ 正确！核心利润获现率 = 经营活动产生的现金流量净额 ÷ 核心利润，理想值为1.2～1.5，反映核心利润的现金转化能力。',
+  q14: '✓ 正确！成熟期采用预收款模式的企业（如航空、在线教育）通常先收钱后提供服务，含金量最高。',
+  q15: '✓ 正确！上市公司年报专门列示「扣非净利润」，分析师可直接用于评估核心经营的可持续性。',
+  q16: '✓ 正确！经营资产报酬率 = 核心利润 ÷ 平均经营资产 × 100%，衡量经营资产的盈利效率。',
+  q17: '✓ 正确！投资盈利能力高于经营盈利能力，可能说明经营层面出现问题，也可能存在投资收益泡沫，两种情形均需深入分析。',
+  q18: '✓ 正确！应选错误。数据完全相反——海天味业经营资产报酬率（90.13%）远高于非经营资产报酬率（3.27%），说明主营业务盈利能力极强，而投资配置效率偏低。',
+  q19: '✓ 正确！D项「营收连续三年超30%增长」本身不是恶化信号，但教材信号①是「扩张过快」——过快扩张才是风险，稳健高速增长不一定是问题。A、B、C均是明确的恶化信号。',
+  q20: '✓ 正确！在购货和销售无明显变化、行业竞争力未提升的情况下，应付账款不正常增长往往是企业支付能力下降的信号。',
+  q21: '✓ 正确！这是信号⑧的典型案例——无形资产/开发支出不正常增加（资本化比例过高）掩盖了实际费用，形成虚假利润。',
+  q22: '✓ 正确！现行准则将资产处置收益等非经营性项目归入营业利润（而非单独的「营业外收入」），使普通读者难以识别，这正是教材强调分析能力的重要原因。',
+};
+
+const wrongFBMap = {
+  q1: '✕ 错误。正确顺序：营业利润 → 利润总额（+营业外）→ 净利润（-所得税）→ 综合收益总额（+其他综合收益）。',
+  q2: '✕ 参考答案：核心利润 = 毛利（营业收入−营业成本）− 税金及附加 − 销售费用 − 管理费用 − 研发费用 − 信用减值损失 − 资产减值损失 + 其他收益。关键词应包含「毛利」或「营业收入减营业成本」。',
+  q3: '✕ 错误。利润表确实具有「评价战略实施效果」的作用——利润结构是资源配置战略实施后果的集中体现。',
+  q4: '✕ 错误。处置固定资产的一次性收益是最典型的非经常性损益。权益法长期股权投资收益（B选项）属于经常性损益，公允价值变动收益（C选项）较为特殊，通常归类为经常性但质量较低。',
+  q5: '✕ 错误。其他综合收益是「已确认但未实现」的利得/损失，不纳税、无现金流，含金量极低，不能视为高质量利润。',
+  q6: '✕ 错误。放宽赊销信用政策会导致应收账款堆积、坏账风险上升，是收入质量下降的典型信号（对应5.4节信号⑤）。',
+  q7: '✕ 错误。这正是教材明确指出的利润操纵信号——异常的成本转出比例往往意味着企业在调节利润，需重点分析。',
+  q8: '✕ 错误。研发费用资本化过高确实可能是利润操纵。B选项（全部费用化最稳健）也不完全正确——符合条件的开发支出资本化是准则允许的，关键是比例是否合理。',
+  q9: '✕ 错误。公允价值变动收益属于「浮盈/浮亏」，未实现、不带来现金流，含金量极差。只有实际处置时才能实现，持续性也很差。',
+  q10: '✕ 错误。债务重组收益仅是账务处理，完全没有对应现金流，质量最差。A（利息收入）、B（权益法持有收益）、C（处置收益）都有对应现金流或已实现，质量高于债务重组收益。',
+  q11: '✕ 错误。资产减值损失确实存在被人为操纵的空间，这是利润质量分析中需要重点关注的项目。',
+  q12: '✕ 参考答案：含金量（现金实现程度）· 持续性（成长性+波动性）· 战略吻合度（与资产结构的匹配）。您的答案需包含这三个维度的关键词。',
+  q13: '✕ 错误。核心利润获现率 = 经营活动产生的现金流量净额 ÷ 核心利润，理想值1.2～1.5（不是1.0）。注意分母是核心利润而非净利润。',
+  q14: '✕ 错误。预收款模式的成熟期企业（先收钱后提供服务）含金量最高。建筑和房地产企业通常是先垫资后收款，含金量最低。',
+  q15: '✕ 错误。上市公司年报确实会列示「扣除非经常性损益后的净利润」，这是分析持续性的重要数据，该说法正确。',
+  q16: '✕ 参考答案：核心利润 ÷ 平均经营资产 × 100%。注意分子是「核心利润」（不是净利润或营业利润），分母是「平均经营资产」（不是总资产）。',
+  q17: '✕ 错误。投资盈利能力高于经营盈利能力，首先应怀疑经营层面出现问题（管理质量低或产品竞争力不足），同时也要考虑投资收益是否存在泡沫。不能简单视为正面信号。',
+  q18: '✕ 实际上海天味业的情况完全相反：经营资产报酬率（90.13%）远高于非经营资产报酬率（3.27%），说明主营业务盈利能力极强，而投资配置（货币资金+金融资产）效益偏低。',
+  q19: '✕ 错误。D项「营收连续三年超30%快速增长」本身并非恶化信号——高速成长企业本应如此，关键是「扩张过快」（超出管理能力、涉足不擅长领域）才是信号①的核心。A（审计异常）、B（压缩酌量性支出）、C（不分红）均是明确的恶化信号。',
+  q20: '✕ 错误。在购货与销售无大变化的情况下，应付账款不正常增长往往是支付能力下降的信号，不能简单认为是主动谈判的结果。',
+  q21: '✕ 错误。将研发支出不合理地资本化为无形资产/开发支出，使资产科目不正常增大，对应的是信号⑧：无形资产或开发支出等资产项目规模不正常增加。注意区分信号④（变更会计政策）与信号⑧（资本化导致资产虚增）的不同。',
+  q22: '✕ 错误。这正是教材中的重要观点——非经营性项目（如资产处置收益）已被现行准则「上移」至营业利润，普通读者如果没有专业分析能力，很容易被这些「蒙混过关」的业绩所迷惑。',
+};
+
+updateProgress();
+</script>
+
+<!-- ── Fullscreen Button ── -->
+<button id="fsBtn" onclick="toggleFS()" title="全螢幕 / 退出全螢幕">⛶</button>
+
+<script>
+function toggleFS() {
+  const btn = document.getElementById('fsBtn');
+  if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+    // Enter fullscreen
+    const el = document.documentElement;
+    if (el.requestFullscreen) el.requestFullscreen();
+    else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+    btn.textContent = '✕';
+    btn.title = '退出全螢幕';
+  } else {
+    // Exit fullscreen
+    if (document.exitFullscreen) document.exitFullscreen();
+    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+    btn.textContent = '⛶';
+    btn.title = '全螢幕';
+  }
+}
+
+// Sync button icon when user presses Esc
+document.addEventListener('fullscreenchange', function() {
+  const btn = document.getElementById('fsBtn');
+  if (!document.fullscreenElement) {
+    btn.textContent = '⛶';
+    btn.title = '全螢幕';
+  } else {
+    btn.textContent = '✕';
+    btn.title = '退出全螢幕';
+  }
+});
+document.addEventListener('webkitfullscreenchange', function() {
+  const btn = document.getElementById('fsBtn');
+  if (!document.webkitFullscreenElement) {
+    btn.textContent = '⛶';
+    btn.title = '全螢幕';
+  } else {
+    btn.textContent = '✕';
+    btn.title = '退出全螢幕';
+  }
+});
+</script>
+</body>
+</html>
